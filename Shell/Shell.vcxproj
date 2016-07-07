@@ -76,7 +76,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BuiltinProgController.cpp" />
+    <ClCompile Include="HelloWorld.cpp" />
     <ClCompile Include="Shell.cpp" />
+    <ClCompile Include="StringList.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BuiltinProgController.h" />
+    <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="StringList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
