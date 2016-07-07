@@ -30,7 +30,7 @@ int main()
 		{
 			printf("Enter a program name: ");
 			scanf("%s", prefix);
-			if (BPC_Execute(prefix, 0, 0, &ret) == (void*)-2)//выполняем программу. -2 = программа не существует
+			if (BPC_Execute(prefix, 0, &ret) == (void*)-2)//выполняем программу. -2 = программа не существует
 				printf("Error: A program doesn't exist\n");
 		}
 		printf("\n\n");

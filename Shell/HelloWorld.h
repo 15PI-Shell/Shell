@@ -2,7 +2,8 @@
 #define BipHelloWorld
 
 #include <stdio.h>
+#include "StringList.h"
 
-void* HelloWorldProc(char** argv, int argc);
+void* HelloWorldProc(STRLIST_NODE* args);
 
 #endif
