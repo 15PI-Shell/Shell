@@ -3,7 +3,7 @@
 //структура, описывающая встроенную программу
 typedef struct BPC_Program
 {
-	char* (*procFuncPtr)(STRLIST_NODE* args);//указатель на обработчик программы, принимает список аргументов
+	char* (*procFuncPtr)(char* args);//указатель на обработчик программы, принимает строку аргументов
 	BPC_RETURNS returns;//какой тип данных возвращает функция
 } BPC_PROGRAM;
 
@@ -83,7 +83,7 @@ void BPC_Init()
 	RegisterProgram(&trieRoot, "HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
 }
 
-char* BPC_Execute(char* program, STRLIST_NODE* args, BPC_RETURNS* returns)
+char* BPC_Execute(char* program, char* args, BPC_RETURNS* returns)
 {
 	TRIE_NODE* tn = FindInTrie(trieRoot, program);//ищем строку-название в дереве
 	if (0 == tn || 0 == tn->hasAValue)//если строка содержится в дереве и её конец приходится на узел с описанием программы, то продолжаем
