@@ -33,7 +33,7 @@
     <ClCompile Include="HelloWorld.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="FindFile.c">
+    <ClCompile Include="FindFiles.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
