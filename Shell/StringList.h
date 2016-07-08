@@ -2,6 +2,7 @@
 #define StringList
 
 #include <stdlib.h>
+#include <string.h>
 
 //структура, описывающая объект списка
 typedef struct strlistNode
