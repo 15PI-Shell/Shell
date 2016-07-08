@@ -3,7 +3,7 @@
 //структура, описывающая встроенную программу
 typedef struct BPC_Program
 {
-	void* (*procFuncPtr)(STRLIST_NODE* args);//указатель на обработчик программы, принимает список аргументов
+	char* (*procFuncPtr)(STRLIST_NODE* args);//указатель на обработчик программы, принимает список аргументов
 	BPC_RETURNS returns;//какой тип данных возвращает функция
 } BPC_PROGRAM;
 
@@ -32,7 +32,7 @@ TRIE_NODE* FindInTrie(TRIE_NODE* node, char* name)
 }
 
 //функция, регистрирующая программу в контроллере
-void RegisterProgram(TRIE_NODE** node, char* name, void* (*procFuncPtr)(STRLIST_NODE* args), BPC_RETURNS returns)
+void RegisterProgram(TRIE_NODE** node, char* name, char* (*procFuncPtr)(STRLIST_NODE* args), BPC_RETURNS returns)
 {
 	if (0 == *node)
 	{//создаём новый узел в префиксном дереве, если он ещё не существует
@@ -83,11 +83,11 @@ void BPC_Init()
 	RegisterProgram(&trieRoot, "HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
 }
 
-void* BPC_Execute(char* program, STRLIST_NODE* args, BPC_RETURNS* returns)
+char* BPC_Execute(char* program, STRLIST_NODE* args, BPC_RETURNS* returns)
 {
 	TRIE_NODE* tn = FindInTrie(trieRoot, program);//ищем строку-название в дереве
 	if (0 == tn || 0 == tn->hasAValue)//если строка содержится в дереве и её конец приходится на узел с описанием программы, то продолжаем
-		return (void*)-2;//программа не существует
+		return (char*)-2;//программа не существует
 	*returns = tn->functionDesc.returns;//заполняем возвращаемое значение
 	return tn->functionDesc.procFuncPtr(args);//вызываем обработчик программы
 }
