@@ -1,5 +1,4 @@
-#include <Windows.h>
-#include <string.h>
+#include "ShellInstaller.h"
 
 void MakeInstaller(char* pathWithFiles)
 {
