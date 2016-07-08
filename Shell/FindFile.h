@@ -4,7 +4,7 @@
 #include <windows.h>
 #include "StringList.h"
 
-//функция поиска файла по маске или префиксу
-STRLIST_NODE* FindFiles(char* FileMask);
+//функция поиска файла по префиксу
+STRLIST_NODE* FindFile(char* FileMask);
 
 #endif
