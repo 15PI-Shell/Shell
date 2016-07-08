@@ -6,10 +6,10 @@ int main()
 	//ДЕМО!
 	char prefix[100];
 	int demoMode;
-	BPC_Returns ret;
+	BPC_RETURNS ret;
 
 	printf("Created programs: HelloWorld & HelloAcuion (two names of a one program)\n");
-	while (true)
+	while (1)
 	{
 		printf("Execute(1) / Find(2)? ");
 		scanf("%d", &demoMode);

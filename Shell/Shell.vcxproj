@@ -76,10 +76,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BuiltinProgController.cpp" />
-    <ClCompile Include="HelloWorld.cpp" />
-    <ClCompile Include="Shell.cpp" />
-    <ClCompile Include="StringList.cpp" />
+    <ClCompile Include="BuiltinProgController.c" />
+    <ClCompile Include="HelloWorld.c" />
+    <ClCompile Include="Shell.c" />
+    <ClCompile Include="StringList.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />

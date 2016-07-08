@@ -21,17 +21,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Shell.cpp">
+    <ClCompile Include="StringList.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="BuiltinProgController.cpp">
+    <ClCompile Include="Shell.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="HelloWorld.cpp">
+    <ClCompile Include="BuiltinProgController.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="HelloWorld.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="StringList.cpp">
-      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,15 +4,15 @@
 typedef struct BPC_Program
 {
 	void* (*procFuncPtr)(STRLIST_NODE* args);//указатель на обработчик программы, принимает список аргументов
-	BPC_Returns returns;//какой тип данных возвращает функция
-} BPC_FUNCTION;
+	BPC_RETURNS returns;//какой тип данных возвращает функция
+} BPC_PROGRAM;
 
 //структура, описывающая узел префиксного дерева
 typedef struct TrieNode
 {
 	char key;//буква, соотвествующая этому узлу
 	int hasAValue;//содержит ли описание программы или лишь является промежуточным узлом
-	BPC_Program functionDesc;//описание программы
+	BPC_PROGRAM functionDesc;//описание программы
 	struct TrieNode* children[26];//a..z - возможные потомки этого узла
 } TRIE_NODE;
 
@@ -32,7 +32,7 @@ TRIE_NODE* FindInTrie(TRIE_NODE* node, char* name)
 }
 
 //функция, регистрирующая программу в контроллере
-void RegisterProgram(TRIE_NODE** node, char* name, void* (*procFuncPtr)(STRLIST_NODE* args), BPC_Returns returns)
+void RegisterProgram(TRIE_NODE** node, char* name, void* (*procFuncPtr)(STRLIST_NODE* args), BPC_RETURNS returns)
 {
 	if (0 == *node)
 	{//создаём новый узел в префиксном дереве, если он ещё не существует
@@ -83,7 +83,7 @@ void BPC_Init()
 	RegisterProgram(&trieRoot, "HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
 }
 
-void* BPC_Execute(char* program, STRLIST_NODE* args, BPC_Returns* returns)
+void* BPC_Execute(char* program, STRLIST_NODE* args, BPC_RETURNS* returns)
 {
 	TRIE_NODE* tn = FindInTrie(trieRoot, program);//ищем строку-название в дереве
 	if (0 == tn || 0 == tn->hasAValue)//если строка содержится в дереве и её конец приходится на узел с описанием программы, то продолжаем
