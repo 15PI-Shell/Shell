@@ -1,6 +1,6 @@
 ﻿#include "HelloWorld.h"
 
-char* HelloWorldProc(STRLIST_NODE* args)
+char* HelloWorldProc(char* args)
 {
 	printf("Hello world!\n");
 	return 0;

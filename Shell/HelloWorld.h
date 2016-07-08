@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include "StringList.h"
 
-char* HelloWorldProc(STRLIST_NODE* args);
+char* HelloWorldProc(char* args);
 
 #endif

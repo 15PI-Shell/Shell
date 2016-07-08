@@ -32,7 +32,7 @@ TRIE_NODE* FindInTrie(TRIE_NODE* node, char* name)
 }
 
 //функция, регистрирующая программу в контроллере
-void RegisterProgram(TRIE_NODE** node, char* name, char* (*procFuncPtr)(STRLIST_NODE* args), BPC_RETURNS returns)
+void RegisterProgram(TRIE_NODE** node, char* name, char* (*procFuncPtr)(char* args), BPC_RETURNS returns)
 {
 	if (0 == *node)
 	{//создаём новый узел в префиксном дереве, если он ещё не существует
