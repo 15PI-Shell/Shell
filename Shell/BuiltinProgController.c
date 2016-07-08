@@ -19,7 +19,7 @@ typedef struct TrieNode
 TRIE_NODE* trieRoot = 0;//корень префиксного дерева
 
 //функция, возвращающая узел дерева, которому соотвествует указанная строка
-TRIE_NODE* FindInTrie(TRIE_NODE* node, char* name)
+TRIE_NODE* FindInTrieRec(TRIE_NODE* node, char* name)
 {
 	if (0 == node)
 		return 0;//узел не найден
@@ -28,11 +28,17 @@ TRIE_NODE* FindInTrie(TRIE_NODE* node, char* name)
 		return node;//если следующий символ строки - 0, то возвращаем этот узел - работа закончена.
 
 	//name + 1 каждую итерацию как бы откусывает первый символ от строки
-	return FindInTrie(node->children[tolower(name[1]) - 'a'], name + 1);//дерево регистронезависимо, поэтому переводим любой символ в нижний регистр
+	return FindInTrieRec(node->children[tolower(name[1]) - 'a'], name + 1);//дерево регистронезависимо, поэтому переводим любой символ в нижний регистр
+}
+
+//оболочка для запуска рекурсивной функции
+TRIE_NODE* FindInTrie(char* name)
+{
+	return FindInTrieRec(trieRoot->children[tolower(name[0]) - 'a'], name);
 }
 
 //функция, регистрирующая программу в контроллере
-void RegisterProgram(TRIE_NODE** node, char* name, char* (*procFuncPtr)(char* args), BPC_RETURNS returns)
+void RegisterProgramRec(TRIE_NODE** node, char* name, char* (*procFuncPtr)(char* args), BPC_RETURNS returns)
 {
 	if (0 == *node)
 	{//создаём новый узел в префиксном дереве, если он ещё не существует
@@ -51,7 +57,13 @@ void RegisterProgram(TRIE_NODE** node, char* name, char* (*procFuncPtr)(char* ar
 		return;
 	}
 
-	RegisterProgram(&(*node)->children[tolower(name[1]) - 'a'], name + 1, procFuncPtr, returns);
+	RegisterProgramRec(&(*node)->children[tolower(name[1]) - 'a'], name + 1, procFuncPtr, returns);
+}
+
+//оболочка для запуска рекурсивной функции
+void RegisterProgram(char* name, char* (*procFuncPtr)(char* args), BPC_RETURNS returns)
+{
+	RegisterProgramRec(&trieRoot->children[tolower(name[0]) - 'a'], name, procFuncPtr, returns);
 }
 
 //функция, реализующая обход в глубину и сохраняющая все найденные названия программ в список
@@ -65,9 +77,7 @@ void FindAllValuesInSubtree(TRIE_NODE* node, char* prefix, int prefixLen, STRLIS
 	if (node->hasAValue)//если в этом узле содержится описание программы, значит путь который мы прошли - её название
 	{
 		prefix[prefixLen + 1] = 0;//устанавливаем финальный 0
-		char* toInsert = (char*)malloc(sizeof(char) * (prefixLen + 1));
-		strcpy(toInsert, prefix);//копируем ответ в новую строку для помещения в список
-		StrlistAdd(values, toInsert);//помещаем в конец списка
+		StrlistAdd(values, prefix);//помещаем в конец списка
 	}
 
 	for (int i = 0; i < 26; ++i)
@@ -78,14 +88,20 @@ void FindAllValuesInSubtree(TRIE_NODE* node, char* prefix, int prefixLen, STRLIS
 
 void BPC_Init()
 {
+	trieRoot = (TRIE_NODE*)malloc(sizeof(TRIE_NODE));
+	for (int i = 0; i < 26; ++i)
+		trieRoot->children[i] = 0;
+	trieRoot->hasAValue = 0;
+	trieRoot->key = 0;//инициализируем корень, он не содержит никаких значений. Используется чтобы не создавать по дереву на каждую букву
+
 	//здесь будет список всех реализованных встроенных программ
-	RegisterProgram(&trieRoot, "HelloWorld", HelloWorldProc, BPC_ReturnsNothing);
-	RegisterProgram(&trieRoot, "HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
+	RegisterProgram("HelloWorld", HelloWorldProc, BPC_ReturnsNothing);
+	RegisterProgram("HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
 }
 
 char* BPC_Execute(char* program, char* args, BPC_RETURNS* returns)
 {
-	TRIE_NODE* tn = FindInTrie(trieRoot, program);//ищем строку-название в дереве
+	TRIE_NODE* tn = FindInTrie(program);//ищем строку-название в дереве
 	if (0 == tn || 0 == tn->hasAValue)//если строка содержится в дереве и её конец приходится на узел с описанием программы, то продолжаем
 		return (char*)-2;//программа не существует
 	*returns = tn->functionDesc.returns;//заполняем возвращаемое значение
@@ -94,7 +110,7 @@ char* BPC_Execute(char* program, char* args, BPC_RETURNS* returns)
 
 STRLIST_NODE* BPC_GetHints(char* prefix)
 {
-	TRIE_NODE* tn = FindInTrie(trieRoot, prefix);//находим узел, на котором заканчивается заданный префикс
+	TRIE_NODE* tn = FindInTrie(prefix);//находим узел, на котором заканчивается заданный префикс
 	if (0 == tn)
 		return 0;//такого префикса нет в дереве
 	STRLIST_NODE* hints = 0;//инициализируем список строк нулём
