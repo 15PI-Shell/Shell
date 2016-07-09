@@ -44,13 +44,12 @@ void DoubleStrlistInsertUnder(DoubleListStringNode* node, char* value);
 void DoubleStrlistInsertAbove(DoubleListStringNode* node, char* value);
 //Добавляает в двусвязный список копию указанной строки в самый низ списка (передавать можно любой элемент)
 //Если это указатель на 0, то вместо добавления выше, функция перезапишет его созданным элементом
-void DoubleStrlistInsertDownmost(DoubleListStringNode** node, char* value);
+void DoubleStrlistAddDownmost(DoubleListStringNode** node, char* value);
 //Добавляает в двусвязный список копию указанной строки в самый верх списка (передавать можно любой элемент)
 //Если это указатель на 0, то вместо добавления, функция перезапишет его созданным элементом
 void DoubleStrlistAddUpmost(DoubleListStringNode** node, char* value);
 //Удаляет самый нижний элемент из двусвязного списка (передавать можно любой элемент)
-//Если это указатель на 0, то вместо добавления, функция перезапишет его созданным элементом
-void DoubleStrlistAddDownmost(DoubleListStringNode** node, char* value);
+void DoubleStrlistRemoveDownmost(DoubleListStringNode** node);
 //Удаляет самый верхний элемент из двусвязного списка (передавать можно любой элемент)
 void DoubleStrlistRemoveUpmost(DoubleListStringNode** node);
 //Удаляет элемент, не нарушая структуру двусвязного списка
