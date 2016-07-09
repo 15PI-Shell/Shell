@@ -79,6 +79,8 @@
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
+    <ClCompile Include="Execute.c" />
+    <ClCompile Include="FindFile.c" />
     <ClCompile Include="HelloWorld.c" />
     <ClCompile Include="Shell.c" />
     <ClCompile Include="StringList.c" />
@@ -86,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
+    <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />

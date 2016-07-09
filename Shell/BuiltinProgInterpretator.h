@@ -6,7 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <conio.h>
+#include "BuiltinProgController.h"
 
-char* analisator( char*);
+char* analisator(char*);
 
 #endif

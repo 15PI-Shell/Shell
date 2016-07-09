@@ -1,14 +1,13 @@
-﻿#include "BuiltinProgController.h"
-#include "BuiltinProgInterpretator.h"
+﻿#include "BuiltinProgInterpretator.h"
 
-char* analisator( char* mas)
+char* analisator(char* mas)
 {
-	int p = 0, lenname = 0, lenarg = 0,flag = 0;
-	BPC_RETURNS TypeOfResult;
+	int p = 0, lenname = 0, lenarg = 0, flag = 0;
+	BPC_Returns TypeOfResult;
 	char* result = NULL;
 
 	// flag=0 - первый проход; 1 - если есть "|"; 2- выход
-	while ((flag == 0) || (flag==1) )
+	while ((flag == 0) || (flag == 1))
 	{
 		while (*(mas + p) == ' ')
 			p++;
@@ -34,7 +33,7 @@ char* analisator( char* mas)
 		}
 
 		if (flag == 0)
-		{ 
+		{
 			//находим длину строки аргументов
 			lenarg = p;
 			while ((*(mas + lenarg) != '\0') && (*(mas + lenarg) != '|'))
@@ -49,13 +48,13 @@ char* analisator( char* mas)
 				*(ptrarg + i) = mas[p];
 				p++;
 				i++;
-	
+
 			}
 			*(ptrarg + lenarg) = '\0';
 
 			result = BPC_Execute(ptrname, ptrarg, &TypeOfResult);
 			printf("%c", *(mas + p));
-			if (*(mas+p) == '\0')
+			if (*(mas + p) == '\0')
 				flag = 2;
 			else
 			{
@@ -68,7 +67,7 @@ char* analisator( char* mas)
 			// помещаем результат предыдущей функции в строку аргументов следующей 
 			result = BPC_Execute(ptrname, result, &TypeOfResult);
 
-			while ( (*(mas + p) != '\0') && (*(mas + p) != '|') )
+			while ((*(mas + p) != '\0') && (*(mas + p) != '|'))
 				p++;
 			if (*(mas + p) == '\0')
 				flag = 2;
