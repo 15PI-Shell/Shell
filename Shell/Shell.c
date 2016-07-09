@@ -3,9 +3,10 @@
 
 int main()
 {
-	/*
+	
 	BPC_Init();//регистрируем программы в контроллере
 	//ДЕМО!
+	/*
 	char prefix[100];
 	int demoMode;
 	BPC_RETURNS ret;
@@ -36,10 +37,10 @@ int main()
 				printf("Error: A program doesn't exist\n");
 		}
 		printf("\n\n");
-	}*/
-
-	char *p = analisator;
-	printf("%c",*p);
+	*/
+	char mas[] = "HelloWorld classmate";
+	char *p = analisator(mas);
+	
 	getch();
 	return 0;
 }

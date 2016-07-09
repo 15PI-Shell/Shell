@@ -7,6 +7,6 @@
 #include <stdio.h>
 #include <conio.h>
 
-char* analisator();
+char* analisator( char*);
 
 #endif

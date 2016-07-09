@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
     <ClCompile Include="HelloWorld.c" />
@@ -88,6 +89,7 @@
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
+    <ClInclude Include="sum.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
