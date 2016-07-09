@@ -1,37 +1,66 @@
 ﻿#include "Shell.h"
+#include "FindFile.h"
 
 int main()
 {
-	BPC_Init();//регистрируем программы в контроллере
-	//ДЕМО!
 	char prefix[100];
 	int demoMode;
-	BPC_Returns ret;
-	
-	printf("Created programs: HelloWorld & HelloAcuion (two names of a one program)\n");
+	GetCurrentDirectoryA(sizeof(CurrentDirectory), CurrentDirectory);
+	setlocale(LC_ALL, "rus");
+	printf("Поиск или открытие файлов:\n");
+	printf("Текущая директория: %s\n", CurrentDirectory);
 	while (1)
 	{
-		printf("Execute(1) / Find(2)? ");
+		printf("Запуск(1) / Поиск(2) / Изменить дирректорию(3)? ");
 		scanf("%d", &demoMode);
 		printf("\n\n");
-		if (demoMode == 2)
+		switch (demoMode)
 		{
-			printf("Enter a prefix: ");
+		case 2:
+			printf("Введите префикс файла: ");
 			scanf("%s", prefix);
-			SingleListStringNode* list = BPC_GetHints(prefix);//получаем список вариантов
+			SingleListStringNode* list = FindFiles(prefix);//получаем список вариантов
 			while (list)
 			{//выводим его
-				printf("%s ", list->value);
+				printf("%s\n", list->value);
 				list = list->up;
 			}
 			printf("\n");
-		}
-		else
-		{
-			printf("Enter a program name: ");
+			break;
+			
+		case 1:
+			printf("Введите имя файла с указанием расширения (путь указывается по желанию): ");
 			scanf("%s", prefix);
-			if (BPC_Execute(prefix, 0, &ret) == (void*)-2)//выполняем программу. -2 = программа не существует
-				printf("Error: A program doesn't exist\n");
+			ExecResult result = FileExecute(prefix);
+			switch (result)
+			{
+			case ExecResult_Success:
+				printf("Success\n");
+				break;
+			case ExecResult_NotEnoughResources:
+				printf("Not Enough Resources\n");
+				break;
+			case ExecResult_FileNotFound:
+				printf("File Not Found\n");
+				break;
+			case ExecResult_WrongExe:
+				printf("The .exe file is invalid\n");
+				break;
+			case ExecResult_AccessDenied:
+				printf("Access Denied\n");
+				break;
+			case ExecResult_WrongAssociation:
+				printf("Wrong Association\n");
+				break;
+			case ExecResult_UnknownError:
+				printf("Unknown Error\n");
+				break;
+			}
+			break;
+		case 3:
+			printf("Введите путь к новой директории: ");
+			scanf("%s", CurrentDirectory);
+			break;
 		}
 		printf("\n\n");
 	}
