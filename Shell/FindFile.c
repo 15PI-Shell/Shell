@@ -39,7 +39,7 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 
 		else
 		{
-			CopyCurrentDir[j] = 0;
+			CopyCurrentDir[j+1] = 0;
 			j = -1;
 			if (CopyCurrentDir[strlen(CopyCurrentDir) - 1] != '\\') //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
 				strcat(CopyCurrentDir, "\\");
