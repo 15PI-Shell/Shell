@@ -1,5 +1,4 @@
 ﻿#include "FindFile.h"
-#include "Execute.h"
 
 
 STRLIST_NODE* FindFiles(char* PrefixFile)
@@ -9,18 +8,22 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 	char * pathPTR;
 	int i = -1, j = -1;
 	HANDLE HandleFile;
+	char CopyCurrentDir[MAX_PATH];
+	strcat(PrefixFile, "*");
+	strcpy(CopyCurrentDir, CurrentDirectory);
+	//GetCopyCurrentDirA(sizeof(CopyCurrentDir), CopyCurrentDir); //получение текущей директории 
 
-	//GetCurrentDirectoryA(sizeof(CurrentDirectory), CurrentDirectory); //получение текущей директории 
-	strcat(CurrentDirectory, "\\"); //создаем путь для функции
-	strcat(CurrentDirectory, PrefixFile); //добавляем наш префикс
-	HandleFile = FindFirstFileA(CurrentDirectory, &FileData); //пытаемся получить дескриптор файла. В FileData отправляются данные файла
+	if (CopyCurrentDir[strlen(CopyCurrentDir) - 1] != '\\') //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
+		strcat(CopyCurrentDir, "\\"); //создаем путь для функции
+	strcat(CopyCurrentDir, PrefixFile); //добавляем наш префикс			
+	HandleFile = FindFirstFileA(CopyCurrentDir, &FileData); //пытаемся получить дескриптор файла. В FileData отправляются данные файла
 	if (HandleFile != INVALID_HANDLE_VALUE) //если подходящий файл или папка найдены
 	{
-		//printf("\n%s\n", CurrentDirectory);
+		//printf("\n%s\n", CopyCurrentDir);
 		do
 		{
-				//printf("%s\n", FileData.cFileName);
-				StrlistAdd(&last, FileData.cFileName); //добавляем имя файла/папки в список
+			//printf("%s\n", FileData.cFileName);
+			StrlistAdd(&last, FileData.cFileName); //добавляем имя файла/папки в список
 		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
 	}
 	FindClose(HandleFile);
@@ -31,24 +34,24 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 	{
 		if (pathPTR[i] != ';') //проходим все пути, указанные в PATH и ищем походящие файлы
 		{
-			CurrentDirectory[++j] = pathPTR[i];
+			CopyCurrentDir[++j] = pathPTR[i];
 		}
 
 		else
 		{
-			CurrentDirectory[j] = 0;
+			CopyCurrentDir[j] = 0;
 			j = -1;
-			strcat(CurrentDirectory, "\\");
-			strcat(CurrentDirectory, PrefixFile);
-			strcat(CurrentDirectory, "*");
-			HandleFile = FindFirstFileA(CurrentDirectory, &FileData);
+			if (CopyCurrentDir[strlen(CopyCurrentDir) - 1] != '\\') //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
+				strcat(CopyCurrentDir, "\\");
+			strcat(CopyCurrentDir, PrefixFile);
+			HandleFile = FindFirstFileA(CopyCurrentDir, &FileData);
 			if (HandleFile != INVALID_HANDLE_VALUE)
 			{
-				//printf("\n%s\n", CurrentDirectory);
+				//printf("\n%s\n", CopyCurrentDir);
 				do
 				{
-						//printf("%s\n", FileData.cFileName);
-						StrlistAdd(&last, FileData.cFileName);
+					//printf("%s\n", FileData.cFileName);
+					StrlistAdd(&last, FileData.cFileName);
 				} while (FindNextFileA(HandleFile, &FileData) != 0);
 			}
 		}

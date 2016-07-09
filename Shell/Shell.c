@@ -1,5 +1,4 @@
 ﻿#include "Shell.h"
-#include "Execute.h"
 #include "FindFile.h"
 
 int main()
@@ -18,16 +17,16 @@ int main()
 		switch (demoMode)
 		{
 		case 2:
-				printf("Введите префикс файла: ");
-				scanf("%s", prefix);
-				STRLIST_NODE* list = FindFiles(prefix);//получаем список вариантов
-				while (list)
-				{//выводим его
-					printf("%s\n", list->value);
-					list = list->next;
-				}
-				printf("\n");
-				break;
+			printf("Введите префикс файла: ");
+			scanf("%s", prefix);
+			STRLIST_NODE* list = FindFiles(prefix);//получаем список вариантов
+			while (list)
+			{//выводим его
+				printf("%s\n", list->value);
+				list = list->next;
+			}
+			printf("\n");
+			break;
 
 		case 1:
 			printf("Введите имя файла с указанием расширения (путь указывается по желанию): ");
@@ -62,8 +61,8 @@ int main()
 			printf("Введите путь к новой директории: ");
 			scanf("%s", CurrentDirectory);
 			break;
-		printf("\n\n");
 		}
+		printf("\n\n");
 	}
 	return 0;
 }

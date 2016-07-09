@@ -85,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />
-    <ClInclude Include="Execute.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="Shell.h" />
