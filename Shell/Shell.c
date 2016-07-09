@@ -1,7 +1,9 @@
 ﻿#include "Shell.h"
 
+
 int main()
 {
+	/*
 	BPC_Init();//регистрируем программы в контроллере
 	//ДЕМО!
 	char prefix[100];
@@ -34,6 +36,10 @@ int main()
 				printf("Error: A program doesn't exist\n");
 		}
 		printf("\n\n");
-	}
+	}*/
+
+	char *p = analisator;
+	printf("%c",*p);
+	getch();
 	return 0;
 }
