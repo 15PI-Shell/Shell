@@ -4,7 +4,7 @@
 ExecResult FileExecute(char * nameProc)
 {
 	UINT result; //переменная для возвращения результата открытия файла
-	if ((tolower(nameProc[0]) >= 'a') && (tolower(nameProc[0]) >= 'z') && (nameProc[1] == ':')) //если указан путь C:\...
+	if ((tolower(nameProc[0]) >= 'a') && (tolower(nameProc[0]) <= 'z') && (nameProc[1] == ':')) //если указан путь C:\...
 		result = ShellExecuteA(0, "open", nameProc, NULL, NULL, 1); //запускаем файл по переданному пути
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{

@@ -1,25 +1,25 @@
 ﻿#include "FindFile.h"
+#include "Execute.h"
 
 
 STRLIST_NODE* FindFiles(char* PrefixFile)
 {
 	WIN32_FIND_DATA FileData;
 	STRLIST_NODE *last = NULL;
-	char way[MAX_PATH];
 	char * pathPTR;
 	int i = -1, j = -1;
 	HANDLE HandleFile;
 
-	GetCurrentDirectoryA(sizeof(way), way); //получение текущей директории 
-	strcat(way, "\\"); //создаем путь для функции
-	strcat(way, PrefixFile); //добавляем наш префикс
-	HandleFile = FindFirstFileA(way, &FileData); //пытаемся получить дескриптор файла. В FileData отправляются данные файла
+	//GetCurrentDirectoryA(sizeof(CurrentDirectory), CurrentDirectory); //получение текущей директории 
+	strcat(CurrentDirectory, "\\"); //создаем путь для функции
+	strcat(CurrentDirectory, PrefixFile); //добавляем наш префикс
+	HandleFile = FindFirstFileA(CurrentDirectory, &FileData); //пытаемся получить дескриптор файла. В FileData отправляются данные файла
 	if (HandleFile != INVALID_HANDLE_VALUE) //если подходящий файл или папка найдены
 	{
-		printf("\n%s\n", way);
+		//printf("\n%s\n", CurrentDirectory);
 		do
 		{
-				printf("%s\n", FileData.cFileName);
+				//printf("%s\n", FileData.cFileName);
 				StrlistAdd(&last, FileData.cFileName); //добавляем имя файла/папки в список
 		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
 	}
@@ -31,23 +31,23 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 	{
 		if (pathPTR[i] != ';') //проходим все пути, указанные в PATH и ищем походящие файлы
 		{
-			way[++j] = pathPTR[i];
+			CurrentDirectory[++j] = pathPTR[i];
 		}
 
 		else
 		{
-			way[j] = 0;
+			CurrentDirectory[j] = 0;
 			j = -1;
-			strcat(way, "\\");
-			strcat(way, PrefixFile);
-			strcat(way, "*");
-			HandleFile = FindFirstFileA(way, &FileData);
+			strcat(CurrentDirectory, "\\");
+			strcat(CurrentDirectory, PrefixFile);
+			strcat(CurrentDirectory, "*");
+			HandleFile = FindFirstFileA(CurrentDirectory, &FileData);
 			if (HandleFile != INVALID_HANDLE_VALUE)
 			{
-				printf("\n%s\n", way);
+				//printf("\n%s\n", CurrentDirectory);
 				do
 				{
-						printf("%s\n", FileData.cFileName);
+						//printf("%s\n", FileData.cFileName);
 						StrlistAdd(&last, FileData.cFileName);
 				} while (FindNextFileA(HandleFile, &FileData) != 0);
 			}
