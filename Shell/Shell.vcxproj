@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BuiltinProgController.c" />
+    <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFiles.c" />
     <ClCompile Include="HelloWorld.c" />
     <ClCompile Include="Shell.c" />
@@ -84,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />
+    <ClInclude Include="Execute.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="Shell.h" />
