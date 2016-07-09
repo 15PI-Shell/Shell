@@ -21,7 +21,7 @@ typedef enum
 char CurrentDirectory[MAX_PATH];
 
 //функция поиска файла по префиксу
-STRLIST_NODE* FindFiles(char* PrefixFile);
+SingleListStringNode* FindFiles(char* PrefixFile);
 
 //функция запуска любых файлов (обязательно указывать расширение)
 ExecResult FileExecute(char * nameProc);

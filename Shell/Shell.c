@@ -19,11 +19,11 @@ int main()
 		case 2:
 			printf("Введите префикс файла: ");
 			scanf("%s", prefix);
-			STRLIST_NODE* list = FindFiles(prefix);//получаем список вариантов
+			SingleListStringNode* list = FindFiles(prefix);//получаем список вариантов
 			while (list)
 			{//выводим его
 				printf("%s\n", list->value);
-				list = list->next;
+				list = list->up;
 			}
 			printf("\n");
 			break;

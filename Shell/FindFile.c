@@ -1,10 +1,10 @@
 ﻿#include "FindFile.h"
 
 
-STRLIST_NODE* FindFiles(char* PrefixFile)
+SingleListStringNode* FindFiles(char* PrefixFile)
 {
 	WIN32_FIND_DATA FileData;
-	STRLIST_NODE *last = NULL;
+	SingleListStringNode *last = NULL;
 	char * pathPTR;
 	int i = -1, j = -1;
 	HANDLE HandleFile;
@@ -23,7 +23,7 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 		do
 		{
 			//printf("%s\n", FileData.cFileName);
-			StrlistAdd(&last, FileData.cFileName); //добавляем имя файла/папки в список
+			SingleStrlistAddDownmost(&last, FileData.cFileName); //добавляем имя файла/папки в список
 		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
 	}
 	FindClose(HandleFile);
@@ -51,7 +51,7 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 				do
 				{
 					//printf("%s\n", FileData.cFileName);
-					StrlistAdd(&last, FileData.cFileName);
+					SingleStrlistAddDownmost(&last, FileData.cFileName);
 				} while (FindNextFileA(HandleFile, &FileData) != 0);
 			}
 		}
