@@ -1,10 +1,10 @@
-#ifndef FindFile
+п»ї#ifndef FindFile
 #define FindFile
 
 #include <windows.h>
 #include "StringList.h"
 
-//функция поиска файла по префиксу
+//С„СѓРЅРєС†РёСЏ РїРѕРёСЃРєР° С„Р°Р№Р»Р° РїРѕ РїСЂРµС„РёРєСЃСѓ
 STRLIST_NODE* FindFiles(char* PrefixFile);
 
 #endif

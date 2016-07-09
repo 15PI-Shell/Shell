@@ -1,20 +1,25 @@
-#ifndef Execute
+п»ї#ifndef Execute
 #define Execute
 
 #include <string.h>
 #include <windows.h>
 
-typedef enum //результаты, возвращаемые функцией FileExecute
+//СЂРµР·СѓР»СЊС‚Р°С‚С‹, РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ С„СѓРЅРєС†РёРµР№ FileExecute
+typedef enum 
 {
-	ExecResult_Success,
-	ExecResult_OutOfResources,
-	ExecResult_BadFormat,
+	ExecResult_NotEnoughResources,
 	ExecResult_FileNotFound,
-	ExecResult_PathNotFound,
+	ExecResult_WrongExe,
+	ExecResult_AccessDenied,
+	ExecResult_WrongAssociation,
+	ExecResult_UnknownError,
+	ExecResult_Success,
 }ExecResult;
 
-char CurrentDirectory[MAX_PATH]; //хранит путь к текущей папке
+//С…СЂР°РЅРёС‚ РїСѓС‚СЊ Рє С‚РµРєСѓС‰РµР№ РїР°РїРєРµ
+char CurrentDirectory[MAX_PATH]; 
 
-ExecResult FileExecute(char * nameProc); //функция запуска .exe файлов
+//С„СѓРЅРєС†РёСЏ Р·Р°РїСѓСЃРєР° Р»СЋР±С‹С… С„Р°Р№Р»РѕРІ (РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ СѓРєР°Р·С‹РІР°С‚СЊ СЂР°СЃС€РёСЂРµРЅРёРµ)
+ExecResult FileExecute(char * nameProc); 
 
 #endif

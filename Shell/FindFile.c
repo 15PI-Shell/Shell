@@ -1,4 +1,4 @@
-#include "FindFile.h"
+п»ї#include "FindFile.h"
 
 
 STRLIST_NODE* FindFiles(char* PrefixFile)
@@ -10,26 +10,26 @@ STRLIST_NODE* FindFiles(char* PrefixFile)
 	int i = -1, j = -1;
 	HANDLE HandleFile;
 
-	GetCurrentDirectoryA(sizeof(way), way); //получение текущей директории 
-	strcat(way, "\\"); //создаем путь для функции
-	strcat(way, PrefixFile); //добавляем наш префикс
-	HandleFile = FindFirstFileA(way, &FileData); //пытаемся получить дескриптор файла. В FileData отправляются данные файла
-	if (HandleFile != INVALID_HANDLE_VALUE) //если подходящий файл или папка найдены
+	GetCurrentDirectoryA(sizeof(way), way); //РїРѕР»СѓС‡РµРЅРёРµ С‚РµРєСѓС‰РµР№ РґРёСЂРµРєС‚РѕСЂРёРё 
+	strcat(way, "\\"); //СЃРѕР·РґР°РµРј РїСѓС‚СЊ РґР»СЏ С„СѓРЅРєС†РёРё
+	strcat(way, PrefixFile); //РґРѕР±Р°РІР»СЏРµРј РЅР°С€ РїСЂРµС„РёРєСЃ
+	HandleFile = FindFirstFileA(way, &FileData); //РїС‹С‚Р°РµРјСЃСЏ РїРѕР»СѓС‡РёС‚СЊ РґРµСЃРєСЂРёРїС‚РѕСЂ С„Р°Р№Р»Р°. Р’ FileData РѕС‚РїСЂР°РІР»СЏСЋС‚СЃСЏ РґР°РЅРЅС‹Рµ С„Р°Р№Р»Р°
+	if (HandleFile != INVALID_HANDLE_VALUE) //РµСЃР»Рё РїРѕРґС…РѕРґСЏС‰РёР№ С„Р°Р№Р» РёР»Рё РїР°РїРєР° РЅР°Р№РґРµРЅС‹
 	{
 		printf("\n%s\n", way);
 		do
 		{
 				printf("%s\n", FileData.cFileName);
-				StrlistAdd(&last, FileData.cFileName); //добавляем имя файла/папки в список
-		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
+				StrlistAdd(&last, FileData.cFileName); //РґРѕР±Р°РІР»СЏРµРј РёРјСЏ С„Р°Р№Р»Р°/РїР°РїРєРё РІ СЃРїРёСЃРѕРє
+		} while (FindNextFileA(HandleFile, &FileData) != 0); //РїСЂРѕРґРѕР»Р¶Р°РµРј РїРѕРёСЃРє
 	}
 	FindClose(HandleFile);
 
 	pathPTR = getenv("PATH");
 
-	while (pathPTR[++i]) //парсим PATH
+	while (pathPTR[++i]) //РїР°СЂСЃРёРј PATH
 	{
-		if (pathPTR[i] != ';') //проходим все пути, указанные в PATH и ищем походящие файлы
+		if (pathPTR[i] != ';') //РїСЂРѕС…РѕРґРёРј РІСЃРµ РїСѓС‚Рё, СѓРєР°Р·Р°РЅРЅС‹Рµ РІ PATH Рё РёС‰РµРј РїРѕС…РѕРґСЏС‰РёРµ С„Р°Р№Р»С‹
 		{
 			way[++j] = pathPTR[i];
 		}
