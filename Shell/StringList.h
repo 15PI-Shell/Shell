@@ -1,5 +1,4 @@
-﻿#ifndef StringList
-#define StringList
+﻿#pragma once
 
 #include <stdlib.h>
 #include <string.h>
@@ -13,5 +12,3 @@ typedef struct strlistNode
 
 //функция, добавляющая в список указанную строку
 void StrlistAdd(STRLIST_NODE** last, char* value);
-
-#endif

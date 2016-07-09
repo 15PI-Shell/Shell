@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="KeyDefines.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
   </ItemGroup>

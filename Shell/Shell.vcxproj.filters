@@ -47,5 +47,8 @@
     <ClInclude Include="Shell.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="KeyDefines.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

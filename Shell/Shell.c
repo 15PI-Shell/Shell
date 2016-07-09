@@ -2,38 +2,88 @@
 
 int main()
 {
-	BPC_Init();//регистрируем программы в контроллере
-	//ДЕМО!
-	char prefix[100];
-	int demoMode;
-	BPC_RETURNS ret;
-
-	printf("Created programs: HelloWorld & HelloAcuion (two names of a one program)\n");
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD cor = { 0,0 }, o = { 0 , 0 };
+	DoubleListStringNode *CurrHist;
+	char Buff[100], tmp[100];
+	char *pch;
+	for (int i = 0; i < 100; i++)
+	{
+		Buff[i] = '\0';
+	}
+	int cur = 0, key;
 	while (1)
 	{
-		printf("Execute(1) / Find(2)? ");
-		scanf("%d", &demoMode);
-		printf("\n\n");
-		if (demoMode == 2)
+		key = getch();
+		switch (key)
 		{
-			printf("Enter a prefix: ");
-			scanf("%s", prefix);
-			STRLIST_NODE* list = BPC_GetHints(prefix);//получаем список вариантов
-			while (list)
-			{//выводим его
-				printf("%s ", list->value);
-				list = list->next;
+		case keys_arrows: key = getch();
+			switch (key)
+			{
+			case key_left: cor.X = cor.X - 1; SetConsoleCursorPosition(hConsole, cor); cur--;break;
+			case key_right:if (Buff[cur - 1] != '\0')
+			{
+				cor.X = cor.X + 1;
+				SetConsoleCursorPosition(hConsole, cor); cur++;
+			} break;
+			case key_up: if (CurrHist->up != NULL)
+			{
+				CurrHist = CurrHist->up; *Buff= CurrHist->value;
+				cor.X = 0;cur = 0;
+				SetConsoleCursorPosition(hConsole, cor);
+				printf("%s", Buff);
 			}
-			printf("\n");
-		}
-		else
+				break;
+			case key_down:if (CurrHist->down != NULL)
+			{
+				CurrHist = CurrHist->down; *Buff = CurrHist->value;
+				cor.X = 0;
+				cur = 0;
+				SetConsoleCursorPosition(hConsole, cor);
+				printf("%s", Buff);
+			}
+				break;
+			case key_del:  SetConsoleCursorPosition(hConsole, cor);
+				for (int i = cur; i < strlen(Buff) - 1; i++)
+				{
+					Buff[i] = Buff[i + 1];
+				}
+				if (strlen(Buff) > 1) Buff[strlen(Buff) - 1] = ' ';
+				o.Y = cor.Y;
+				SetConsoleCursorPosition(hConsole, o);
+				printf("%s", Buff);
+				SetConsoleCursorPosition(hConsole, cor);
+			}break;
+		case key_enter:
+			cor.X = 0; cor.Y = cor.Y + 1; SetConsoleCursorPosition(hConsole, cor); cur = 0;
+			DoubleStrlistInsertAbove(CurrHist, Buff);
+			for (int i = 0; i < 100; i++)
+			{
+				Buff[i] = '\0';
+			}break;
+		case key_BackSpase:
+			for (int i = cur - 1; i < strlen(Buff) - 1; i++)
+			{
+
+				Buff[i] = Buff[i + 1];
+			}
+			if (strlen(Buff) > 1) Buff[strlen(Buff) - 1] = ' ';
+			o.Y = cor.Y;
+			SetConsoleCursorPosition(hConsole, o);
+			printf("%s", Buff);
+			SetConsoleCursorPosition(hConsole, cor);
+			break;
+		case key_tab: //автодополнение
+			break;
+		default:if ((((key >= 'a' && key <= 'z') || (key >= 'A' || key <= 'Z')) || (key >= '0' || key <= '9')) || (key == key_Space))
 		{
-			printf("Enter a program name: ");
-			scanf("%s", prefix);
-			if (BPC_Execute(prefix, 0, &ret) == (void*)-2)//выполняем программу. -2 = программа не существует
-				printf("Error: A program doesn't exist\n");
+			SetConsoleCursorPosition(hConsole, cor);cor.X = cor.X + 1;
+			printf("%c", key); Buff[cur] = (char)key; cur++;
+
 		}
-		printf("\n\n");
+				break;
+		}
 	}
 	return 0;
+
 }
