@@ -1,25 +1,25 @@
-#include "BuiltinProgController.h"
+п»ї#include "BuiltinProgController.h"
 #include "BuiltinProgInterpretator.h"
 
 char* analisator( char* mas)
 {
 	int p = 0, lenname = 0, lenarg = 0,flag = 0;
-	BPC_RETURNS* TypeOfResult = NULL;
+	BPC_RETURNS TypeOfResult;
 	char* result = NULL;
 
-	// flag=0 - первый проход; 1 - если есть "|"; 2- выход
+	// flag=0 - РїРµСЂРІС‹Р№ РїСЂРѕС…РѕРґ; 1 - РµСЃР»Рё РµСЃС‚СЊ "|"; 2- РІС‹С…РѕРґ
 	while ((flag == 0) || (flag==1) )
 	{
 		while (*(mas + p) == ' ')
 			p++;
 
-		//находим длину названия команды
+		//РЅР°С…РѕРґРёРј РґР»РёРЅСѓ РЅР°Р·РІР°РЅРёСЏ РєРѕРјР°РЅРґС‹
 		lenname = p;
 		while (*(mas + lenname) != ' ')
 			lenname++;
 		lenname = lenname - p;
 
-		//указатель на строку с названием команды
+		//СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂРѕРєСѓ СЃ РЅР°Р·РІР°РЅРёРµРј РєРѕРјР°РЅРґС‹
 		char* ptrname = NULL;
 		ptrname = (char*)malloc(lenname * sizeof(char));
 
@@ -35,13 +35,13 @@ char* analisator( char* mas)
 
 		if (flag == 0)
 		{ 
-			//находим длину строки аргументов
+			//РЅР°С…РѕРґРёРј РґР»РёРЅСѓ СЃС‚СЂРѕРєРё Р°СЂРіСѓРјРµРЅС‚РѕРІ
 			lenarg = p;
 			while ((*(mas + lenarg) != '\0') && (*(mas + lenarg) != '|'))
 				lenarg++;
 			lenarg = lenarg - p;
 
-			// указатель на строку с аругментами
+			// СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂРѕРєСѓ СЃ Р°СЂСѓРіРјРµРЅС‚Р°РјРё
 			char* ptrarg = (char*)malloc(lenarg * sizeof(char));
 			i = 0;
 			while (i != lenarg)
@@ -53,7 +53,7 @@ char* analisator( char* mas)
 			}
 			*(ptrarg + lenarg) = '\0';
 
-			result = BPC_Execute(ptrname, ptrarg, TypeOfResult);
+			result = BPC_Execute(ptrname, ptrarg, &TypeOfResult);
 			printf("%c", *(mas + p));
 			if (*(mas+p) == '\0')
 				flag = 2;
@@ -65,8 +65,8 @@ char* analisator( char* mas)
 		}
 		else
 		{
-			// помещаем результат предыдущей функции в строку аргументов следующей 
-			result = BPC_Execute(ptrname, result, TypeOfResult);
+			// РїРѕРјРµС‰Р°РµРј СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРµРґС‹РґСѓС‰РµР№ С„СѓРЅРєС†РёРё РІ СЃС‚СЂРѕРєСѓ Р°СЂРіСѓРјРµРЅС‚РѕРІ СЃР»РµРґСѓСЋС‰РµР№ 
+			result = BPC_Execute(ptrname, result, &TypeOfResult);
 
 			while ( (*(mas + p) != '\0') && (*(mas + p) != '|') )
 				p++;

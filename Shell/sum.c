@@ -1,6 +1,9 @@
-#include "sum.h"
+﻿#include "sum.h"
 
-int sumProc(int a, int b)
+char* sumProc(char* arg)
 {
-	return a + b;
+	int a, b;
+	sscanf(arg, "%d%d", &a, &b);//опасно, но для теста хватит
+	sprintf(arg, "%d", a + b);
+	return arg;
 }

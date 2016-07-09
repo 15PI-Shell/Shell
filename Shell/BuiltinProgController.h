@@ -6,6 +6,7 @@
 #include "StringList.h"
 
 #include "HelloWorld.h"
+#include "sum.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum BPC_Returns
