@@ -5,6 +5,6 @@
 #include "StringList.h"
 
 //функция поиска файла по префиксу
-STRLIST_NODE* FindFile(char* FileMask);
+STRLIST_NODE* FindFiles(char* PrefixFile);
 
 #endif

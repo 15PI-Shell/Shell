@@ -1,8 +1,7 @@
 #include "Execute.h"
 
-char CurrentDirectory[]="C:";
 
-ExecResult Execution(char * nameProc)
+ExecResult FileExecute(char * nameProc)
 {
 	UINT result;
 	char check[] = ".exe";

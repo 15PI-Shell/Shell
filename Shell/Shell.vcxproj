@@ -78,7 +78,7 @@
   <ItemGroup>
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="Execute.c" />
-    <ClCompile Include="FindFiles.c" />
+    <ClCompile Include="FindFile.c" />
     <ClCompile Include="HelloWorld.c" />
     <ClCompile Include="Shell.c" />
     <ClCompile Include="StringList.c" />
