@@ -2,6 +2,8 @@
 
 int main()
 {
+	BPC_Init();
+	
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD cor = { 0,0 }, o = { 0 , 0 };
 	DoubleListStringNode *CurrHist;
