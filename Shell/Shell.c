@@ -6,8 +6,8 @@ int main()
 	//ДЕМО!
 	char prefix[100];
 	int demoMode;
-	BPC_RETURNS ret;
-
+	BPC_Returns ret;
+	
 	printf("Created programs: HelloWorld & HelloAcuion (two names of a one program)\n");
 	while (1)
 	{
@@ -18,11 +18,11 @@ int main()
 		{
 			printf("Enter a prefix: ");
 			scanf("%s", prefix);
-			STRLIST_NODE* list = BPC_GetHints(prefix);//получаем список вариантов
+			SingleListStringNode* list = BPC_GetHints(prefix);//получаем список вариантов
 			while (list)
 			{//выводим его
 				printf("%s ", list->value);
-				list = list->next;
+				list = list->up;
 			}
 			printf("\n");
 		}
