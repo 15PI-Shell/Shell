@@ -4,6 +4,7 @@
 int main()
 {
 	char prefix[100];
+	char parametrs[100]="";
 	int demoMode;
 	GetCurrentDirectoryA(sizeof(CurrentDirectory), CurrentDirectory);
 	setlocale(LC_ALL, "rus");
@@ -31,7 +32,7 @@ int main()
 		case 1:
 			printf("Введите имя файла с указанием расширения (путь указывается по желанию): ");
 			scanf("%s", prefix);
-			ExecResult result = FileExecute(prefix);
+			ExecResult result = FileExecute(prefix, parametrs);
 			switch (result)
 			{
 			case ExecResult_Success:
