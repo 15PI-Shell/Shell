@@ -172,8 +172,7 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList)
 	EnLen = strlen(entry);
 	switch (list)
 	{
-	case 1: //AutoComplitionOfCommand(entry, EnLen);
-		break;
+	case 1: LastFound = BPC_GetHints(entry); break;
 	case 2:	LastFound = FindFiles(entry); break;
 		if (LastFound == NULL) return; // дополнения не найдены
 		if (LastFound->up == 0) {
