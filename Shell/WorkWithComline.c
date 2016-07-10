@@ -161,22 +161,29 @@ void ConsoleEnter(int *flagOfAutocomplition)
 
 /*-Autocompletion-*/
 
-void ConsoleAutocomplition(int *flagOfAutocomplitionList)
+void ConsoleAutocomplition(int *flagOfAutocomplitionList,SingleListStringNode *LastFoundList)
 {
 	int Buflen = strlen(Buff);
 	char *entry;
 	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry, k;
-	SingleListStringNode* LastFound = NULL;
+	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
+	LastFoundList = NULL;
 	list = DetermineEntry(Buff, Buflen, entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
 	EnLen = strlen(entry);
 	switch (list)
 	{
-	case 1: LastFound = BPC_GetHints(entry); break;
-	case 2:	LastFound = FindFiles(entry); break;
-		if (LastFound == NULL) return; // дополнения не найдены
-		if (LastFound->up == 0) {
-			*(Buff + posEntry) = LastFound->value;
+	case 1: LastFoundCommand = BPC_GetHints(entry);
+		LastFoundFile = FindFiles(entry);
+		//слияние
+		break;
+	case 2:	LastFoundFile = FindFiles(entry); LastFoundList = LastFoundList;break;
+		if (LastFoundList == NULL) return; // дополнения не найдены
+		if (LastFoundList->up == 0) {
+			for (int i = posEntry; i < strlen(LastFoundList->value); i++)
+			{
+				Buff[i] = LastFoundList->value[i - posEntry];
+			}
 			ReprintConsoleBuffer();
 		} //дополнение единственное, печатаем
 		else //найдено несколько дополнений, ждем след таба
@@ -184,7 +191,7 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList)
 			k = getch();
 			if (k == key_tab)
 			{
-				*flagOfAutocomplitionList = PrintListOfAutocomplition(LastFound);
+				//*flagOfAutocomplitionList = PrintListOfAutocomplition(LastFoundList);
 			}
 		} return;
 	}
