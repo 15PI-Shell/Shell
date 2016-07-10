@@ -76,7 +76,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Autocompletion.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFile.c" />
@@ -86,7 +85,6 @@
     <ClCompile Include="StringList.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Autocompletion.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />

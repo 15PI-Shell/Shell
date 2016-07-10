@@ -39,9 +39,6 @@
     <ClCompile Include="FindFile.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="Autocompletion.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="WorkWithComline.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -63,9 +60,6 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="FindFile.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Autocompletion.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="WorkWithComline.h">

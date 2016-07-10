@@ -1,13 +1,12 @@
 ﻿#include "Shell.h"
 int main()
 {
-	
+
 	BPC_Init();
 	ConsoleInitialisation();
-	int key, buffLen, cur = 0, flagOfAutocomplitionList=0;
+	int key, flagOfAutocomplitionList = 0;
 	while (1)
 	{
-		buffLen = strlen(Buff);
 		key = getch();
 		switch (key)
 		{
@@ -22,10 +21,10 @@ int main()
 			case key_del: ConsoleDeleteCurElem(); break;
 			}
 			break;
-		case key_enter:ConsoleEnter(flagOfAutocomplitionList); break;	
-		case key_BackSpase:ConsoleBackSpace();break;
-		case key_tab:ConsoleAutocomplition( buffLen, &flagOfAutocomplitionList);break;//автодополнение
-		default:ConsolePrintChar(key, buffLen);break;
+		case key_enter:ConsoleEnter(&flagOfAutocomplitionList); break;
+		case key_BackSpase:ConsoleBackSpace(); break;
+		case key_tab:ConsoleAutocomplition(&flagOfAutocomplitionList); break;//автодополнение
+		default:ConsolePrintChar(key); break;
 		}
 	}
 	return 0;
