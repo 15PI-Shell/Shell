@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <Windows.h>
 #include "StringList.h"
 #include "KeyDefines.h"
@@ -27,8 +27,8 @@ void ConsoleBackSpace();
 void ConsoleDeleteCurElem();
 void ConsoleEnter(int *flagOfAutocomplition);
 
-int PrintListOfAutocomplition(SingleListStringNode* ListOfAutocomplitions);//распечатка всезх найденных вариантов автодополнений, возвращает кол-во занимаемых строк
-void DeleteListOfAutocomlition(int n);//если распечатанные автодополнения не актуальны, убираем с экрана
-void ConsoleAutocomplition(int *flag);// основная функция автодополнения, в флаге отражего напечатан ли список автодополнений, нет-0, да-кол-во занимаемых строк 
-int  DetermineEntry(char *Buff, int Buflen, char *entry, int *PosEntryStart);// определяет момент, с которого начнется автодополнения, возвращает 1 - если автодополнение комманды, 2-автодополнение имени файла, 0-в случае ошибки(например если буффер пуст)
+int PrintListOfAutocomplition(SingleListStringNode* ListOfAutocomplitions);//СЂР°СЃРїРµС‡Р°С‚РєР° РІСЃРµР·С… РЅР°Р№РґРµРЅРЅС‹С… РІР°СЂРёР°РЅС‚РѕРІ Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёР№, РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»-РІРѕ Р·Р°РЅРёРјР°РµРјС‹С… СЃС‚СЂРѕРє
+void DeleteListOfAutocomlition(int n);//РµСЃР»Рё СЂР°СЃРїРµС‡Р°С‚Р°РЅРЅС‹Рµ Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёСЏ РЅРµ Р°РєС‚СѓР°Р»СЊРЅС‹, СѓР±РёСЂР°РµРј СЃ СЌРєСЂР°РЅР°
+void ConsoleAutocomplition(int *flag);// РѕСЃРЅРѕРІРЅР°СЏ С„СѓРЅРєС†РёСЏ Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёСЏ, РІ С„Р»Р°РіРµ РѕС‚СЂР°Р¶РµРіРѕ РЅР°РїРµС‡Р°С‚Р°РЅ Р»Рё СЃРїРёСЃРѕРє Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёР№, РЅРµС‚-0, РґР°-РєРѕР»-РІРѕ Р·Р°РЅРёРјР°РµРјС‹С… СЃС‚СЂРѕРє 
+int  DetermineEntry(char *Buff, int Buflen, char *entry, int *PosEntryStart);// РѕРїСЂРµРґРµР»СЏРµС‚ РјРѕРјРµРЅС‚, СЃ РєРѕС‚РѕСЂРѕРіРѕ РЅР°С‡РЅРµС‚СЃСЏ Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёСЏ, РІРѕР·РІСЂР°С‰Р°РµС‚ 1 - РµСЃР»Рё Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёРµ РєРѕРјРјР°РЅРґС‹, 2-Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёРµ РёРјРµРЅРё С„Р°Р№Р»Р°, 0-РІ СЃР»СѓС‡Р°Рµ РѕС€РёР±РєРё(РЅР°РїСЂРёРјРµСЂ РµСЃР»Рё Р±СѓС„С„РµСЂ РїСѓСЃС‚)
 void ChekFFlagOfAutoComplition(int *flag);

@@ -1,13 +1,13 @@
-#include "WorkWithComline.h"
+п»ї#include "WorkWithComline.h"
 
 void ConsoleInitialisation()
 {
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	cor.X = cor.Y = 0;
 	startPrintPoint.X = startPrintPoint.Y = 0;
-	DoubleStrlistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
+	DoubleStrlistAddUpmost(&CurrHist, "");//РґРѕР±Р°РІР»СЏРµРј "РЅРёС‡С‚Рѕ" РІ РёСЃС‚РѕСЂРёСЋ
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
+	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//РїРѕРїСЂР°РІРєР° РЅР° РїРµСЂРµС‚Р°СЃРєРёРІР°РЅРёРµ СЃРёРјРІРѕР»РѕРІ backspace'РѕРј
 }
 
 void ClearComline()
@@ -66,9 +66,9 @@ void OnNextLine()
 void ConsolePrintChar(int key)
 {
 	int buffLen = strlen(Buff);
-	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'а' && key <= 'я') && !(key >= 'А' && key <= 'Я'))
+	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'Р°' && key <= 'СЏ') && !(key >= 'Рђ' && key <= 'РЇ'))
 	{
-		//если символ печатаем и не кириллица (ну её)
+		//РµСЃР»Рё СЃРёРјРІРѕР» РїРµС‡Р°С‚Р°РµРј Рё РЅРµ РєРёСЂРёР»Р»РёС†Р° (РЅСѓ РµС‘)
 		for (int i = buffLen; i > cur; --i)
 			Buff[i] = Buff[i - 1];
 		Buff[cur] = (char)key;
@@ -152,7 +152,7 @@ void ConsoleEnter(int *flagOfAutocomplition)
 	str = (char*)malloc(MAX_CONSOLE_INPUT + 2); memset(str, 0, MAX_CONSOLE_INPUT + 2);
 	ChekFFlagOfAutoComplition(flagOfAutocomplition);
 	DoubleStrlistAddDownmost(&CurrHist, str);
-	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
+	while (CurrHist->down)//СЃР±СЂР°СЃС‹РІР°РµРј СѓРєР°Р·Р°С‚РµР»СЊ РёСЃС‚РѕСЂРёРё, РІСЃРµРіРґР° СЃРёРґРёРј РІ СЃР°РјРѕРј РЅРёР·Сѓ
 		CurrHist = CurrHist->down;
 	strcmp(CurrHist->value, Buff);
 	OnNextLine();
@@ -175,12 +175,12 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList)
 	case 1: //AutoComplitionOfCommand(entry, EnLen);
 		break;
 	case 2:	LastFound = FindFiles(entry); break;
-		if (LastFound == NULL) return; // дополнения не найдены
+		if (LastFound == NULL) return; // РґРѕРїРѕР»РЅРµРЅРёСЏ РЅРµ РЅР°Р№РґРµРЅС‹
 		if (LastFound->up == 0) {
 			*(Buff + posEntry) = LastFound->value;
 			ReprintConsoleBuffer();
-		} //дополнение единственное, печатаем
-		else //найдено несколько дополнений, ждем след таба
+		} //РґРѕРїРѕР»РЅРµРЅРёРµ РµРґРёРЅСЃС‚РІРµРЅРЅРѕРµ, РїРµС‡Р°С‚Р°РµРј
+		else //РЅР°Р№РґРµРЅРѕ РЅРµСЃРєРѕР»СЊРєРѕ РґРѕРїРѕР»РЅРµРЅРёР№, Р¶РґРµРј СЃР»РµРґ С‚Р°Р±Р°
 		{
 			k = getch();
 			if (k == key_tab)
