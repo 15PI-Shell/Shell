@@ -45,10 +45,6 @@ void ResetCur()
 {
 	cur = 0;
 }
-void AddNewCommandInHistory(char *str, DoubleListStringNode *CurHist)
-{
-	
-}
 void OnNextLine()
 {
 	cor.X = 0;

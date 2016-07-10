@@ -75,7 +75,7 @@ void ChekFFlagOfAutoComplition(int *flag)
 {
 	if (flag != 0)
 	{
-		DeleteListOfAutocomlition(flag);
-		flag = 0;
+		DeleteListOfAutocomlition(*flag);
+		*flag = 0;
 	}
 }
