@@ -29,6 +29,9 @@ void SingleStrlistRemoveDownmost(SingleListStringNode** downmost);
 void SingleStrlistRemoveUpmost(SingleListStringNode* node);
 //Удаляет элемент выше данного, не нарушая структуру односвязного списка
 void SingleStrlistRemoveNextUp(SingleListStringNode* node);
+//присоединяет к нижнему листу верхний
+//up и down должны указывать на самый нижний элемент списка
+void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode* down);
 
 //структура, описывающая объект двусвязного списка
 typedef struct DoubleListStringNode
@@ -54,3 +57,5 @@ void DoubleStrlistRemoveUpmost(DoubleListStringNode** node);
 //Удаляет элемент, не нарушая структуру двусвязного списка
 //Указатель переместится на элемент ниже данного, если он существует, иначе на верхний. Если это единственный элемент, то установится на 0
 void DoubleStrlistRemove(DoubleListStringNode** node);
+//присоединяет к нижнему листу верхний (наверх)
+void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode* down);
