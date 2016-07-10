@@ -81,7 +81,6 @@
     <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFile.c" />
     <ClCompile Include="HelloWorld.c" />
-    <ClCompile Include="KeyEvents.c" />
     <ClCompile Include="WorkWithComline.c" />
     <ClCompile Include="Shell.c" />
     <ClCompile Include="StringList.c" />
@@ -92,7 +91,6 @@
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="KeyDefines.h" />
-    <ClInclude Include="KeyEvents.h" />
     <ClInclude Include="WorkWithComline.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
