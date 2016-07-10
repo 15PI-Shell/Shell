@@ -1,28 +1,29 @@
 #include "Autocompletion.h"
 
-void Autocomplition(char *Buff, int Buflen, int *flag)
+void ConsoleAutocomplition(int Buflen, int *flagOfAutocomplitionList)
 {
 	char *entry;
 	entry= (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry, k;
 	SingleListStringNode* LastFound = NULL;
-	list = DetemineEntry(Buff, Buflen, entry, &posEntry);
+	list = DetermineEntry(Buff, Buflen, entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
 	EnLen = strlen(entry);
 	switch (list)
 	{
-	case 1: AutoComplitionOfCommand(entry, EnLen);break;
+	case 1: //AutoComplitionOfCommand(entry, EnLen);
+		break;
 	case 2:	LastFound = FindFiles(entry);break;
 		if (LastFound == NULL) return; // дополнения не найдены
 		if (LastFound->up == 0) { 
 			*(Buff + posEntry) = LastFound->value; 
-			reprintConsoleBuffer();
+			ReprintConsoleBuffer();
 		} //дополнение единственное, печатаем
 		else //найдено несколько дополнений, ждем след таба
 		{
 			k = getch();
 			if (k == key_tab)
 			{
-				flag = PrintListOfAutocomplition(LastFound);
+				flagOfAutocomplitionList = PrintListOfAutocomplition(LastFound);
 			}
 		} return;
 	}
@@ -69,4 +70,12 @@ void DeleteListOfAutocomlition(int n)
 	startPrintPoint.Y = y - n;
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
 	return;
+}
+void ChekFFlagOfAutoComplition(int *flag)
+{
+	if (flag != 0)
+	{
+		DeleteListOfAutocomlition(flag);
+		flag = 0;
+	}
 }

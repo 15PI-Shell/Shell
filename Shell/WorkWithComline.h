@@ -1,11 +1,16 @@
 #pragma once
 #include <Windows.h>
+#include "StringList.h"
 #define MAX_CONSOLE_INPUT 100
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
-int cur = 0;
+DoubleListStringNode *CurrHist;
 void ClearComline();
 void ReprintConsoleBuffer();
-void IncCursor();
-void DecCursor();
+int IncCursor(int currentPos);
+int DecCursor(int currentPos);
+void ResetCur(int currentPos);
+void AddNewCommandInHistory(char *str, DoubleListStringNode *CurHist);
+void OnNextLine(int CurrPos);
+void ConsoleInitialisation();
