@@ -39,6 +39,12 @@
     <ClCompile Include="FindFile.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Autocompletion.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkWithComline.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h">
@@ -54,9 +60,15 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="KeyDefines.h">
-		<Filter>Заголовочные файлы</Filter>
-	</ClInclude>
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
     <ClInclude Include="FindFile.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Autocompletion.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkWithComline.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

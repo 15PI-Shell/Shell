@@ -1,43 +1,4 @@
 ﻿#include "Shell.h"
-
-char *Buff;
-HANDLE hConsole;
-COORD cor, startPrintPoint;
-int cur = 0;
-
-void ClearComline()
-{
-	SetConsoleCursorPosition(hConsole, startPrintPoint);
-	for (int i = 0; i < MAX_CONSOLE_INPUT; ++i)
-		printf(" ");
-}
-
-void ReprintConsoleBuffer()
-{
-	ClearComline();
-	SetConsoleCursorPosition(hConsole, startPrintPoint);
-	printf("%s", Buff);
-	SetConsoleCursorPosition(hConsole, cor);
-}
-
-void IncCursor()
-{
-	CONSOLE_SCREEN_BUFFER_INFO inf;
-	GetConsoleScreenBufferInfo(hConsole, &inf);
-	cur++;
-	cor.Y = (cur + startPrintPoint.Y * inf.dwSize.X) / inf.dwSize.X;
-	cor.X = (cur + startPrintPoint.Y * inf.dwSize.X) % inf.dwSize.X;
-}
-
-void DecCursor()
-{
-	CONSOLE_SCREEN_BUFFER_INFO inf;
-	GetConsoleScreenBufferInfo(hConsole, &inf);
-	cur--;
-	cor.Y = (cur + startPrintPoint.Y * inf.dwSize.X) / inf.dwSize.X;
-	cor.X = (cur + startPrintPoint.Y * inf.dwSize.X) % inf.dwSize.X;
-}
-
 int main()
 {
 	BPC_Init();
@@ -52,7 +13,7 @@ int main()
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
 
-	int key, buffLen;
+	int key, buffLen, flagOfAutocomplitionList=0;
 	while (1)
 	{
 		buffLen = strlen(Buff);
@@ -86,6 +47,11 @@ int main()
 					cur = 0;
 					ReprintConsoleBuffer();
 				}
+				if (flagOfAutocomplitionList != 0)
+				{
+					DeleteListOfAutocomlition(flagOfAutocomplitionList);
+					flagOfAutocomplitionList = 0;
+				}
 				break;
 			case key_down:
 				if (CurrHist->down != NULL)
@@ -95,6 +61,11 @@ int main()
 					cor.X = 0;
 					cur = 0;
 					ReprintConsoleBuffer();
+				}
+				if (flagOfAutocomplitionList != 0)
+				{
+					DeleteListOfAutocomlition(flagOfAutocomplitionList);
+					flagOfAutocomplitionList = 0;
 				}
 				break;
 			case key_del:
@@ -108,6 +79,11 @@ int main()
 			}
 			break;
 		case key_enter:
+			if (flagOfAutocomplitionList != 0)
+			{
+				DeleteListOfAutocomlition(flagOfAutocomplitionList);
+				flagOfAutocomplitionList = 0;
+			}
 			cor.X = 0;
 			cor.Y++;
 			startPrintPoint.Y = cor.Y;
@@ -127,7 +103,12 @@ int main()
 				ReprintConsoleBuffer();
 			}
 			break;
-		case key_tab: //автодополнение
+		case key_tab:if (flagOfAutocomplitionList != 0)
+		{
+			DeleteListOfAutocomlition(flagOfAutocomplitionList);
+			flagOfAutocomplitionList = 0;
+		}
+			Autocomplition(Buff, buffLen, &flagOfAutocomplitionList);//автодополнение
 			break;
 		default:
 			if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'а' && key <= 'я') && !(key >= 'А' && key <= 'Я'))
