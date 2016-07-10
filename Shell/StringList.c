@@ -79,6 +79,14 @@ void SingleStrlistRemoveNextUp(SingleListStringNode* node)
 	node->up = reassign;
 }
 
+void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode* down)
+{
+	SingleListStringNode* iter1 = down;
+	while (iter1->up)
+		iter1 = iter1->up;
+	iter1->up = up;
+}
+
 //двусвязный список:
 
 DoubleListStringNode* DoubleCreateAndLink(char* value, DoubleListStringNode* down, DoubleListStringNode* up)
@@ -206,4 +214,16 @@ void DoubleStrlistRemove(DoubleListStringNode** node)
 
 	free(*node);
 	*node = assign;
+}
+
+void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode* down)
+{
+	DoubleListStringNode* iter1 = down;
+	while (iter1->up)
+		iter1 = iter1->up;
+	DoubleListStringNode* iter2 = up;
+	while (iter2->down)
+		iter2 = iter2->down;
+	iter1->up = iter2;
+	iter2->down = iter1;
 }
