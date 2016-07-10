@@ -149,13 +149,15 @@ void ConsoleBackSpace()
 
 void ConsoleEnter(int *flagOfAutocomplition)
 {
-	char *str;
-	str = (char*)malloc(MAX_CONSOLE_INPUT + 2); memset(str, 0, MAX_CONSOLE_INPUT + 2);
+	
 	ChekFFlagOfAutoComplition(flagOfAutocomplition);
-	DoubleStrlistAddDownmost(&CurrHist, str);
+	DoubleStrlistAddDownmost(&CurrHist, "00000000000000000000");
 	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
-		CurrHist = CurrHist->down;
-	strcmp(CurrHist->value, Buff);
+	{
+		
+		CurrHist = CurrHist->down; 
+	}
+	strcpy(CurrHist->up->value, Buff); printf("\n\n %s", CurrHist->up->value);
 	OnNextLine();
 
 }
