@@ -18,7 +18,7 @@ typedef enum
 }ExecResult;
 
 //хранит путь к текущей папке
-char CurrentDirectory[MAX_PATH];
+char *CurrentDirectory;
 
 //функция поиска файла по префиксу
 SingleListStringNode* FindFiles(char* PrefixFile);

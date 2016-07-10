@@ -81,6 +81,8 @@ void SingleStrlistRemoveNextUp(SingleListStringNode* node)
 
 void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode* down)
 {
+	if (0 == up)
+		return;
 	SingleListStringNode* iter1 = down;
 	while (iter1->up)
 		iter1 = iter1->up;
@@ -218,6 +220,8 @@ void DoubleStrlistRemove(DoubleListStringNode** node)
 
 void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode* down)
 {
+	if (0 == up)
+		return;
 	DoubleListStringNode* iter1 = down;
 	while (iter1->up)
 		iter1 = iter1->up;
