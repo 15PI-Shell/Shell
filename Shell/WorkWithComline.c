@@ -1,5 +1,6 @@
 ﻿#include "WorkWithComline.h"
 
+
 void ConsoleInitialisation()
 {
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -166,7 +167,7 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList,SingleListStringNode *L
 	int Buflen = strlen(Buff);
 	char *entry;
 	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-	int list, EnLen, posEntry, k;
+	int list, EnLen, posEntry;
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
 	LastFoundList = NULL;
 	list = DetermineEntry(Buff, Buflen, entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
@@ -174,26 +175,20 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList,SingleListStringNode *L
 	switch (list)
 	{
 	case 1: LastFoundCommand = BPC_GetHints(entry);
-		LastFoundFile = FindFiles(entry);
+		LastFoundFile = FindFiles(entry); LastFoundList = LastFoundCommand;
+			SingleStrlistConcat(LastFoundList, LastFoundFile);
 		//слияние
 		break;
 	case 2:	LastFoundFile = FindFiles(entry); LastFoundList = LastFoundList;break;
 		if (LastFoundList == NULL) return; // дополнения не найдены
 		if (LastFoundList->up == 0) {
-			for (int i = posEntry; i < strlen(LastFoundList->value); i++)
+			for (int i = posEntry; i <posEntry+(int)strlen(LastFoundList->value); i++)
 			{
 				Buff[i] = LastFoundList->value[i - posEntry];
 			}
 			ReprintConsoleBuffer();
 		} //дополнение единственное, печатаем
-		else //найдено несколько дополнений, ждем след таба
-		{
-			k = getch();
-			if (k == key_tab)
-			{
-				//*flagOfAutocomplitionList = PrintListOfAutocomplition(LastFoundList);
-			}
-		} return;
+		 return;
 	}
 }
 
@@ -206,7 +201,7 @@ int DetermineEntry(char *Buff, int Buflen, char *entry, int *PosEntryStart) {
 			{
 				return 0;
 			}
-			for (int j = i + 1; j < Buff; j++)
+			for (int j = i + 1; j < Buflen; j++)
 			{
 				entry[Buflen - j - 1] = Buff[j];
 			}
