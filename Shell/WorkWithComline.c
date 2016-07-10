@@ -1,6 +1,6 @@
 ﻿#include "WorkWithComline.h"
 
-
+CurrentDirectory = "YOU are here";
 void ConsoleInitialisation()
 {
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -22,7 +22,7 @@ void ReprintConsoleBuffer()
 {
 	ClearComline();
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
-	printf("%s", Buff);
+	printf("%s->%s",CurrentDirectory, Buff);
 	SetConsoleCursorPosition(hConsole, cor);
 }
 
