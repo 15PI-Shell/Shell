@@ -53,3 +53,12 @@ SetConsoleCursorPosition(hConsole, cor);
 ResetCur(cur);
 memset(Buff, 0, MAX_CONSOLE_INPUT);
 }
+void ConsoleInitialisation()
+{
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	cor.X = cor.Y = 0;
+	startPrintPoint.X = startPrintPoint.Y = 0;
+	DoubleStrlistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
+	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
+}

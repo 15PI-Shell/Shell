@@ -5,6 +5,7 @@
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
+DoubleListStringNode *CurrHist;
 void ClearComline();
 void ReprintConsoleBuffer();
 int IncCursor(int currentPos);
@@ -12,3 +13,4 @@ int DecCursor(int currentPos);
 void ResetCur(int currentPos);
 void AddNewCommandInHistory(char *str, DoubleListStringNode *CurHist);
 void OnNextLine(int CurrPos);
+void ConsoleInitialisation();

@@ -3,15 +3,8 @@ int main()
 {
 	
 	BPC_Init();
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	cor.X = cor.Y = 0;
-	DoubleListStringNode *CurrHist = 0;
-	startPrintPoint.X = startPrintPoint.Y = 0;
+	ConsoleInitialisation();
 	char*str;
-	DoubleStrlistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
-
-	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2); 
-	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
 	int key, buffLen, cur = 0, flagOfAutocomplitionList=0;
 	while (1)
 	{
