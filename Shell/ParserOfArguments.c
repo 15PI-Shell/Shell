@@ -1,4 +1,4 @@
-﻿#include "ParserOfArguments"
+﻿#include "ParserOfArguments.h"
 
 int ParsOfArgs(char* str, SingleListStringNode** args)
 {
@@ -35,7 +35,7 @@ int ParsOfArgs(char* str, SingleListStringNode** args)
 			{
 				sp = strtok(str, "\"");	//забирает все содержимое под кавычками
 			}
-			SingleStrlistAddDownmost(*args, sp); //кладем в список аргументы
+			SingleStrlistAddDownmost(args, sp); //кладем в список аргументы
 			len -= strlen(sp) + cnt_spc;		//длина строки высчитывается заново, вычитая предыдущее содержимое строки
 			str += strlen(sp);					//прыгаем через слово, которое уже внесено в список
 			cnt_spc = 0;
