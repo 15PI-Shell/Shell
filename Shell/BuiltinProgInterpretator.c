@@ -53,7 +53,7 @@ char* analisator(char* mas)
 			*(ptrarg + lenarg) = '\0';
 
 			result = BPC_Execute(ptrname, ptrarg, &TypeOfResult);
-			printf("%c", *(mas + p));
+			
 			if (*(mas + p) == '\0')
 				flag = 2;
 			else

@@ -77,7 +77,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Binary.c" />
-    <ClCompile Include="ParserOfArguments.cpp" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />

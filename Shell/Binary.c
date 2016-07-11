@@ -2,8 +2,8 @@
 
 char* BinaryProc(char* arg)
 {
-	int a, i = 0, j = 0;
-	char mas[100];
+	int a = 0, i = 0, b=0;
+	int mas[100];
 
 	sscanf(arg,"%d",&a);
 
@@ -16,13 +16,13 @@ char* BinaryProc(char* arg)
 	mas[i] = a % 2;
 	i++;
 	mas[i] = 1;
-	j = i;
 
-	while (i != -1)
+	for (i; i >= 0; i--)
 	{
-		*(arg + j-i) = mas[i];
-		i--;
+		b = b * 10 + mas[i];
 	}
-	*(arg + j+1) = '\0';
+	
+	sprintf(arg, "%d", b);
+
 	return arg;
 }
