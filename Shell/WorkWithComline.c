@@ -156,7 +156,7 @@ void ConsoleEnter(int *flagOfAutocomplition)
 {
 	ChekFFlagOfAutoComplition(flagOfAutocomplition);
 	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
-		CurrHist = CurrHist->down; 
+		CurrHist = CurrHist->down;
 	DoubleStrlistInsertAbove(CurrHist, Buff);
 	OnNextLine();
 	startPrintPoint.X = strlen(CurrentDirectory) + 1;
@@ -165,15 +165,15 @@ void ConsoleEnter(int *flagOfAutocomplition)
 
 /*-Autocompletion-*/
 
-void ConsoleAutocomplition(int *flagOfAutocomplitionList,SingleListStringNode *LastFoundList)
+void ConsoleAutocomplition(int *flagOfAutocomplitionList, SingleListStringNode *LastFoundList)
 {
 	int Buflen = strlen(Buff);
 	char *entry;
-	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
 	LastFoundList = NULL;
-	list = DetermineEntry(Buff, Buflen, entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
+	list = DetermineEntry(Buff, Buflen, &entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
 	EnLen = strlen(entry);
 	switch (list)
 	{
@@ -183,20 +183,23 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList,SingleListStringNode *L
 		SingleStrlistConcat(LastFoundFile, LastFoundList);
 		//слияние
 		break;
-	case 2:	LastFoundFile = FindFiles(entry); LastFoundList = LastFoundList;break;
-		if (LastFoundList == NULL) return; // дополнения не найдены
-		if (LastFoundList->up == 0) {
-			for (int i = posEntry; i <posEntry+(int)strlen(LastFoundList->value); i++)
-			{
-				Buff[i] = LastFoundList->value[i - posEntry];
-			}
-			ReprintConsoleBuffer();
-		} //дополнение единственное, печатаем
-		 return;
+	case 2:	LastFoundFile = FindFiles(entry); LastFoundList = LastFoundFile;break;
+	default: return;
 	}
+	if (LastFoundList == NULL) return; // дополнения не найдены
+	if (LastFoundList->up == 0) {
+		int len = strlen(LastFoundList->value);
+		for (int i = posEntry; i < len; i++)
+		{
+			Buff[i] = LastFoundList->value[i - posEntry];
+		}
+		ReprintConsoleBuffer();
+	} //дополнение единственное, печатаем
+	return;
 }
 
-int DetermineEntry(char *Buff, int Buflen, char *entry, int *PosEntryStart) {
+
+int DetermineEntry(char *Buff, int Buflen, char **entry, int *PosEntryStart) {
 	for (int i = Buflen - 1; i > 0; i--)
 	{
 		if (Buff[i] == ' ')
@@ -207,12 +210,13 @@ int DetermineEntry(char *Buff, int Buflen, char *entry, int *PosEntryStart) {
 			}
 			for (int j = i + 1; j < Buflen; j++)
 			{
-				entry[Buflen - j - 1] = Buff[j];
+				*(entry)[Buflen - j - 2] = Buff[j]; 
 			}
+			*PosEntryStart = i + 1;
 			return 2;
 		}
 	}
-	entry = Buff; return 1;
+	*entry = Buff; *PosEntryStart = 0; return 1;
 }
 
 int PrintListOfAutocomplition(SingleListStringNode* ListOfAutocomplitions)
