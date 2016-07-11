@@ -169,7 +169,8 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList, SingleListStringNode *
 {
 	int Buflen = strlen(Buff);
 	char *entry;
-	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);memset(entry, 0, MAX_CONSOLE_INPUT + 2);
+	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
 	*LastFoundList = NULL;
@@ -180,7 +181,7 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList, SingleListStringNode *
 	case 1: LastFoundCommand = BPC_GetHints(entry);
 		LastFoundFile = FindFiles(entry);
 		*LastFoundList = LastFoundCommand;
-		SingleStrlistConcat(LastFoundFile, *LastFoundList);
+		SingleStrlistConcat(LastFoundFile, LastFoundList);
 		//слияние
 		break;
 	case 2:	LastFoundFile = FindFiles(entry); *LastFoundList = LastFoundFile;break;
@@ -210,7 +211,7 @@ int DetermineEntry(char *Buff, int Buflen, char **entry, int *PosEntryStart) {
 			}
 			for (int j = i + 1; j < Buflen; j++)
 			{
-				*(entry)[Buflen - j - 2] = Buff[j]; 
+				(*entry)[Buflen - j - 2] = Buff[j]; 
 			}
 			*PosEntryStart = i + 1;
 			return 2;
