@@ -26,7 +26,7 @@ int main()
 		case key_enter:ConsoleEnter(&flagOfAutocomplitionList); break;
 		case key_BackSpase:ConsoleBackSpace(); break;
 		case key_tab:ConsoleAutocomplition(&flagOfAutocomplitionList,  LastFoundList);
-			if ((LastFoundList != NULL)&(LastFoundList->up != 0))
+			if ((LastFoundList != NULL)&&(LastFoundList->up != 0))
 			{
 				key = _getch();
 				switch (key)
