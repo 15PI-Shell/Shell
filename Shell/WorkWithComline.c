@@ -165,33 +165,33 @@ void ConsoleEnter(int *flagOfAutocomplition)
 
 /*-Autocompletion-*/
 
-void ConsoleAutocomplition(int *flagOfAutocomplitionList, SingleListStringNode *LastFoundList)
+void ConsoleAutocomplition(int *flagOfAutocomplitionList, SingleListStringNode **LastFoundList)
 {
 	int Buflen = strlen(Buff);
 	char *entry;
 	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
-	LastFoundList = NULL;
+	*LastFoundList = NULL;
 	list = DetermineEntry(Buff, Buflen, &entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
 	EnLen = strlen(entry);
 	switch (list)
 	{
 	case 1: LastFoundCommand = BPC_GetHints(entry);
 		LastFoundFile = FindFiles(entry);
-		LastFoundList = LastFoundCommand;
-		SingleStrlistConcat(LastFoundFile, LastFoundList);
+		*LastFoundList = LastFoundCommand;
+		SingleStrlistConcat(LastFoundFile, *LastFoundList);
 		//слияние
 		break;
-	case 2:	LastFoundFile = FindFiles(entry); LastFoundList = LastFoundFile;break;
+	case 2:	LastFoundFile = FindFiles(entry); *LastFoundList = LastFoundFile;break;
 	default: return;
 	}
-	if (LastFoundList == NULL) return; // дополнения не найдены
-	if (LastFoundList->up == 0) {
-		int len = strlen(LastFoundList->value);
+	if (*LastFoundList == NULL) return; // дополнения не найдены
+	if ((*LastFoundList)->up == 0) {
+		int len = strlen((*LastFoundList)->value);
 		for (int i = posEntry; i < len; i++)
 		{
-			Buff[i] = LastFoundList->value[i - posEntry];
+			Buff[i] = (*LastFoundList)->value[i - posEntry];
 		}
 		ReprintConsoleBuffer();
 	} //дополнение единственное, печатаем
@@ -222,11 +222,11 @@ int DetermineEntry(char *Buff, int Buflen, char **entry, int *PosEntryStart) {
 int PrintListOfAutocomplition(SingleListStringNode* ListOfAutocomplitions)
 {
 	int cnt = 1;
-	printf("\n__________________________________________________________________________________________________");
-	while (ListOfAutocomplitions = NULL) {
+	printf("\n____________________________________________________");
+	while (ListOfAutocomplitions != NULL) {
 		printf("\n%s", ListOfAutocomplitions->value);
 		cnt++;
-		ListOfAutocomplitions->up;
+		ListOfAutocomplitions = ListOfAutocomplitions->up;
 	}
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
 	return cnt;
