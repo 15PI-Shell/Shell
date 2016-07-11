@@ -15,7 +15,13 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	ReprintConsoleBuffer();
 }
-
+void GetConsoleCursorPosition()
+{
+	CONSOLE_SCREEN_BUFFER_INFO inf;
+	GetConsoleScreenBufferInfo(hConsole, &inf);
+	cor.Y = (cur + startPrintPoint.Y * inf.dwSize.X + startPrintPoint.X) / inf.dwSize.X;
+	cor.X = (cur + startPrintPoint.Y * inf.dwSize.X + startPrintPoint.X) % inf.dwSize.X;
+}
 void ClearComline()
 {
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
@@ -61,6 +67,7 @@ void ResetCursor()
 
 void OnNextLine()
 {
+	GetConsoleCursorPosition();
 	cor.X = 0;
 	cor.Y++;
 	startPrintPoint.Y = cor.Y;
@@ -181,12 +188,12 @@ void ConsoleAutocomplition(int *flagOfAutocomplitionList, SingleListStringNode *
 	case 1: LastFoundCommand = BPC_GetHints(entry);
 		LastFoundFile = FindFiles(entry);
 		*LastFoundList = LastFoundCommand;
-		SingleStrlistConcat(LastFoundFile, LastFoundList);
-		//слияние
 		break;
-	case 2:	LastFoundFile = FindFiles(entry); *LastFoundList = LastFoundFile;break;
+	case 2:	LastFoundFile = FindFiles(entry);*LastFoundList=LastFoundFile ; break;
 	default: return;
 	}
+	printf("\n\n%s", entry);
+	SingleStrlistConcat(LastFoundFile, LastFoundList);
 	if (*LastFoundList == NULL) return; // дополнения не найдены
 	if ((*LastFoundList)->up == 0) {
 		int len = strlen((*LastFoundList)->value);
@@ -205,16 +212,17 @@ int DetermineEntry(char *Buff, int Buflen, char **entry, int *PosEntryStart) {
 	{
 		if (Buff[i] == ' ')
 		{
-			if (i == 0)
+			if (i != 0)
 			{
-				return 0;
+				*PosEntryStart = i + 1; int k=0;
+				for (int j = i + 1; j < Buflen; j++)
+				{
+
+					(*entry)[k] = Buff[j]; k++;
+				} return 2;
+				
 			}
-			for (int j = i + 1; j < Buflen; j++)
-			{
-				(*entry)[Buflen - j - 2] = Buff[j]; 
-			}
-			*PosEntryStart = i + 1;
-			return 2;
+			else return 0;			
 		}
 	}
 	*entry = Buff; *PosEntryStart = 0; return 1;
@@ -235,20 +243,22 @@ int PrintListOfAutocomplition(SingleListStringNode* ListOfAutocomplitions)
 
 void DeleteListOfAutocomlition(int n)
 {
-	int y = cor.Y;
-	for (int i = 0; i < n; i++)
+	char *str=(char*)malloc(MAX_CONSOLE_INPUT + 2);
+	for (int i = 0; i < MAX_CONSOLE_INPUT; i++)
 	{
-		y++;
-		ClearComline();
+		str[i] = ' ';
 	}
-	startPrintPoint.Y = y - n;
-	SetConsoleCursorPosition(hConsole, startPrintPoint);
+	for (int i=0; i<n; i++)
+	{
+		printf("\n%s", str);
+	}
+	SetConsoleCursorPosition(hConsole, cor);
 	return;
 }
 
 void ChekFFlagOfAutoComplition(int *flag)
 {
-	if (*flag != 0)
+	if ((*flag) != 0)
 	{
 		DeleteListOfAutocomlition(*flag);
 		*flag = 0;
