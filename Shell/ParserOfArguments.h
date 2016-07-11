@@ -6,6 +6,6 @@
 #include <string.h>
 #include "StringList.h"
 
-void ParsOfArgs(char* str);
+int ParsOfArgs(char* str, SingleListStringNode** args);
 
 #endif
