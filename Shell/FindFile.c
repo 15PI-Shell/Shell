@@ -3,6 +3,10 @@
 
 SingleListStringNode* FindFiles(char* PrefixFile)
 {
+	char* cpyPrefix = (char*)malloc(MAX_PATH);
+	strcpy(cpyPrefix, PrefixFile);
+	PrefixFile = cpyPrefix;
+
 	WIN32_FIND_DATA FileData;
 	SingleListStringNode *last = NULL;
 	char * pathPTR;
@@ -57,5 +61,6 @@ SingleListStringNode* FindFiles(char* PrefixFile)
 		}
 	}
 	FindClose(HandleFile);
+	free(PrefixFile);
 	return last;
 }

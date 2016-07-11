@@ -2,12 +2,11 @@
 #include<conio.h>
 int main()
 {
-
 	BPC_Init();
 	ConsoleInitialisation();
 	int key, flagOfAutocomplitionList = 0;
 	SingleListStringNode *LastFoundList = NULL;
-
+	
 	while (1)
 	{
 		key = _getch();

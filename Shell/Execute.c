@@ -1,11 +1,11 @@
 ﻿#include "FindFile.h"
 
 
-ExecResult FileExecute(char * nameProc)
+ExecResult FileExecute(char* nameProc, char* parametrs)
 {
 	UINT result; //переменная для возвращения результата открытия файла
 	if ((tolower(nameProc[0]) >= 'a') && (tolower(nameProc[0]) <= 'z') && (nameProc[1] == ':')) //если указан путь C:\...
-		result = ShellExecuteA(0, "open", nameProc, NULL, NULL, 1); //запускаем файл по переданному пути
+		result = ShellExecuteA(0, "open", nameProc, parametrs, NULL, 1); //запускаем файл по переданному пути
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{
 		char CurDir[MAX_PATH];
@@ -13,7 +13,7 @@ ExecResult FileExecute(char * nameProc)
 		if ((CurDir[strlen(CurDir) - 1] != '\\') && (nameProc[0] != '\\')) //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
 			strcat(CurDir, "\\");
 		strcat(CurDir, nameProc); //добавляем к текущей дирректории то, что было введено пользователем
-		result = ShellExecuteA(0, "open", CurDir, NULL, NULL, 1);
+		result = ShellExecuteA(0, "open", CurDir, parametrs, NULL, 1);
 		if (result < 33) //если файл не был запущен
 		{
 			//делаем проверку на то, что nameProc не является относительным путем
@@ -27,7 +27,7 @@ ExecResult FileExecute(char * nameProc)
 				}
 			}
 			if (i != -1) //если передано только имя файла, то ищем его по путям в PATH
-				result = ShellExecuteA(0, "open", nameProc, NULL, NULL, 1);
+				result = ShellExecuteA(0, "open", nameProc, parametrs, NULL, 1);
 		}
 	}
 	if (result > 32)
