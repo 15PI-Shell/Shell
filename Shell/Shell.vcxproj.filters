@@ -48,6 +48,9 @@
     <ClCompile Include="ParserOfArguments.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Binary.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="ParserOfArguments.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

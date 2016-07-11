@@ -9,6 +9,7 @@
 //встроенные программы:
 #include "HelloWorld.h"
 #include "sum.h"
+#include "Binary.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

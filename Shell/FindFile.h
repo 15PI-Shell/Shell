@@ -24,6 +24,6 @@ char CurrentDirectory[MAX_PATH];
 SingleListStringNode* FindFiles(char* PrefixFile);
 
 //функция запуска любых файлов (обязательно указывать расширение)
-ExecResult FileExecute(char * nameProc);
+ExecResult FileExecute(char* nameProc, char* parametrs);
 
 #endif

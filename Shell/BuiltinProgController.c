@@ -21,6 +21,9 @@ TrieNode* trieRoot = 0;//корень префиксного дерева
 //функция, возвращающая узел дерева, которому соотвествует указанная строка
 TrieNode* FindInTrieRec(TrieNode* node, char* name)
 {
+	if (!(tolower(name[0]) >= 'a' && tolower(name[0]) <= 'z'))
+		return 0;
+
 	if (0 == node)
 		return 0;//узел не найден
 
@@ -34,6 +37,8 @@ TrieNode* FindInTrieRec(TrieNode* node, char* name)
 //оболочка для запуска рекурсивной функции
 TrieNode* FindInTrie(char* name)
 {
+	if (!(tolower(name[0]) >= 'a' && tolower(name[0]) <= 'z'))
+		return 0;
 	return FindInTrieRec(trieRoot->children[tolower(name[0]) - 'a'], name);
 }
 
@@ -98,6 +103,7 @@ void BPC_Init()
 	RegisterProgram("HelloWorld", HelloWorldProc, BPC_ReturnsNothing);
 	RegisterProgram("HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
 	RegisterProgram("Sum", sumProc, BPC_ReturnsInt);
+	RegisterProgram("Binary", BinaryProc, BPC_ReturnsInt);
 }
 
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)
