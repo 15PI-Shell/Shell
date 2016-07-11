@@ -27,7 +27,6 @@ void Install()
 		return;
 	}
 	RegCloseKey(pathRegKey);
-	//
 }
 
 void Uninstall()
@@ -37,7 +36,6 @@ void Uninstall()
 	GetCurrentDirectoryA(sizeof(InstallationPath), InstallationPath);
 	//strcpy(InstallationPath, "C:\\Game"); На проверку путь вводить без последнего слеша (GetCurrentDirectory получает такой путь)
 	RegGetValueA(pathRegKey, 0, "PATH", RRF_RT_ANY, 0, BufPath, &SizeBufPath);
-	char CurPath[MAX_PATH], copyPath[10000]="";
 	int i = -1, j = -1, CheckOnePath = 0;
 	strcat(BufPath, ";");
 	while (BufPath[++i])
@@ -71,7 +69,6 @@ void Uninstall()
 		return;
 	}
 	RegCloseKey(pathRegKey);
-	//
 }
 
 int main(int argc, char* argv[])
