@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ParserOfArguments.cpp" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
@@ -90,6 +91,7 @@
     <ClInclude Include="BuiltinProgInterpretator.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
     <ClInclude Include="sum.h" />
