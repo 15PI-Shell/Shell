@@ -4,8 +4,9 @@
 int main()
 {
 	char prefix[100];
-	char parametrs[100]="";
+	char parametrs[100] = "";
 	int demoMode;
+	SingleListStringNode* list = NULL;
 	GetCurrentDirectoryA(sizeof(CurrentDirectory), CurrentDirectory);
 	setlocale(LC_ALL, "rus");
 	printf("Поиск или открытие файлов:\n");
@@ -18,9 +19,20 @@ int main()
 		switch (demoMode)
 		{
 		case 2:
-			printf("Введите префикс файла: ");
-			scanf("%s", prefix);
-			SingleListStringNode* list = FindFiles(prefix);//получаем список вариантов
+
+			printf("Введите префикс или маску файла: ");
+			scanf("%s", &prefix);
+			int i = -1;
+			while (prefix[++i])
+				if (prefix[i] == '*' || prefix[i] == '?')
+				{
+					i = -1;
+					break;
+				}
+			if (i == -1)
+				list = FindFilesAndDirsMask(prefix, CurrentDirectory);//получаем список вариантов
+			else
+				list = FindFilesAndDirsPrefix(prefix);
 			while (list)
 			{//выводим его
 				printf("%s\n", list->value);
@@ -28,7 +40,7 @@ int main()
 			}
 			printf("\n");
 			break;
-			
+
 		case 1:
 			printf("Введите имя файла с указанием расширения (путь указывается по желанию): ");
 			scanf("%s", prefix);

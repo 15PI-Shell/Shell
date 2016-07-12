@@ -20,8 +20,11 @@ typedef enum
 //хранит путь к текущей папке
 char CurrentDirectory[MAX_PATH];
 
-//функция поиска файла по префиксу
-SingleListStringNode* FindFiles(char* PrefixFile);
+//функция поиска файлов и папок по префиксу
+SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile);
+
+//функция поиска файлов по маске в указанной директори
+SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind);
 
 //функция запуска любых файлов (обязательно указывать расширение)
 ExecResult FileExecute(char* nameProc, char* parametrs);
