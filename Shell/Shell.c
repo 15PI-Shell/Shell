@@ -30,7 +30,12 @@ int main()
 					break;
 				}
 			if (i == -1)
-				list = FindFilesAndDirsMask(prefix, CurrentDirectory);//получаем список вариантов
+			{
+				FindType type;
+				printf("Искать файлы(1) / папки(2) / всё(3)? ");
+				scanf("%d", &type);
+				list = FindFilesAndDirsMask(prefix, CurrentDirectory, type);//получаем список вариантов
+			}
 			else
 				list = FindFilesAndDirsPrefix(prefix);
 			while (list)

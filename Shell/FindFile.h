@@ -17,6 +17,13 @@ typedef enum
 	ExecResult_Success,
 }ExecResult;
 
+typedef enum
+{
+	Files = 1,
+	Folders,
+	FilesAndFolders,
+}FindType;
+
 //хранит путь к текущей папке
 char CurrentDirectory[MAX_PATH];
 
@@ -24,7 +31,7 @@ char CurrentDirectory[MAX_PATH];
 SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile);
 
 //функция поиска файлов по маске в указанной директори
-SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind);
+SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type);
 
 //функция запуска любых файлов (обязательно указывать расширение)
 ExecResult FileExecute(char* nameProc, char* parametrs);

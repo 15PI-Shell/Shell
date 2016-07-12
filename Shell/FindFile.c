@@ -34,8 +34,8 @@ SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile)
 		//printf("\n%s\n", CopyCurrentDir);
 		do
 		{
+			SingleStrlistAddDownmost(&last, FileData.cFileName);
 			//printf("%s\n", FileData.cFileName);
-			SingleStrlistAddDownmost(&last, FileData.cFileName); //добавляем имя файла/папки в список
 		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
 	}
 	FindClose(HandleFile);
@@ -75,7 +75,7 @@ SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile)
 	return last;
 }
 
-SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind)
+SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type)
 {
 	WIN32_FIND_DATA FileData;
 	SingleListStringNode *last = NULL;
@@ -100,7 +100,20 @@ SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind)
 		{
 			//printf("%s\n", FileData.cFileName);
 			if (strcmp(FileData.cFileName, ".") != 0 && strcmp(FileData.cFileName, "..") != 0)
-				SingleStrlistAddDownmost(&last, FileData.cFileName); //добавляем имя файла/папки в список
+				switch (type)
+				{
+				case FilesAndFolders:
+					SingleStrlistAddDownmost(&last, FileData.cFileName);//добавляем имя файла/папки в список
+					break;
+				case Files:
+					if (FileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+						SingleStrlistAddDownmost(&last, FileData.cFileName);
+					break;
+				case Folders:
+					if (FileData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
+						SingleStrlistAddDownmost(&last, FileData.cFileName);
+					break;
+				}
 		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
 	}
 	FindClose(HandleFile);
