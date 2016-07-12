@@ -10,5 +10,3 @@
 #define key_del 83
 #define key_BackSpase 8
 #define keys_ctrl_v 22
-#define keys_ctrl_c 3
-#define Keys_ctrl_x 24

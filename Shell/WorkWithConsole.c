@@ -194,7 +194,30 @@ void ConsoleEnter()
 
 
 }
-
+void PastInConsole()
+{
+	char *str= (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	GetClipboardContent(str);
+	int lenB = strlen(Buff), lenS = strlen(str);
+	if (lenB + lenS < MAX_CONSOLE_INPUT)
+	{
+		if ((cur == lenB - 1) || (cur == 0)) strcon(Buff, str);
+		else
+		{
+			char *EndBuff= (char*)malloc(MAX_CONSOLE_INPUT + 2);
+			for (int i = lenB; i > cur; i++)
+			{
+				EndBuff[lenB - i] = Buff[i];
+				Buff[i] = '0';
+			}
+			strcon(Buff, str);
+			strcon(Buff, EndBuff);
+		}
+		ReprintConsoleBuffer();
+	}
+	return;
+	
+}
 /*-------------------------------------------Autocompletion-----------------------------------------------*/
 int DetermineEntry(char **entry, int *PosEntryStart) {
 	int Buflen = strlen(Buff);

@@ -22,9 +22,7 @@ int main()
 		case key_enter:ConsoleEnter(); break;
 		case key_BackSpase:ConsoleBackSpace(); break;
 		case key_tab: ConsoleAutocompletion(); break;
-		case keys_ctrl_v: break;
-		case keys_ctrl_c: break;
-		case Keys_ctrl_x: break;
+		case keys_ctrl_v: PastInConsole(); break;
 		default:ConsolePrintChar(key); break;
 		}
 	}
