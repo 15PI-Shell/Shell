@@ -62,6 +62,7 @@ void CursorOnEndString()
 	{
 		IncCursor();
 	}
+	SetConsoleCursorPosition(hConsole, cor);
 }
 void OnNextLine()
 {
