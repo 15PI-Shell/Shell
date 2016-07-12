@@ -253,6 +253,9 @@ int DetermineEntry(char **entry, int *PosEntryStart) {
 
 void ConsoleAutocompletion()
 {
+	COORD pos = cor; 
+	int crn = cur;
+	CursorOnEndString();
 	if (DoubleTabFlag) { 
 		PrintListOfAutocompletion();
 		DoubleTabFlag = 0;
@@ -282,8 +285,13 @@ void ConsoleAutocompletion()
 	default: return;
 	}
 	SingleStrlistConcat(LastFoundFile, &LastFoundList);
-	if (LastFoundList == NULL) return; // дополнения не найдены
-	if (LastFoundList->up == 0) {
+	if (LastFoundList == NULL) {
+		cur = crn; cor = pos;
+		SetConsoleCursorPosition(hConsole, pos);
+		return;
+	} // дополнения не найдены
+	if (LastFoundList->up == 0) {cur = crn; cor = pos;
+	SetConsoleCursorPosition(hConsole, pos);
 		int len = strlen(LastFoundList->value);
 		if (len > MAX_CONSOLE_INPUT - posEntry) {
 			DoubleTabFlag = 1;	return;
@@ -294,10 +302,13 @@ void ConsoleAutocompletion()
 			Buff[i] = LastFoundList->value[k];
 			k++;
 		}
+		cur = crn; cor = pos;
 		ReprintConsoleBuffer();
 	} //дополнение единственное, печатаем
-	else FlagAutocompletions = 1;
+	else  FlagAutocompletions = 1;
 	DoubleTabFlag = 1;
+	cur = crn; cor = pos;
+	SetConsoleCursorPosition(hConsole, pos);
 	free(entry);
 	return;
 }
@@ -306,7 +317,6 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
-		CursorOnEndString();
 		FlagAutocompletions = 2;
 		printf("\n\n____________________________________________________");
 		while (LastFoundList != NULL) {
