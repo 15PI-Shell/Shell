@@ -290,10 +290,11 @@ void ConsoleAutocompletion()
 		SetConsoleCursorPosition(hConsole, pos);
 		return;
 	} // дополнения не найдены
-	if (LastFoundList->up == 0) {cur = crn; cor = pos;
-	SetConsoleCursorPosition(hConsole, pos);
+	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
-		if (len > MAX_CONSOLE_INPUT - posEntry) {
+		if (len + posEntry > MAX_CONSOLE_INPUT) {
+			cur = crn; cor = pos;
+			SetConsoleCursorPosition(hConsole, pos);
 			DoubleTabFlag = 1;	return;
 		}
 		int k = 0;
@@ -302,13 +303,21 @@ void ConsoleAutocompletion()
 			Buff[i] = LastFoundList->value[k];
 			k++;
 		}
-		cur = crn; cor = pos;
+		if (Buflen + 2<MAX_CONSOLE_INPUT) {
+		 Buflen = strlen(Buff);
+		 Buff[Buflen] = ' ';CursorOnEndString(); cur = Buflen + 1;
+		}
+		else CursorOnEndString();
+		GetConsoleCursorPosition();
 		ReprintConsoleBuffer();
 	} //дополнение единственное, печатаем
-	else  FlagAutocompletions = 1;
+	else {
+		FlagAutocompletions = 1;
+		cur = crn; cor = pos;
+		SetConsoleCursorPosition(hConsole, cor);
+	}
 	DoubleTabFlag = 1;
-	cur = crn; cor = pos;
-	SetConsoleCursorPosition(hConsole, pos);
+	
 	free(entry);
 	return;
 }
