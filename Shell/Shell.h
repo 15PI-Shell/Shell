@@ -5,7 +5,6 @@
 #include "KeyDefines.h"
 #include "FindFile.h"
 #include "WorkWithConsole.h"
-#include "GetClipboardCont.h"
 #include <Windows.h>
 #include <stdio.h>
 #include <locale.h>

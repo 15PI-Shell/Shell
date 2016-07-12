@@ -1,5 +1,5 @@
 ﻿#include "WorkWithConsole.h"
-#include <string.h>
+
 void DeleteListOfAutocomletion();
 DoubleListStringNode *CurrHist = 0;
 SingleListStringNode *LastFoundList = 0;
@@ -213,8 +213,11 @@ void PastInConsole()
 			}
 			strcat(Buff, str);
 			strcat(Buff, EndBuff);
+			free(EndBuff);
 		}
+
 		ReprintConsoleBuffer();
+		free(str);
 	}
 	return;
 	
@@ -309,7 +312,7 @@ void DeleteListOfAutocomletion()
 {
 	if (FlagAutocompletions)
 	{
-		COORD posPrint = startPrintPoint, posCor;
+		COORD posPrint = startPrintPoint, posCor=cor;
 		char*tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 		strcpy(tmp, Buff);
 
