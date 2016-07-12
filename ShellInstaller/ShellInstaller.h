@@ -4,11 +4,8 @@
 #include <Windows.h>
 #include <string.h>
 #include <stdio.h>
+#include "ModifyingRegistry.h"
 
-HKEY shellRegKey, pathRegKey;
-char InstallationPath[MAX_PATH];
-char BufPath[10000];
-DWORD SizeBufPath = sizeof(BufPath);
-LSTATUS RegFunStatus;
+int InstallResult;
 
 #endif
