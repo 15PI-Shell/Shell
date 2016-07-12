@@ -253,7 +253,7 @@ int DetermineEntry(char **entry, int *PosEntryStart) {
 
 void ConsoleAutocompletion()
 {
-	if (DoubleTabFlag) {
+	if (DoubleTabFlag) { 
 		PrintListOfAutocompletion();
 		DoubleTabFlag = 0;
 		return;
@@ -306,6 +306,7 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
+		CursorOnEndString();
 		FlagAutocompletions = 2;
 		printf("\n\n____________________________________________________");
 		while (LastFoundList != NULL) {
