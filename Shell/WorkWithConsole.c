@@ -291,7 +291,9 @@ void ConsoleAutocompletion()
 		ReprintConsoleBuffer();
 	} //дополнение единственное, печатаем
 	else FlagAutocompletions = 1;
-	DoubleTabFlag = 1;return;
+	DoubleTabFlag = 1;
+	free(entry);
+	return;
 }
 
 void  PrintListOfAutocompletion()
@@ -326,6 +328,7 @@ void DeleteListOfAutocomletion()
 		strcpy(Buff, tmp);
 		SetConsoleCursorPosition(hConsole, cor);
 		FlagAutocompletions = 0;
+		free(tmp);
 	}
 	return;
 }
