@@ -15,7 +15,7 @@ void GetClipboardContent(char* InpStr)
 		char* str = (char*)malloc(GlobalSize(hClipMemory));//строка, в которую вставляем наш текст
 		char* pClipMemory = (char*)GlobalLock(hClipMemory);//блокируем память
 		strcpy(str, pClipMemory);
-		if (str <= MAX_CONSOLE_INPUT)
+		if (strlen(str) <= MAX_CONSOLE_INPUT)
 		{
 			strcpy(InpStr, str);
 			GlobalUnlock(hClipMemory);//разблокируем память
