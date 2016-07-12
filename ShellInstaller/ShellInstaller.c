@@ -12,8 +12,7 @@ void Install()
 	printf("Please, enter installation path: ");
 	scanf("%s", &InstallationPath);
 	//добавление пути в PATH
-	//RegFunStatus = RegGetValueA(pathRegKey, 0, "PATH", RRF_RT_ANY, 0, BufPath, &SizeBufPath);
-	strcpy(BufPath,getenv("PATH"));
+	RegFunStatus = RegGetValueA(pathRegKey, 0, "PATH", RRF_RT_ANY, 0, BufPath, &SizeBufPath);
 	strcat(BufPath, ";");
 	strcat(BufPath, InstallationPath);
 	RegCloseKey(pathRegKey);
