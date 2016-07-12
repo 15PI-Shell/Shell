@@ -3,11 +3,13 @@
 
 SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile)
 {
+	SingleListStringNode *last = NULL;
+	if (strlen(PrefixFile) > MAX_PATH+1)
+		return last;
 	char* cpyPrefix = (char*)malloc(MAX_PATH+1);
 	strcpy(cpyPrefix, PrefixFile);
 	PrefixFile = cpyPrefix;
 
-	SingleListStringNode *last = NULL;
 	char * pathPTR;
 	int i = -1, j = -1;
 	char PathDir[MAX_PATH+1];
