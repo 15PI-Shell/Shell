@@ -4,7 +4,7 @@
 #include "StringList.h"
 #include "KeyDefines.h"
 #include "FindFile.h"
-#include "WorkWithComline.h"
+#include "WorkWithConsole.h"
 #include <Windows.h>
 #include <stdio.h>
 #include <locale.h>

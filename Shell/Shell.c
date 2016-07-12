@@ -1,54 +1,30 @@
 ﻿#include "Shell.h"
-#include<conio.h>
 int main()
 {
 	BPC_Init();
 	ConsoleInitialisation();
-	int key, flagOfAutocomplitionList = 0;
-	SingleListStringNode *LastFoundList = NULL;
-	
+	int key;
 	while (1)
 	{
-		key = _getch();
+		key = getch();
 		switch (key)
 		{
 		case keys_arrows:
-			key = _getch();
+			key = getch();
 			switch (key)
 			{
 			case key_left: ConsoleCursorMoveLeft(); break;
 			case key_right:ConsoleCursoreMoveRight(); break;
-			case key_up: ConsoleGetPrewHistory(&flagOfAutocomplitionList); break;
-			case key_down:ConsoleGetNextHistory(&flagOfAutocomplitionList); break;
+			case key_up: ConsoleGetPrewHistory(); break;
+			case key_down:ConsoleGetNextHistory(); break;
 			case key_del: ConsoleDeleteCurElem(); break;
-			}
-			break;
-		case key_enter:ConsoleEnter(&flagOfAutocomplitionList); break;
+			} break;
+		case key_enter:ConsoleEnter(); break;
 		case key_BackSpase:ConsoleBackSpace(); break;
-		case key_tab:ConsoleAutocomplition(&flagOfAutocomplitionList,  &LastFoundList);
-			if ((LastFoundList != NULL)&&(LastFoundList->up != 0))
-			{
-				key = _getch();
-				switch (key)
-				{
-				case keys_arrows:
-					key = _getch();
-					switch (key)
-					{
-					case key_left: ConsoleCursorMoveLeft(); break;
-					case key_right:ConsoleCursoreMoveRight(); break;
-					case key_up: ConsoleGetPrewHistory(&flagOfAutocomplitionList); break;
-					case key_down:ConsoleGetNextHistory(&flagOfAutocomplitionList); break;
-					case key_del: ConsoleDeleteCurElem(); break;
-					}
-					break;
-				case key_enter:ConsoleEnter(&flagOfAutocomplitionList); break;
-				case key_BackSpase:ConsoleBackSpace(); break;
-				case key_tab:flagOfAutocomplitionList=PrintListOfAutocomplition(LastFoundList);
-					break;//автодополнение
-				default:ConsolePrintChar(key); break;
-				}
-			}break;
+		case key_tab: ConsoleAutocompletion(); break;
+		case keys_ctrl_v: break;
+		case keys_ctrl_c: break;
+		case Keys_ctrl_x: break;
 		default:ConsolePrintChar(key); break;
 		}
 	}

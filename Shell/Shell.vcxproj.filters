@@ -39,7 +39,7 @@
     <ClCompile Include="FindFile.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="WorkWithComline.c">
+    <ClCompile Include="WorkWithConsole.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="GetClipboardContent.c">
@@ -65,7 +65,7 @@
     <ClInclude Include="FindFile.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="WorkWithComline.h">
+    <ClInclude Include="WorkWithConsole.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="Header.h">

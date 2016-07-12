@@ -81,7 +81,7 @@
     <ClCompile Include="FindFile.c" />
     <ClCompile Include="GetClipboardContent.c" />
     <ClCompile Include="HelloWorld.c" />
-    <ClCompile Include="WorkWithComline.c" />
+    <ClCompile Include="WorkWithConsole.c" />
     <ClCompile Include="Shell.c" />
     <ClCompile Include="StringList.c" />
   </ItemGroup>
@@ -91,7 +91,7 @@
     <ClInclude Include="Header.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="KeyDefines.h" />
-    <ClInclude Include="WorkWithComline.h" />
+    <ClInclude Include="WorkWithConsole.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
   </ItemGroup>
