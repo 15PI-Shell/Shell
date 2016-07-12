@@ -6,11 +6,11 @@ int main()
 	int key;
 	while (1)
 	{
-		key = _getch();
+		key = getch();
 		switch (key)
 		{
 		case keys_arrows:
-			key = _getch();
+			key = getch();
 			switch (key)
 			{
 			case key_left: ConsoleCursorMoveLeft(); break;
@@ -21,8 +21,7 @@ int main()
 			} break;
 		case key_enter:ConsoleEnter(); break;
 		case key_BackSpase:ConsoleBackSpace(); break;
-		case key_tab: if (!DoubleTabFlag) ConsoleAutocompletion();
-					  else 	PrintListOfAutocompletion(); break;
+		case key_tab: ConsoleAutocompletion(); break;
 		//case keys_ctrl_v:clipboard(Buff); break;
 		default:ConsolePrintChar(key); break;
 		}

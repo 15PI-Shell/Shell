@@ -6,10 +6,9 @@
 #include"BuiltinProgController.h"
 #include <stdio.h>
 #include <string.h>
+//#include "Clipboard.h"
 
 #define MAX_CONSOLE_INPUT 100
-int DoubleTabFlag;//хранит информацию был ли нажат таб перед этой клавишей
-
 void ConsoleInitialisation();
 
 void ConsoleCursorMoveLeft();//обработка клавиши <-, стрелка в лево

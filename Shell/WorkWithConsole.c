@@ -7,7 +7,7 @@ HANDLE hConsole;
 COORD cor, startPrintPoint;
 int cur;
 int FlagAutocompletions = 0;
-DoubleTabFlag = 0;
+int DoubleTabFlag = 0;
 /*-----------------------------------------Функции работы с командной строкой---------------------------------------------------------------*/
 void ClearComline()
 {
@@ -75,7 +75,7 @@ void OnNextLine()
 }
 void ConsolePrintChar(int key)
 {
-	if (DoubleTabFlag) DoubleTabFlag = 0;
+	 DoubleTabFlag = 0;
 	int buffLen = strlen(Buff);
 	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'а' && key <= 'я') && !(key >= 'А' && key <= 'Я'))
 	{
@@ -104,18 +104,11 @@ void ConsoleInitialisation()
 	ReprintConsoleBuffer();
 }
 
-
-
-
-
-
-
-
 /*---------------------------------------Обработка специальных клавиш------------------------------------*/
 
 void ConsoleCursorMoveLeft()
 {
-	if (DoubleTabFlag) DoubleTabFlag = 0;
+	 DoubleTabFlag = 0;
 	if (cur > 0)
 	{
 		DecCursor();
@@ -134,8 +127,8 @@ void ConsoleCursoreMoveRight()
 
 void ConsoleGetNextHistory()
 {
-	if (DoubleTabFlag) DoubleTabFlag = 0;
-	if (FlagAutocompletions) DeleteListOfAutocomletion();
+	 DoubleTabFlag = 0;
+	 DeleteListOfAutocomletion();
 	if (CurrHist->down != NULL)
 	{
 		CurrHist = CurrHist->down;
@@ -148,8 +141,8 @@ void ConsoleGetNextHistory()
 
 void ConsoleGetPrewHistory()
 {
-	if (DoubleTabFlag) DoubleTabFlag = 0;
-	if (FlagAutocompletions) DeleteListOfAutocomletion();
+	 DoubleTabFlag = 0;
+	 DeleteListOfAutocomletion();
 	if (CurrHist->up != NULL)
 	{
 		CurrHist = CurrHist->up;
@@ -162,7 +155,7 @@ void ConsoleGetPrewHistory()
 
 void ConsoleDeleteCurElem()
 {
-	if (DoubleTabFlag) DoubleTabFlag = 0;
+	DoubleTabFlag = 0;
 	if (Buff[cur])
 	{
 		int len = strlen(Buff);
@@ -174,7 +167,7 @@ void ConsoleDeleteCurElem()
 
 void ConsoleBackSpace()
 {
-	if (DoubleTabFlag) DoubleTabFlag = 0;
+	DoubleTabFlag = 0;
 	if (cur > 0)
 	{
 		int len = strlen(Buff);
@@ -188,9 +181,8 @@ void ConsoleBackSpace()
 void ConsoleEnter()
 {
 	
-	if (DoubleTabFlag) DoubleTabFlag = 0;
-	CursorOnEndString();
-	if (FlagAutocompletions) DeleteListOfAutocomletion();
+	 DoubleTabFlag = 0;
+	DeleteListOfAutocomletion();
 	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up==NULL)||((CurrHist->up!=0)&&(strcmp(CurrHist->up->value,Buff))))
@@ -228,19 +220,23 @@ int DetermineEntry(char **entry, int *PosEntryStart) {
 
 void ConsoleAutocompletion()
 {
+	if (DoubleTabFlag) {
+		PrintListOfAutocompletion();
+		DoubleTabFlag = 0;
+		return;
+	}
+	DeleteListOfAutocomletion();
 	while (LastFoundList != 0)
 	{
 		SingleStrlistRemoveDownmost(&LastFoundList);
 	}
-	if (FlagAutocompletions) DeleteListOfAutocomletion;
 	int Buflen = strlen(Buff);
 	char *entry;
 	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
-	//LastFoundList = NULL;
-	list = DetermineEntry(&entry, &posEntry);//DetemineEntry(Buff, Buflen, entry, &posEntry);
+	list = DetermineEntry(&entry, &posEntry);
 	EnLen = strlen(entry);
 	switch (list)
 	{
@@ -262,7 +258,7 @@ void ConsoleAutocompletion()
 		}
 		ReprintConsoleBuffer();
 	} //дополнение единственное, печатаем
-	else FlagAutocompletions = 1;// PrintListOfAutocompletion();
+	else FlagAutocompletions = 1;
 	DoubleTabFlag = 1;return ;
 }
 
@@ -277,10 +273,6 @@ void  PrintListOfAutocompletion()
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
-		while (LastFoundList != 0)
-		{
-			SingleStrlistRemoveDownmost(&LastFoundList);
-		}
 		SetConsoleCursorPosition(hConsole, startPrintPoint);
 	}
 }
@@ -289,6 +281,7 @@ void DeleteListOfAutocomletion()
 	COORD pos = startPrintPoint;
 	char*tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	strcpy(tmp, Buff);
+
 	for (int i = 0; i < FlagAutocompletions; i++)
 	{
 		startPrintPoint.Y++; 
