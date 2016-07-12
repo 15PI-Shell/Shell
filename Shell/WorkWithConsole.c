@@ -1,4 +1,5 @@
 ﻿#include "WorkWithConsole.h"
+#include <string.h>
 void DeleteListOfAutocomletion();
 DoubleListStringNode *CurrHist = 0;
 SingleListStringNode *LastFoundList = 0;
@@ -201,7 +202,7 @@ void PastInConsole()
 	int lenB = strlen(Buff), lenS = strlen(str);
 	if (lenB + lenS < MAX_CONSOLE_INPUT)
 	{
-		if ((cur == lenB - 1) || (cur == 0)) strcon(Buff, str);
+		if ((cur == lenB - 1) || (lenB == 0)) strcat(Buff, str);
 		else
 		{
 			char *EndBuff= (char*)malloc(MAX_CONSOLE_INPUT + 2);
@@ -210,8 +211,8 @@ void PastInConsole()
 				EndBuff[lenB - i] = Buff[i];
 				Buff[i] = '0';
 			}
-			strcon(Buff, str);
-			strcon(Buff, EndBuff);
+			strcat(Buff, str);
+			strcat(Buff, EndBuff);
 		}
 		ReprintConsoleBuffer();
 	}
