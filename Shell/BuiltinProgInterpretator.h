@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <conio.h>
 #include "BuiltinProgController.h"
+#include "FindFile.h"
 
-char* analisator(char*);
+void analisator(char*);
 
 #endif
