@@ -203,15 +203,17 @@ void PastInConsole()
 	int lenB = strlen(Buff), lenS = strlen(str);
 	if (lenB + lenS < MAX_CONSOLE_INPUT)
 	{
-		if ((cur == lenB) || (lenB == 0)) strcat(Buff, str);
+		if ((cur == lenB-1) || (lenB == 0)) strcat(Buff, str);
 		else
 		{
 			char *EndBuff= (char*)malloc(MAX_CONSOLE_INPUT + 2);
-			int i = 0;
-			for (i=lenB; i>cur; i--)
+			int i = 0;  int j = 0;
+			for (i=0; i<=lenB-cur; i++)
 			{
-
-				EndBuff[lenB-i] = Buff[i];
+				EndBuff[i] = Buff[i+cur];
+			}
+			for ( i = lenB; i > cur; i--)
+			{
 				Buff[i] = '\0';
 			}
 			strcat(Buff, str);
