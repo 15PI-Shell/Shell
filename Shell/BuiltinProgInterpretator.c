@@ -69,7 +69,7 @@ void analisator(char* mas)
 				ExecResult fileresult = FileExecute(ptrname, ptrarg);
 				if (fileresult != ExecResult_Success)
 				{
-					printf("_This Builtin program not exist_\n");
+					printf("_This Builtin program doesn't exist_\n");
 
 					// search builtin programs with the same prefix
 					lenname--;
@@ -101,28 +101,28 @@ void analisator(char* mas)
 					
 					}
 					else
-						printf("Builtin programs with the same prefix not exist\n");
+						printf("Builtin programs with the same prefix don't exist\n");
 
 					// errors of extern files
 					switch (fileresult)
 					{
 					case ExecResult_NotEnoughResources:
-						printf("_Not enoug resources to start extern file_\n");
+						printf("_Not enough resources to start extern file_\n");
 						break;
 					case ExecResult_FileNotFound:
-						printf("_Extern File was not found_\n");
+						printf("_External File was not found_\n");
 						break;
 					case ExecResult_WrongExe:
-						printf("_The .exe extern file is invalid_\n");
+						printf("_The .exe external file is invalid_\n");
 						break;
 					case ExecResult_AccessDenied:
-						printf("_Access denied for open extern file_\n"); 
+						printf("_Access denied for open external file_\n"); 
 						break;
 					case ExecResult_WrongAssociation:
-						printf("_Extern file name association is incomplete or invalid_\n");
+						printf("_External file name association is incomplete or invalid_\n");
 						break;
 					case ExecResult_UnknownError:
-						printf("_Unknown Error for open extern file_\n");
+						printf("_Unknown Error for open external file_\n");
 						break;
 					}
 					return;
@@ -174,22 +174,22 @@ void analisator(char* mas)
 					switch (fileresult)
 					{
 					case ExecResult_NotEnoughResources:
-						printf("_Not enoug resources to start extern file_\n");
+						printf("_Not enough resources to start external file_\n");
 						break;
 					case ExecResult_FileNotFound:
-						printf("_Extern File was not found_\n");
+						printf("_External File was not found_\n");
 						break;
 					case ExecResult_WrongExe:
-						printf("_The .exe extern file is invalid_\n");
+						printf("_The .exe external file is invalid_\n");
 						break;
 					case ExecResult_AccessDenied:
-						printf("_Access denied for open extern file_\n");
+						printf("_Access denied for open external file_\n");
 						break;
 					case ExecResult_WrongAssociation:
-						printf("_Extern file name association is incomplete or invalid_\n");
+						printf("_External file name association is incomplete or invalid_\n");
 						break;
 					case ExecResult_UnknownError:
-						printf("_Unknown Error for open extern file_\n");
+						printf("_Unknown Error for open external file_\n");
 						break;
 					}
 					return;
