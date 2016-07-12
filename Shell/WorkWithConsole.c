@@ -93,14 +93,12 @@ void ConsoleInitialisation()
 	CurrentDirectory = (char*)malloc(MAX_PATH);
 	GetCurrentDirectoryA(MAX_PATH, CurrentDirectory);
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	cor.X = (short)strlen(CurrentDirectory) + 1;
-	cor.Y = 0;
-	startPrintPoint.X = (short)strlen(CurrentDirectory) + 1;
-	startPrintPoint.Y = 0;
+	printf("%s>", CurrentDirectory);
+	GetConsoleCursorPosition();
+	startPrintPoint = cor;
 	DoubleStrlistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
-	printf("%s>", CurrentDirectory);
 	ReprintConsoleBuffer();
 }
 
