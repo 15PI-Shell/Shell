@@ -1,6 +1,7 @@
 ﻿#include "GetClipboardCont.h"
+#include "WorkWithConsole.h"
 
-void GetClipboardContent()
+void GetClipboardContent(char* InpStr)
 {
 	if (OpenClipboard(NULL)) //открываем буфер обмена
 	{
@@ -14,8 +15,17 @@ void GetClipboardContent()
 		char* str = (char*)malloc(GlobalSize(hClipMemory));//строка, в которую вставляем наш текст
 		char* pClipMemory = (char*)GlobalLock(hClipMemory);//блокируем память
 		strcpy(str, pClipMemory);
-		GlobalUnlock(hClipMemory);//разблокируем память
-		printf("%s\n", str);
-		CloseClipboard();
+		if (str <= MAX_CONSOLE_INPUT)
+		{
+			strcpy(InpStr, str);
+			GlobalUnlock(hClipMemory);//разблокируем память
+			CloseClipboard();
+		}
+		else
+		{
+			CloseClipboard();
+			return;
+		}
 	}
+
 }
