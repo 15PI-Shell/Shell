@@ -43,14 +43,20 @@ void Install()
 	//добавление DisplayIcon
 	strcpy(copyInstalPath, InstallationPath);
 	strcat(copyInstalPath, "\\15PI-SHELL.exe");
+	RegSetValueExA(shellRegKey, "DisplayIcon", NULL, REG_SZ, copyInstalPath, strlen(copyInstalPath)+1);
 	//добавление DisplayName
+	RegSetValueExA(shellRegKey, "DisplayName", NULL, REG_SZ, "15PI-SHELL", sizeof("15PI-SHELL"));	
 	//добавление InstallLocation
+	RegSetValueExA(shellRegKey, "InstallLocation", NULL, REG_SZ, InstallationPath, strlen(InstallationPath)+1);	
 	//добавление UninstallString
 	strcpy(copyInstalPath, InstallationPath);
 	strcat(copyInstalPath, "\\Uninstall.exe");
+	RegSetValueExA(shellRegKey, "UninstallString", NULL, REG_SZ, copyInstalPath, strlen(copyInstalPath)+1);	
 	//добавление Publisher 
+	RegSetValueExA(shellRegKey, "Publisher", NULL, REG_SZ, "15PI", sizeof("15PI"));
 	//добавление EstimatedSize
 	DWORD size = 0xFFFFFF;
+	RegSetValueExA(shellRegKey, "EstimatedSize", NULL, REG_DWORD, &size, sizeof(DWORD));
 	printf("The data was successfully written to the registry\n");
 }
 
