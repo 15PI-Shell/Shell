@@ -107,7 +107,7 @@ void analisator(char* mas)
 					switch (fileresult)
 					{
 					case ExecResult_NotEnoughResources:
-						printf("_Not enough resources to start extern file_\n");
+						printf("_Not enough resources to start external file_\n");
 						break;
 					case ExecResult_FileNotFound:
 						printf("_External File was not found_\n");
