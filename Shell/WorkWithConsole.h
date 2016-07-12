@@ -8,7 +8,7 @@
 #include <string.h>
 //#include "Clipboard.h"
 
-#define MAX_CONSOLE_INPUT 100
+#define MAX_CONSOLE_INPUT 300
 void ConsoleInitialisation();
 
 void ConsoleCursorMoveLeft();//обработка клавиши <-, стрелка в лево
