@@ -9,3 +9,4 @@
 #define keys_arrows 224
 #define key_del 83
 #define key_BackSpase 8
+#define keys_ctrl_v 22
