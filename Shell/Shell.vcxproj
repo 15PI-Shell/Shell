@@ -79,6 +79,7 @@
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFile.c" />
+    <ClCompile Include="GetClipboardContent.c" />
     <ClCompile Include="HelloWorld.c" />
     <ClCompile Include="WorkWithComline.c" />
     <ClCompile Include="Shell.c" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="FindFile.h" />
+    <ClInclude Include="Header.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="KeyDefines.h" />
     <ClInclude Include="WorkWithComline.h" />
