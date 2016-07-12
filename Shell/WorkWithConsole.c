@@ -271,11 +271,11 @@ void ConsoleAutocompletion()
 	switch (list)
 	{
 	case 1: LastFoundCommand = BPC_GetHints(entry); 
-		LastFoundFile = FindFiles(entry);
+		LastFoundFile = FindFilesAndDirsPrefix(entry);
 		LastFoundList = LastFoundCommand;
 		break;
-	case 2:	LastFoundFile = FindFiles(entry); 
-		LastFoundFile = FindFiles(entry); break;
+	case 2:	LastFoundFile = FindFilesAndDirsPrefix(entry);
+		break;
 	default: return;
 	}
 	SingleStrlistConcat(LastFoundFile, &LastFoundList);

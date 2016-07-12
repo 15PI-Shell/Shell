@@ -3,12 +3,14 @@
 
 ExecResult FileExecute(char* nameProc, char* parametrs)
 {
+	if (strlen(nameProc)>MAX_PATH)
+		return ExecResult_FileNotFound;
 	UINT result; //переменная для возвращения результата открытия файла
 	if ((tolower(nameProc[0]) >= 'a') && (tolower(nameProc[0]) <= 'z') && (nameProc[1] == ':')) //если указан путь C:\...
 		result = ShellExecuteA(0, "open", nameProc, parametrs, NULL, 1); //запускаем файл по переданному пути
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{
-		char CurDir[MAX_PATH];
+		char CurDir[MAX_PATH+1];
 		strcpy(CurDir, CurrentDirectory);
 		if ((CurDir[strlen(CurDir) - 1] != '\\') && (nameProc[0] != '\\')) //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
 			strcat(CurDir, "\\");
