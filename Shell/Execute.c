@@ -8,7 +8,7 @@ ExecResult FileExecute(char* nameProc, char* parametrs)
 		result = ShellExecuteA(0, "open", nameProc, parametrs, NULL, 1); //запускаем файл по переданному пути
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{
-		char CurDir[MAX_PATH];
+		char CurDir[MAX_PATH+1];
 		strcpy(CurDir, CurrentDirectory);
 		if ((CurDir[strlen(CurDir) - 1] != '\\') && (nameProc[0] != '\\')) //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
 			strcat(CurDir, "\\");

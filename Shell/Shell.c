@@ -3,7 +3,7 @@
 
 int main()
 {
-	char prefix[100];
+	char prefix[MAX_PATH+1];
 	char parametrs[100] = "";
 	int demoMode;
 	SingleListStringNode* list = NULL;
@@ -34,7 +34,7 @@ int main()
 				FindType type;
 				printf("Искать файлы(1) / папки(2) / всё(3)? ");
 				scanf("%d", &type);
-				list = FindFilesAndDirsMask(prefix, CurrentDirectory, type);//получаем список вариантов
+				list = FindFilesAndDirsMask(prefix, CurrentDirectory, type, NULL);//получаем список вариантов
 			}
 			else
 				list = FindFilesAndDirsPrefix(prefix);
