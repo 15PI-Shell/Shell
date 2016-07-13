@@ -241,7 +241,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				{
 
 					entry[k] = Buff[j]; k++;
-				} return 2;
+				} printf("\n%s", entry);return 2;
 
 			}
 			else return 0;
@@ -291,7 +291,7 @@ void ConsoleAutocompletion()
 	} // дополнения не найдены
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
-		if (len + posEntry > MAX_CONSOLE_INPUT) {
+		if (len  > MAX_CONSOLE_INPUT-posEntry) {
 			cur = crn; cor = pos;
 			SetConsoleCursorPosition(hConsole, pos);
 			DoubleTabFlag = 1;	return;
@@ -302,13 +302,18 @@ void ConsoleAutocompletion()
 			Buff[i] = LastFoundList->value[k];
 			k++;
 		}
+		Buflen = strlen(Buff);
 		if (Buflen + 2<MAX_CONSOLE_INPUT) {
-		 Buflen = strlen(Buff);
-		 Buff[Buflen] = ' ';CursorOnEndString(); cur = Buflen + 1;
-		}
-		else CursorOnEndString();
-		GetConsoleCursorPosition();
+			CursorOnEndString();
+			Buff[Buflen+1] = ' '; 
+		 cur = Buflen+2;
+		cor.X= cor.X + 2;
 		ReprintConsoleBuffer();
+		}
+		else {
+			CursorOnEndString();
+			ReprintConsoleBuffer(); }
+		
 	} //дополнение единственное, печатаем
 	else {
 		FlagAutocompletions = 1;
@@ -316,7 +321,6 @@ void ConsoleAutocompletion()
 		SetConsoleCursorPosition(hConsole, cor);
 	}
 	DoubleTabFlag = 1;
-	
 	free(entry);
 	return;
 }
@@ -325,14 +329,14 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
-		FlagAutocompletions = 2;
-		printf("\n\n____________________________________________________");
+		FlagAutocompletions = 3;
+		printf("\n\n\n____________________________________________________");
 		while (LastFoundList != NULL) {
 			printf("\n%s", LastFoundList->value);
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
-		SetConsoleCursorPosition(hConsole, startPrintPoint);
+		SetConsoleCursorPosition(hConsole, startPrintPoint); cor = startPrintPoint; cur = 0;
 	}
 }
 void DeleteListOfAutocomletion()
