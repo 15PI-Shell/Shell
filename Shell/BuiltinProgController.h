@@ -10,6 +10,7 @@
 #include "HelloWorld.h"
 #include "sum.h"
 #include "Binary.h"
+#include "ChangeDirectory.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

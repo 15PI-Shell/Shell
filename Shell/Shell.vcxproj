@@ -77,6 +77,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Binary.c" />
+    <ClCompile Include="ChangeDirectory.c" />
+    <ClCompile Include="DirectoryExists.c" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
@@ -90,6 +92,9 @@
     <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
+    <ClInclude Include="ChangeDirectory.h" />
+    <ClInclude Include="DirectoreExists.h" />
+    <ClInclude Include="Directoryexists.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="ParserOfArguments.h" />

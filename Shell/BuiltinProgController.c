@@ -104,6 +104,7 @@ void BPC_Init()
 	RegisterProgram("HelloAcuion", HelloWorldProc, BPC_ReturnsNothing);
 	RegisterProgram("Sum", sumProc, BPC_ReturnsInt);
 	RegisterProgram("Binary", BinaryProc, BPC_ReturnsInt);
+	RegisterProgram("ChangeDirectory", ChangeDirectory, BPC_ReturnsNothing);
 }
 
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)
