@@ -10,6 +10,7 @@ void CmdInterpretator(char* mas)
 	const char* del = ">\0";
 	char* cmd;
 	
+	
 	cmd = strtok(mas, del); // выделение одной команды из строки аргументов
 
 while (cmd != 0)
@@ -35,7 +36,7 @@ while (cmd != 0)
 		lenname = lenname - p;
 	}
 	char* ptrname = NULL;
-	ptrname = (char*)malloc(lenname * sizeof(char));
+	ptrname = (char*)malloc((lenname+1) * sizeof(char));
 
 	ptrname[lenname] = '\0';
 	int i = 0;
@@ -45,13 +46,13 @@ while (cmd != 0)
 		p++;
 		i++;
 	}
-	if (cmd[p] != '\0') p++;
+	if (cmd[p] == '"') p++;
 
 	// search arguments
 	lenarg = strlen(cmd) - p;
 
 	// указатель на строку с аругментами
-	char* ptrarg = (char*)malloc(lenarg * sizeof(char));
+	char* ptrarg = (char*)malloc((lenarg+2+strlen(strresult)) * sizeof(char));
 	i = 0;
 	while (i != lenarg)
 	{
@@ -59,7 +60,8 @@ while (cmd != 0)
 		p++;
 		i++;
 	}
-	ptrarg[lenarg] = '\0';
+	ptrarg[lenarg] = ' ';
+	ptrarg[lenarg+1] = '\0';
 	strcat(ptrarg, strresult); // add result of program to argaments
 
 	// search ptrname in builtinprogram and start this program
@@ -142,31 +144,18 @@ while (cmd != 0)
 	if (result == 0)
 		strresult[0] = '\0';
 
-	if ( (result != 0) && (result != -1) && (result != -2) )
-	{
-		i = 0;
-		while (result[i] != '\0')
-		{
-			strresult[i] = result[i];
-			i++;
-		}
-		strresult[i] = '\0';
-	}
-
-	//free(ptrarg);
-	//free(ptrname);
+	if ((result != 0) && (result != -1) && (result != -2))
+		strcpy(strresult,result);
+		
+	free(ptrarg);
+	free(ptrname);
 	cmd = strtok('\0', del); // search the following comand 
 }
 	
-if (result != 0)
+if (strresult != 0)
 {
-	printf("\nRESULT:  ");
-	while (*result != '\0')
-	{
-		printf("%c", *result);
-		result++;
-	}
-	//free(result);
+	printf("\nRESULT: ");
+	printf("%s\n",strresult);
 }
 
 return;

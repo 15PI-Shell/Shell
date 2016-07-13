@@ -4,7 +4,7 @@ int main()
 {
 	BPC_Init();
 
-	char* arg = "sum 10 15 > D:\\printf\\Debug\\printf.exe";
+	char* arg = " sum 15 100 >sum 25";
 	CmdInterpretator(arg);
 	getch();
 	/*
