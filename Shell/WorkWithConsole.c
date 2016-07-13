@@ -241,7 +241,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				{
 
 					entry[k] = Buff[j]; k++;
-				} printf("\n%s", entry);return 2;
+				} return 2;
 
 			}
 			else return 0;
@@ -292,6 +292,10 @@ void ConsoleAutocompletion()
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
 		if (len  > MAX_CONSOLE_INPUT-posEntry) {
+			while (LastFoundList != 0)
+			{
+				SingleStrlistRemoveDownmost(&LastFoundList);
+			}
 			cur = crn; cor = pos;
 			SetConsoleCursorPosition(hConsole, pos);
 			DoubleTabFlag = 1;	return;
@@ -302,17 +306,21 @@ void ConsoleAutocompletion()
 			Buff[i] = LastFoundList->value[k];
 			k++;
 		}
-		Buflen = strlen(Buff);
-		if (Buflen + 2<MAX_CONSOLE_INPUT) {
+		int BL = 0; BL=strlen(Buff);
+		if (BL + 2<MAX_CONSOLE_INPUT) {
 			CursorOnEndString();
-			Buff[Buflen+1] = ' '; 
-		 cur = Buflen+2;
-		cor.X= cor.X + 2;
-		ReprintConsoleBuffer();
+			Buff[BL+1] = ' '; Buff[BL + 2] = ' ';
+		 cur = BL+2; 
+		 cor.X = BL + 2+startPrintPoint.X;
+		 SetConsoleCursorPosition(hConsole, cor);
+		 ReprintConsoleBuffer();
+		 
+		
 		}
 		else {
 			CursorOnEndString();
-			ReprintConsoleBuffer(); }
+			ReprintConsoleBuffer(); 
+		}
 		
 	} //дополнение единственное, печатаем
 	else {
@@ -320,6 +328,7 @@ void ConsoleAutocompletion()
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, cor);
 	}
+	
 	DoubleTabFlag = 1;
 	free(entry);
 	return;
