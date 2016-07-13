@@ -63,6 +63,9 @@
     <ClCompile Include="ParserOfArguments.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="MathInterpreter.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h">
@@ -105,6 +108,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="GetClipboardContent.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="MathInterpreter.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

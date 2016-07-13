@@ -9,5 +9,3 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <locale.h>
-
-

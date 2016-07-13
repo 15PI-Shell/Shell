@@ -79,6 +79,7 @@
     <ClCompile Include="Binary.c" />
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="DirectoryExists.c" />
+    <ClCompile Include="MathInterpreter.cpp" />
     <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
@@ -100,6 +101,7 @@
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="MathInterpreter.h" />
     <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
