@@ -1,5 +1,4 @@
-﻿#ifndef StringList
-#define StringList
+﻿#pragma once
 
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +31,7 @@ void SingleStrlistRemoveUpmost(SingleListStringNode* node);
 void SingleStrlistRemoveNextUp(SingleListStringNode* node);
 //присоединяет к нижнему листу верхний
 //up и down должны указывать на самый нижний элемент списка
-void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode** down);
+void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode* down);
 
 //структура, описывающая объект двусвязного списка
 typedef struct DoubleListStringNode
@@ -59,5 +58,4 @@ void DoubleStrlistRemoveUpmost(DoubleListStringNode** node);
 //Указатель переместится на элемент ниже данного, если он существует, иначе на верхний. Если это единственный элемент, то установится на 0
 void DoubleStrlistRemove(DoubleListStringNode** node);
 //присоединяет к нижнему листу верхний (наверх)
-void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode** down);
-#endif
+void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode* down);
