@@ -85,5 +85,9 @@ SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, Find
 	}
 	FindClose(HandleFile);
 	free(WhereFind);
+	SingleListStringNode *list = *last;
+	while (list->up && !strcmp(list->value, list->up->value))
+		SingleStrlistRemoveDownmost(&list);
+	*last = list;
 	return *last;
 }
