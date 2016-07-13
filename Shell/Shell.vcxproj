@@ -76,7 +76,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Binary.c" />
+    <ClCompile Include="ChangeDirectory.c" />
+    <ClCompile Include="DirectoryExists.c" />
+    <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
+    <ClCompile Include="BuiltinProgInterpretator.c" />
     <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFile.c" />
     <ClCompile Include="HelloWorld.c" />
@@ -84,11 +89,18 @@
     <ClCompile Include="StringList.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
+    <ClInclude Include="BuiltinProgInterpretator.h" />
+    <ClInclude Include="ChangeDirectory.h" />
+    <ClInclude Include="DirectoreExists.h" />
+    <ClInclude Include="Directoryexists.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
+    <ClInclude Include="sum.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

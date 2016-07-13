@@ -1,7 +1,8 @@
 #ifndef Shell
 #define Shell
 
-#include "FindFile.h"
+#include "BuiltinProgController.h"
+#include "BuiltinProgInterpretator.h"
 #include <stdio.h>
 #include <locale.h>
 
