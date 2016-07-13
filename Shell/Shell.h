@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DirHistory.h"
 #include "BuiltinProgController.h"
 #include "StringList.h"
 #include "KeyDefines.h"

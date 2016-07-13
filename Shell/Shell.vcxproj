@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BuiltinProgController.c" />
+    <ClCompile Include="DirHistory.c" />
     <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFile.c" />
     <ClCompile Include="GetClipboardContent.c" />
@@ -87,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h" />
+    <ClInclude Include="DirHistory.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="HelloWorld.h" />

@@ -45,6 +45,9 @@
     <ClCompile Include="GetClipboardContent.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="DirHistory.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h">
@@ -69,6 +72,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="Header.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="DirHistory.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
