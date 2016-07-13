@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 		if (RegFunStatus == ERROR_ACCESS_DENIED)
 		{
 			printf("Admin access required\n");
+			system("pause");
 			return 0;
 		}
 		RegCloseKey(pathRegKey);
