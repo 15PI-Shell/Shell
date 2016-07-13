@@ -3,16 +3,16 @@
 
 SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile)
 {
-	SingleListStringNode *last = NULL;
+	SingleListStringNode* last = NULL;
 	if (strlen(PrefixFile) > MAX_PATH)
 		return last;
-	char* cpyPrefix = (char*)malloc(MAX_PATH+1);
+	char* cpyPrefix = (char*)malloc(MAX_PATH + 1);
 	strcpy(cpyPrefix, PrefixFile);
 	PrefixFile = cpyPrefix;
 
 	char * pathPTR;
 	int i = -1, j = -1;
-	char PathDir[MAX_PATH+1];
+	char PathDir[MAX_PATH + 1];
 	strcat(PrefixFile, "*");
 	FindFilesAndDirsMask(PrefixFile, CurrentDirectory, FilesAndFolders, &last);
 	while (PrefixFile[++i])
@@ -48,7 +48,7 @@ SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, Find
 {
 	WIN32_FIND_DATA FileData;
 	HANDLE HandleFile;
-	char* CopyDirectory = (char*)malloc(MAX_PATH+1);
+	char* CopyDirectory = (char*)malloc(MAX_PATH + 1);
 	strcpy(CopyDirectory, WhereFind);
 	WhereFind = CopyDirectory;
 	if ((tolower(FileMask[0]) >= 'a') && (tolower(FileMask[0]) <= 'z') && (FileMask[1] == ':')) //если указан путь C:\...
@@ -85,9 +85,8 @@ SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, Find
 	}
 	FindClose(HandleFile);
 	free(WhereFind);
-	SingleListStringNode *list = *last;
-	while (list->up && !strcmp(list->value, list->up->value))
-		SingleStrlistRemoveDownmost(&list);
-	*last = list;
+	if (*last)
+		while ((*last)->up && !strcmp((*last)->value, (*last)->up->value))
+			SingleStrlistRemoveDownmost(last);
 	return *last;
 }
