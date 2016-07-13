@@ -1,5 +1,4 @@
-﻿#ifndef StringList
-#define StringList
+﻿#pragma once
 
 #include <stdlib.h>
 #include <string.h>
@@ -60,4 +59,3 @@ void DoubleStrlistRemoveUpmost(DoubleListStringNode** node);
 void DoubleStrlistRemove(DoubleListStringNode** node);
 //присоединяет к нижнему листу верхний (наверх)
 void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode* down);
-#endif

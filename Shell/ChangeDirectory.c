@@ -2,7 +2,7 @@
 
 char* ChangeDirectory(char* str)
 {
-	if (DirectoryExists(str) && (strlen(str) <= MAX_PATH))
+	if (DirectoryExists(str))
 	{	
 		strcpy(CurrentDirectory, str);
 		return 0;		

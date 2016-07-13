@@ -48,11 +48,17 @@
     <ClCompile Include="Binary.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeDirectory.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="DirectoryExists.c">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkWithConsole.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="GetClipboardContent.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeDirectory.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,13 +89,16 @@
     <ClInclude Include="Binary.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
+    <ClInclude Include="KeyDefines.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkWithConsole.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
     <ClInclude Include="ChangeDirectory.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
-    <ClInclude Include="Directoryexists.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectoreExists.h">
+    <ClInclude Include="DirectoryExists.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
