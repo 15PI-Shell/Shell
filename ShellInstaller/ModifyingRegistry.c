@@ -1,4 +1,4 @@
-#include "ModifyingRegistry.h"
+п»ї#include "ModifyingRegistry.h"
 
 
 
@@ -21,7 +21,7 @@ int InstallModifyPath()
 int InstallKeyRegistry()
 {
 	char user[100];
-	char HistoryDir[MAX_PATH + 1] = "C:";
+	char HistoryDir[MAX_PATH + 1] = "";
 	DWORD sizeUser = sizeof(user);
 	char copyInstalPath[MAX_PATH + 1];
 	RegCloseKey(shellRegKey);
@@ -31,44 +31,45 @@ int InstallKeyRegistry()
 		return 0;
 	RegCloseKey(shellRegKey);
 	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\15PI-SHELL", 0, KEY_ALL_ACCESS | KEY_WOW64_64KEY, &shellRegKey);
-	//добавление DisplayIcon
+	//РґРѕР±Р°РІР»РµРЅРёРµ DisplayIcon
 	strcpy(copyInstalPath, InstallationPath);
 	strcat(copyInstalPath, "\\15PI-SHELL.exe");
 	RegFunStatus = RegSetValueExA(shellRegKey, "DisplayIcon", NULL, REG_SZ, copyInstalPath, strlen(copyInstalPath) + 1);
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление DisplayName
+	//РґРѕР±Р°РІР»РµРЅРёРµ DisplayName
 	RegFunStatus = RegSetValueExA(shellRegKey, "DisplayName", NULL, REG_SZ, "15PI-SHELL", sizeof("15PI-SHELL"));
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление InstallLocation
+	//РґРѕР±Р°РІР»РµРЅРёРµ InstallLocation
 	RegFunStatus = RegSetValueExA(shellRegKey, "InstallLocation", NULL, REG_SZ, InstallationPath, strlen(InstallationPath) + 1);
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление UninstallString
+	//РґРѕР±Р°РІР»РµРЅРёРµ UninstallString
 	strcpy(copyInstalPath, InstallationPath);
 	strcat(copyInstalPath, "\\ShellInstaller.exe");
 	RegFunStatus = RegSetValueExA(shellRegKey, "UninstallString", NULL, REG_SZ, copyInstalPath, strlen(copyInstalPath) + 1);
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление Publisher 
+	//РґРѕР±Р°РІР»РµРЅРёРµ Publisher 
 	RegFunStatus = RegSetValueExA(shellRegKey, "Publisher", NULL, REG_SZ, "15PI", sizeof("15PI"));
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление EstimatedSize
+	//РґРѕР±Р°РІР»РµРЅРёРµ EstimatedSize
 	DWORD size = 0xFFFFFF;
 	RegFunStatus = RegSetValueExA(shellRegKey, "EstimatedSize", NULL, REG_DWORD, &size, sizeof(size));
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление History (путь к папке с историей)
-	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
-	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
-	strcat(HistoryDir, user);
-	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
+	//РґРѕР±Р°РІР»РµРЅРёРµ History (РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ РёСЃС‚РѕСЂРёРµР№)
 	RegFunStatus = RegSetValueExA(shellRegKey, "History", NULL, REG_SZ, HistoryDir, strlen(HistoryDir)+1);
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//создание папки в документах для истории
+	//СЃРѕР·РґР°РЅРёРµ РїР°РїРєРё РІ РґРѕРєСѓРјРµРЅС‚Р°С… РґР»СЏ РёСЃС‚РѕСЂРёРё
+	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
+	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
+	strcpy(HistoryDir, "C:");
+	strcat(HistoryDir, user);
+	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
 	int FunRes = CreateDirectoryA(HistoryDir, NULL);
 	if (!FunRes)
 		return 0;
@@ -80,7 +81,7 @@ int UninstallModifyPath()
 	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_ALL_ACCESS | KEY_WOW64_64KEY, &pathRegKey);
 	DWORD SizeBufPath = sizeof(BufPath);
 	GetCurrentDirectoryA(sizeof(InstallationPath), InstallationPath);
-	//strcpy(InstallationPath, "C:\\Game"); На проверку путь вводить без последнего слеша (GetCurrentDirectory получает такой путь)
+	//strcpy(InstallationPath, "C:\\Game"); РќР° РїСЂРѕРІРµСЂРєСѓ РїСѓС‚СЊ РІРІРѕРґРёС‚СЊ Р±РµР· РїРѕСЃР»РµРґРЅРµРіРѕ СЃР»РµС€Р° (GetCurrentDirectory РїРѕР»СѓС‡Р°РµС‚ С‚Р°РєРѕР№ РїСѓС‚СЊ)
 	RegGetValueA(pathRegKey, 0, "PATH", RRF_RT_ANY, 0, BufPath, &SizeBufPath);
 	char CurPath[MAX_PATH], copyPath[10000] = "";
 	int i = -1, j = -1, CheckOnePath = 0;
@@ -124,7 +125,7 @@ int UninstallKeyRegistry()
 	RegFunStatus = RegDeleteTreeA(shellRegKey, "15PI-SHELL");
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//удаление папки с историей
+	//СѓРґР°Р»РµРЅРёРµ РїР°РїРєРё СЃ РёСЃС‚РѕСЂРёРµР№
 	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
 	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
 	strcat(HistoryDir, user);
