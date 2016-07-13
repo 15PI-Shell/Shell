@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -76,26 +76,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Binary.c" />
+    <ClCompile Include="ChangeDirectory.c" />
+    <ClCompile Include="DirectoryExists.c" />
+    <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
-    <ClCompile Include="DirHistory.c" />
+    <ClCompile Include="BuiltinProgInterpretator.c" />
     <ClCompile Include="Execute.c" />
     <ClCompile Include="FindFile.c" />
-    <ClCompile Include="GetClipboardContent.c" />
     <ClCompile Include="HelloWorld.c" />
-    <ClCompile Include="WorkWithConsole.c" />
     <ClCompile Include="Shell.c" />
     <ClCompile Include="StringList.c" />
+    <ClCompile Include="GetClipboardContent.c" />
+    <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
-    <ClInclude Include="DirHistory.h" />
+    <ClInclude Include="BuiltinProgInterpretator.h" />
+    <ClInclude Include="ChangeDirectory.h" />
+    <ClInclude Include="DirectoryExists.h" />
     <ClInclude Include="FindFile.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
-    <ClInclude Include="KeyDefines.h" />
-    <ClInclude Include="WorkWithConsole.h" />
+    <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="StringList.h" />
+    <ClInclude Include="sum.h" />
+    <ClInclude Include="KeyDefines.h" />
+    <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,8 @@
-#pragma once
+﻿#pragma once
 
 #include "DirHistory.h"
 #include "BuiltinProgController.h"
+#include "BuiltinProgInterpretator.h"
 #include "StringList.h"
 #include "KeyDefines.h"
 #include "FindFile.h"

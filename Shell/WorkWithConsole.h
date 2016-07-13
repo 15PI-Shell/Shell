@@ -4,7 +4,7 @@
 #include "KeyDefines.h"
 #include "FindFile.h"
 #include"BuiltinProgController.h"
-#include "GetClipboardCont.h"
+#include "GetClipboardContent.h"
 #include <stdio.h>
 #include <string.h>
 //#include "Clipboard.h"
