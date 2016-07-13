@@ -63,7 +63,7 @@
     <ClCompile Include="ParserOfArguments.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="MathInterpreter.cpp">
+    <ClCompile Include="MathInterpreter.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>

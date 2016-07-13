@@ -15,10 +15,11 @@ int main()
 	while (1)
 	{
 		fgets(expression, 1000, stdin);
+		expression[strlen(expression) - 1] = 0;
 		if (MathInterpreter(expression, &result))
 			printf("Answer: %lf\n", result);
 		else
-			printf("Error on %lf\n", result);
+			printf("Error on %d\n", (int)result);
 	}
 	return 0;//до остального дело не дойдёт
 

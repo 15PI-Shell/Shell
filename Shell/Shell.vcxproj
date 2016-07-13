@@ -79,7 +79,7 @@
     <ClCompile Include="Binary.c" />
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="DirectoryExists.c" />
-    <ClCompile Include="MathInterpreter.cpp" />
+    <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
