@@ -58,10 +58,8 @@ void ResetCursor()
 }
 void CursorOnEndString()
 {
-	while (Buff[cur])
-	{
-		IncCursor();
-	}
+	int dx = strlen(Buff) - cur;
+	cor.X + dx;
 	SetConsoleCursorPosition(hConsole, cor);
 }
 void OnNextLine()
@@ -124,6 +122,7 @@ void ConsoleCursoreMoveRight()
 		IncCursor();
 		SetConsoleCursorPosition(hConsole, cor);
 	}
+	GetConsoleCursorPosition();
 }
 
 void ConsoleGetNextHistory()
@@ -229,7 +228,7 @@ void PastInConsole()
 	
 }
 /*-------------------------------------------Autocompletion-----------------------------------------------*/
-int DetermineEntry(char **entry, int *PosEntryStart) {
+int DetermineEntry(char *entry, int *PosEntryStart) {
 	int Buflen = strlen(Buff);
 	for (int i = Buflen - 1; i > 0; i--)
 	{
@@ -241,14 +240,14 @@ int DetermineEntry(char **entry, int *PosEntryStart) {
 				for (int j = i + 1; j < Buflen; j++)
 				{
 
-					(*entry)[k] = Buff[j]; k++;
+					entry[k] = Buff[j]; k++;
 				} return 2;
 
 			}
 			else return 0;
 		}
 	}
-	*entry = Buff; *PosEntryStart = 0; return 1;
+	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
 }
 
 void ConsoleAutocompletion()
@@ -272,7 +271,7 @@ void ConsoleAutocompletion()
 	memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
-	list = DetermineEntry(&entry, &posEntry);
+	list = DetermineEntry(entry, &posEntry);
 	EnLen = strlen(entry);
 	switch (list)
 	{
