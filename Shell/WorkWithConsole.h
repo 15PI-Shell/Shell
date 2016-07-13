@@ -5,6 +5,7 @@
 #include "FindFile.h"
 #include"BuiltinProgController.h"
 #include "GetClipboardContent.h"
+#include "DirHistory.h"
 #include <stdio.h>
 #include <string.h>
 //#include "Clipboard.h"
