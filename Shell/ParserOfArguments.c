@@ -35,10 +35,13 @@ int ParsOfArgs(char* str, SingleListStringNode** args)
 			{
 				sp = strtok(str, "\"");	//забирает все содержимое под кавычками
 			}
-			SingleStrlistAddDownmost(args, sp); //кладем в список аргументы
-			len -= strlen(sp) + cnt_spc;		//длина строки высчитывается заново, вычитая предыдущее содержимое строки
-			str += strlen(sp);					//прыгаем через слово, которое уже внесено в список
-			cnt_spc = 0;
+			if (sp != 0)//wtf?
+			{
+				SingleStrlistAddDownmost(args, sp); //кладем в список аргументы
+				len -= strlen(sp) + cnt_spc;		//длина строки высчитывается заново, вычитая предыдущее содержимое строки
+				str += strlen(sp);					//прыгаем через слово, которое уже внесено в список
+				cnt_spc = 0;
+			}
 		}
 		else cnt_spc++; //иначе считаем количество пробелов
 	}

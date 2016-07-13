@@ -8,6 +8,6 @@
 #include "BuiltinProgController.h"
 #include "FindFile.h"
 
-void analisator(char*);
+void CmdInterpretator(char*);
 
 #endif

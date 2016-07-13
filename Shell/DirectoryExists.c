@@ -1,9 +1,11 @@
 #include "DirectoryExists.h"
 
-BOOL DirectoryExists(LPCTSTR szPath)
+BOOL DirectoryExists(char* szPath)
 {
-	DWORD dwAttrib = GetFileAttributes(szPath);
+	if (strlen(szPath) > MAX_PATH)
+		return 0;
 
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+	DWORD dwAttrib = GetFileAttributesA(szPath);
+
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
