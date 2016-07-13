@@ -60,6 +60,9 @@
     <ClCompile Include="ChangeDirectory.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="ParserOfArguments.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuiltinProgController.h">
@@ -99,6 +102,9 @@
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
     <ClInclude Include="DirectoryExists.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="GetClipboardContent.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

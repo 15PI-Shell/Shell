@@ -6,5 +6,6 @@
 #include "BuiltinProgController.h"
 #include "FindFile.h"
 #include "DirectoryExists.h"
+#include "ParserOfArguments.h"
 
 char* ChangeDirectory(char* str);

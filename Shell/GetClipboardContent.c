@@ -1,4 +1,4 @@
-﻿#include "GetClipboardCont.h"
+﻿#include "GetClipboardContent.h"
 #include "WorkWithConsole.h"
 
 void GetClipboardContent(char* InpStr)

@@ -2,4 +2,4 @@
 
 #include <Windows.h>
 
-BOOL DirectoryExists(LPCTSTR szPath);
+BOOL DirectoryExists(char* szPath);

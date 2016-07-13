@@ -1,7 +1,8 @@
 ﻿#include "BuiltinProgInterpretator.h"
 
-void analisator(char* mas)
+void CmdInterpretator(char* mas)
 {
+	mas = MkStrCopy(mas);
 	int p = 0, lenname = 0, lenarg = 0, flag = 0;
 	BPC_Returns TypeOfResult;
 	char* result1 = NULL, *result2 = NULL;
@@ -17,14 +18,14 @@ void analisator(char* mas)
 		{
 			p++;
 			lenname = p;
-			while ( mas[lenname] != '"')
+			while (mas[lenname] && mas[lenname] != '"')
 				lenname++;
 			lenname = lenname - p;
 		} 
 		else
 		{
 			lenname = p;
-			while ( mas[lenname] != ' ')
+			while (mas[lenname] && mas[lenname] != ' ')
 				lenname++;
 			lenname = lenname - p;
 		}

@@ -59,7 +59,8 @@ void ResetCursor()
 void CursorOnEndString()
 {
 	int dx = strlen(Buff) - cur;
-	cor.X + dx;
+	cor.X += dx;
+	cur = strlen(Buff);
 	SetConsoleCursorPosition(hConsole, cor);
 }
 void OnNextLine()
@@ -91,7 +92,7 @@ void ConsolePrintChar(int key)
 /*------------------------------------------Инициализация консоли-----------------------------------------*/
 void ConsoleInitialisation()
 {
-	CurrentDirectory = (char*)malloc(MAX_PATH+1);
+	CurrentDirectory = (char*)malloc(MAX_PATH + 1);
 	GetCurrentDirectoryA(MAX_PATH, CurrentDirectory);
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	printf("%s>", CurrentDirectory);
@@ -188,29 +189,30 @@ void ConsoleEnter()
 	{
 		DoubleStrlistInsertAbove(CurrHist, Buff);
 	}
-	CmdInterpretator(Buff);
 	CursorOnEndString();
+	printf("\n");
+	CmdInterpretator(Buff);
 	OnNextLine();
 	memset(Buff, 0, MAX_CONSOLE_INPUT);
 }
 
 void PastInConsole()
 {
-	char *str= (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	char *str = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	GetClipboardContent(str);
 	int lenB = strlen(Buff), lenS = strlen(str);
 	if (lenB + lenS < MAX_CONSOLE_INPUT)
 	{
-		if ((cur == lenB-1) || (lenB == 0)) strcat(Buff, str);
+		if ((cur == lenB - 1) || (lenB == 0)) strcat(Buff, str);
 		else
 		{
-			char *EndBuff= (char*)malloc(MAX_CONSOLE_INPUT + 2);
+			char *EndBuff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 			int i = 0;  int j = 0;
-			for (i=0; i<=lenB-cur; i++)
+			for (i = 0; i <= lenB - cur; i++)
 			{
-				EndBuff[i] = Buff[i+cur];
+				EndBuff[i] = Buff[i + cur];
 			}
-			for ( i = lenB; i > cur; i--)
+			for (i = lenB; i > cur; i--)
 			{
 				Buff[i] = '\0';
 			}
@@ -224,7 +226,7 @@ void PastInConsole()
 		free(str);
 	}
 	return;
-	
+
 }
 /*-------------------------------------------Autocompletion-----------------------------------------------*/
 int DetermineEntry(char *entry, int *PosEntryStart) {
@@ -240,7 +242,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				{
 
 					entry[k] = Buff[j]; k++;
-				} printf("\n%s", entry);return 2;
+				} printf("\n%s", entry); return 2;
 
 			}
 			else return 0;
@@ -251,10 +253,10 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 
 void ConsoleAutocompletion()
 {
-	COORD pos = cor; 
+	COORD pos = cor;
 	int crn = cur;
 	CursorOnEndString();
-	if (DoubleTabFlag) { 
+	if (DoubleTabFlag) {
 		PrintListOfAutocompletion();
 		DoubleTabFlag = 0;
 		return;
@@ -272,16 +274,17 @@ void ConsoleAutocompletion()
 	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
 	list = DetermineEntry(entry, &posEntry);
 	EnLen = strlen(entry);
-	switch (list)
-	{
-	case 1: LastFoundCommand = BPC_GetHints(entry); 
-		LastFoundFile = FindFilesAndDirsPrefix(entry);
-		LastFoundList = LastFoundCommand;
-		break;
-	case 2:	LastFoundFile = FindFilesAndDirsPrefix(entry);
-		break;
-	default: return;
-	}
+	if (0 != *entry)
+		switch (list)
+		{
+		case 1: LastFoundCommand = BPC_GetHints(entry);
+			LastFoundFile = FindFilesAndDirsPrefix(entry);
+			LastFoundList = LastFoundCommand;
+			break;
+		case 2:	LastFoundFile = FindFilesAndDirsPrefix(entry);
+			break;
+		default: return;
+		}
 	SingleStrlistConcat(LastFoundFile, &LastFoundList);
 	if (LastFoundList == NULL) {
 		cur = crn; cor = pos;
@@ -290,7 +293,7 @@ void ConsoleAutocompletion()
 	} // дополнения не найдены
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
-		if (len  > MAX_CONSOLE_INPUT-posEntry) {
+		if (len > MAX_CONSOLE_INPUT - posEntry) {
 			cur = crn; cor = pos;
 			SetConsoleCursorPosition(hConsole, pos);
 			DoubleTabFlag = 1;	return;
@@ -301,18 +304,9 @@ void ConsoleAutocompletion()
 			Buff[i] = LastFoundList->value[k];
 			k++;
 		}
-		Buflen = strlen(Buff);
-		if (Buflen + 2<MAX_CONSOLE_INPUT) {
-			CursorOnEndString();
-			Buff[Buflen+1] = ' '; 
-		 cur = Buflen+2;
-		cor.X= cor.X + 2;
-		ReprintConsoleBuffer();
-		}
-		else {
-			CursorOnEndString();
-			ReprintConsoleBuffer(); }
-		
+
+		CursorOnEndString();
+		ConsolePrintChar(' ');
 	} //дополнение единственное, печатаем
 	else {
 		FlagAutocompletions = 1;
@@ -329,7 +323,7 @@ void  PrintListOfAutocompletion()
 	if (FlagAutocompletions)
 	{
 		FlagAutocompletions = 3;
-		printf("\n\n\n____________________________________________________");
+		printf("\n\n\n\n____________________________________________________");
 		while (LastFoundList != NULL) {
 			printf("\n%s", LastFoundList->value);
 			FlagAutocompletions++;
@@ -342,7 +336,7 @@ void DeleteListOfAutocomletion()
 {
 	if (FlagAutocompletions)
 	{
-		COORD posPrint = startPrintPoint, posCor=cor;
+		COORD posPrint = startPrintPoint, posCor = cor;
 		char*tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 		strcpy(tmp, Buff);
 
