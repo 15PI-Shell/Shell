@@ -5,7 +5,7 @@
 #include <string.h>
 
 LSTATUS RegFunStatus;
-HKEY shellRegKey, pathRegKey;
+HKEY shellRegKey, pathRegKey, userRegKey;
 char BufPath[10000];
 char InstallationPath[MAX_PATH + 1];
 

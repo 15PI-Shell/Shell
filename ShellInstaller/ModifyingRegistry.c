@@ -1,5 +1,7 @@
 #include "ModifyingRegistry.h"
 
+
+
 int InstallModifyPath()
 {
 	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &pathRegKey);
@@ -18,6 +20,9 @@ int InstallModifyPath()
 
 int InstallKeyRegistry()
 {
+	char user[100];
+	char HistoryDir[MAX_PATH + 1] = "C:";
+	DWORD sizeUser = sizeof(user);
 	char copyInstalPath[MAX_PATH + 1];
 	RegCloseKey(shellRegKey);
 	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", 0, KEY_CREATE_SUB_KEY | KEY_WOW64_64KEY, &shellRegKey);
@@ -52,8 +57,20 @@ int InstallKeyRegistry()
 		return 0;
 	//добавление EstimatedSize
 	DWORD size = 0xFFFFFF;
-	RegFunStatus = RegSetValueExA(shellRegKey, "EstimatedSize", NULL, REG_DWORD, &size, sizeof(DWORD));
+	RegFunStatus = RegSetValueExA(shellRegKey, "EstimatedSize", NULL, REG_DWORD, &size, sizeof(size));
 	if (RegFunStatus != ERROR_SUCCESS)
+		return 0;
+	//добавление History (путь к папке с историей)
+	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
+	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
+	strcat(HistoryDir, user);
+	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
+	RegFunStatus = RegSetValueExA(shellRegKey, "History", NULL, REG_SZ, HistoryDir, strlen(HistoryDir)+1);
+	if (RegFunStatus != ERROR_SUCCESS)
+		return 0;
+	//создание папки в документах для истории
+	int FunRes = CreateDirectoryA(HistoryDir, NULL);
+	if (!FunRes)
 		return 0;
 	return 1;
 }
@@ -99,10 +116,21 @@ int UninstallModifyPath()
 
 int UninstallKeyRegistry()
 {
+	char user[100];
+	char HistoryDir[MAX_PATH + 1] = "C:";
+	DWORD sizeUser = sizeof(user);
 	RegCloseKey(shellRegKey);
 	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", 0, KEY_ALL_ACCESS | KEY_WOW64_64KEY, &shellRegKey);
 	RegFunStatus = RegDeleteTreeA(shellRegKey, "15PI-SHELL");
 	if (RegFunStatus != ERROR_SUCCESS)
+		return 0;
+	//удаление папки с историей
+	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
+	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
+	strcat(HistoryDir, user);
+	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
+	int FunRes = RemoveDirectoryA(HistoryDir);
+	if (!FunRes)
 		return 0;
 	return 1;
 }
