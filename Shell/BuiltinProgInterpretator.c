@@ -9,22 +9,22 @@ void analisator(char* mas)
 	// flag=0 - первый проход; 1 - если есть "|"; 2- выход
 	while ((flag == 0) || (flag == 1))
 	{
-		while (*(mas + p) == ' ')
+		while ( mas[p] == ' ')
 			p++;
 
 		//находим длину названия команды
-		if (*(mas + p) == '"')
+		if ( mas[p] == '"')
 		{
 			p++;
 			lenname = p;
-			while (*(mas + lenname) != '"')
+			while ( mas[lenname] != '"')
 				lenname++;
 			lenname = lenname - p;
 		} 
 		else
 		{
 			lenname = p;
-			while (*(mas + lenname) != ' ')
+			while ( mas[lenname] != ' ')
 				lenname++;
 			lenname = lenname - p;
 		}
@@ -32,21 +32,20 @@ void analisator(char* mas)
 		char* ptrname = NULL;
 		ptrname = (char*)malloc(lenname * sizeof(char));
 
-		*(ptrname + lenname) = '\0';
+		ptrname[lenname] = '\0';
 		int i = 0;
 		while (i != lenname)
 		{
-			*(ptrname + i) = mas[p];
+			ptrname[i] = mas[p];
 			p++;
 			i++;
-
 		}
 		p++;
 		if (flag == 0)
 		{
 			//находим длину строки аргументов
 			lenarg = p;
-			while ((*(mas + lenarg) != '\0') && (*(mas + lenarg) != '|'))
+			while ((mas[lenarg] != '\0') && (mas[lenarg] != '|'))
 				lenarg++;
 			lenarg = lenarg - p;
 
@@ -55,12 +54,11 @@ void analisator(char* mas)
 			i = 0;
 			while (i != lenarg)
 			{
-				*(ptrarg + i) = mas[p];
+				ptrarg[i] = mas[p];
 				p++;
 				i++;
-
 			}
-			*(ptrarg + lenarg) = '\0';
+			ptrarg[lenarg] = '\0';
 
 			// ищем имя команды во встроенных 
 			result1 = BPC_Execute(ptrname, ptrarg, &TypeOfResult); 
@@ -69,31 +67,24 @@ void analisator(char* mas)
 			if (result1 == -2)
 			{
 				ExecResult fileresult = FileExecute(ptrname, ptrarg);
-				if (fileresult != 6)
+				if (fileresult != ExecResult_Success)
 				{
-					printf("_This Builtin program not exist_\n");
+					printf("_This Builtin program doesn't exist_\n");
 
 					// search builtin programs with the same prefix
 					lenname--;
-					*(mas + lenname) = '\0';
+					mas[lenname] = '\0';
 					SingleListStringNode* ptrListOfProg = BPC_GetHints(mas);
 					while ((ptrListOfProg == 0) && (lenname > 0))
 					{
 						lenname--;
-						*(mas + lenname) = '\0';
+						mas[lenname] = '\0';
 						ptrListOfProg = BPC_GetHints(mas);
 					}
 
 					if (lenname != 0)
 					{
-						printf("Builtin programs with the same prefix '");
-						i = 0;
-						while (*(mas + i) != '\0')
-						{
-							printf("%c", *(mas + i));
-							i++;
-						}
-						printf("'\n");
+						printf("Builtin programs with the same prefix '%s'\n",mas);
 
 						// вывод комманд  с тем же префиксом:
 						while (ptrListOfProg != NULL)
@@ -110,28 +101,28 @@ void analisator(char* mas)
 					
 					}
 					else
-						printf("Builtin programs with the same prefix not exist\n");
+						printf("Builtin programs with the same prefix don't exist\n");
 
 					// errors of extern files
 					switch (fileresult)
 					{
-					case 0: 
-						printf("_Not enoug resources to start extern file_\n");
+					case ExecResult_NotEnoughResources:
+						printf("_Not enough resources to start external file_\n");
 						break;
-					case 1:
-						printf("_Extern File was not found_\n");
+					case ExecResult_FileNotFound:
+						printf("_External File was not found_\n");
 						break;
-					case 2:
-						printf("_The .exe extern file is invalid_\n");
+					case ExecResult_WrongExe:
+						printf("_The .exe external file is invalid_\n");
 						break;
-					case 3:
-						printf("_Access denied for open extern file_\n"); 
+					case ExecResult_AccessDenied:
+						printf("_Access denied for open external file_\n"); 
 						break;
-					case 4:
-						printf("_Extern file name association is incomplete or invalid_\n");
+					case ExecResult_WrongAssociation:
+						printf("_External file name association is incomplete or invalid_\n");
 						break;
-					case 5:
-						printf("_Unknown Error for open extern file_\n");
+					case ExecResult_UnknownError:
+						printf("_Unknown Error for open external file_\n");
 						break;
 					}
 					return;
@@ -146,7 +137,7 @@ void analisator(char* mas)
 				return;
 			}
 
-			if (*(mas + p) == '\0')
+			if (mas[p] == '\0')
 				flag = 2;
 			else
 			{
@@ -168,13 +159,13 @@ void analisator(char* mas)
 			if (result2 == -2)
 			{
 				ExecResult fileresult = FileExecute(ptrname, result1);
-				if (fileresult != 6)
+				if (fileresult != ExecResult_Success)
 				{
 					printf("_This Builtin program '");
 					i = 0;
-					while (*(ptrname + i) != '\0')
+					while (ptrname[i] != '\0')
 					{
-						printf("%c", *(ptrname + i));
+						printf("%c", ptrname[i]);
 						i++;
 					}
 					printf("' not exist_\n");
@@ -182,23 +173,23 @@ void analisator(char* mas)
 					// errors of extern files
 					switch (fileresult)
 					{
-					case 0:
-						printf("_Not enoug resources to start extern file_\n");
+					case ExecResult_NotEnoughResources:
+						printf("_Not enough resources to start external file_\n");
 						break;
-					case 1:
-						printf("_Extern File was not found_\n");
+					case ExecResult_FileNotFound:
+						printf("_External File was not found_\n");
 						break;
-					case 2:
-						printf("_The .exe extern file is invalid_\n");
+					case ExecResult_WrongExe:
+						printf("_The .exe external file is invalid_\n");
 						break;
-					case 3:
-						printf("_Access denied for open extern file_\n");
+					case ExecResult_AccessDenied:
+						printf("_Access denied for open external file_\n");
 						break;
-					case 4:
-						printf("_Extern file name association is incomplete or invalid_\n");
+					case ExecResult_WrongAssociation:
+						printf("_External file name association is incomplete or invalid_\n");
 						break;
-					case 5:
-						printf("_Unknown Error for open extern file_\n");
+					case ExecResult_UnknownError:
+						printf("_Unknown Error for open external file_\n");
 						break;
 					}
 					return;
@@ -207,14 +198,13 @@ void analisator(char* mas)
 				result2 = 0;
 			}
 			result1 = result2;
-			while ((*(mas + p) != '\0') && (*(mas + p) != '|'))
+			while ((mas[p] != '\0') && (mas[p] != '|'))
 				p++;
-			if (*(mas + p) == '\0')
+			if (mas[p] == '\0')
 				flag = 2;
 			else
 				p++;
 		}
-
 	}
 
 	
