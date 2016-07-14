@@ -1,6 +1,6 @@
 int i;
-double a, b;//и такой формат
-string str1, /*кстати это тоже уже пашет*/ str2;
+double a, b;
+string str1, /*кстати это тоже уже работает*/ str2;
 
 begin
 	i = 2 * 2;
@@ -13,7 +13,7 @@ begin
 	//несколько команд на строке - не проблема, были бы ;
 	i *= 70; i /= 35;
 	
-	str1 = "azaza";
-	
-	binary(34);
+	str1 = binary(34);
+	str1 += binary(10);
+	str2 = "teststring?";
 end

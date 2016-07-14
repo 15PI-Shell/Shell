@@ -37,10 +37,9 @@ void VM_SetVariable(char* name, void* value)
 		printf("Setting %s to %lf\n", name, (*(double*)value));
 		break;
 	case BPC_ReturnsString:
-		printf("Setting %s to %s\n", name, (*(char*)value));
+		printf("Setting %s to \"%s\"\n", name, (char*)value);
 		break;
 	}
-	
 	//SHOW
 
 	TrieNode* node = Trie_Find(trieRoot, name);

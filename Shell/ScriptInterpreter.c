@@ -1,7 +1,7 @@
 #include "ScriptInterpreter.h"
 
 char* scr;
-int scptr, failed;
+int scptr, scfailed;
 
 char* ParseName();
 char* ParseBeforeSemi();
@@ -44,7 +44,7 @@ void SkipSpaces()
 		if (scr[scptr] && scr[scptr + 1])
 			scptr += 2;
 		else
-			failed = 1;
+			scfailed = 1;
 		changed = 1;
 	}
 
@@ -54,9 +54,10 @@ void SkipSpaces()
 
 char* StringTermProc(char* term)
 {
-	if (term[0] == "\"")
+	if (term[0] == '\"')
 	{
-
+		strtok(term, "\"");
+		return term + 1;
 	}
 	else
 	{
@@ -82,7 +83,7 @@ char* ProcFunction(char* name, BPC_Returns* type)
 	void* result;
 	char* args = (char*)malloc(1000);
 	GetTerm(ParseInsideBrackets(), &result, type);
-	if (failed)
+	if (scfailed)
 		return;
 	switch (*type)
 	{
@@ -98,10 +99,15 @@ char* ProcFunction(char* name, BPC_Returns* type)
 	}
 	char* res = BPC_Execute(name, args, type);
 	if (res >= 0)
+	{
+		SkipSpaces();
+		if (scr[scptr] == ';')
+			scptr++;
 		return res;
+	}
 	else
 	{
-		failed = 1;
+		scfailed = 1;
 		return 0;
 	}
 }
@@ -110,7 +116,7 @@ void ProcAssignment()
 {
 	char* name = ParseName();
 
-	if (failed)
+	if (scfailed)
 		return;
 
 	BPC_Returns outerFuncRet;
@@ -118,7 +124,6 @@ void ProcAssignment()
 	if (scr[scptr] == '(')
 	{
 		ProcFunction(name, &outerFuncRet);
-		scptr++;
 		return;
 	}
 
@@ -161,9 +166,21 @@ void ProcAssignment()
 	void* result;
 	BPC_Returns termType;
 
-	char* cc = ParseBeforeSemi();
-	GetTerm(cc, &result, &termType);
-	if (failed)
+	int ptrbkp = scptr;
+	char* funcname = ParseName();
+	if (scfailed || scr[scptr] != '(')
+	{
+		scptr = ptrbkp;
+		scfailed = 0;
+		char* bsemi = ParseBeforeSemi();
+		GetTerm(bsemi, &result, &termType);
+	}
+	else
+	{
+		result = ProcFunction(funcname, &termType);
+	}
+
+	if (scfailed)
 		return;
 
 	if (varType == BPC_ReturnsString)
@@ -181,7 +198,7 @@ void ProcAssignment()
 			strcat(toAssign, (char*)result);
 			break;
 		default:
-			failed = 1;
+			scfailed = 1;
 			return;
 		}
 		VM_SetVariable(name, toAssign);
@@ -190,7 +207,7 @@ void ProcAssignment()
 	{
 		if (termType == BPC_ReturnsString)
 		{
-			failed = 1;
+			scfailed = 1;
 			return 0;
 		}
 
@@ -202,7 +219,7 @@ void ProcAssignment()
 				val = ((int*)currentVal);
 			else if (mode != 0)
 			{
-				failed = 1;
+				scfailed = 1;
 				return;
 			}
 			else
@@ -237,7 +254,7 @@ void ProcAssignment()
 				val = ((double*)currentVal);
 			else if (mode != 0)
 			{
-				failed = 1;
+				scfailed = 1;
 				return;
 			}
 			else
@@ -326,7 +343,7 @@ char* ParseName()
 
 	if (!((scr[scptr] >= 'A' && scr[scptr] <= 'Z') || (scr[scptr] >= 'a' && scr[scptr] <= 'z')))
 	{
-		failed = 1;
+		scfailed = 1;
 		return 0;
 	}
 
@@ -357,7 +374,7 @@ char* ParseInsideBrackets()
 
 	if (delta != 0)
 	{
-		failed = 1;
+		scfailed = 1;
 		return 0;
 	}
 
@@ -372,20 +389,20 @@ char* ParseInsideBrackets()
 
 int EvalScript(char* script)
 {
-	scptr = failed = 0;
+	scptr = scfailed = 0;
 	scr = script;
 
-	while (!CheckNextSyms("begin") && !failed)
+	while (!CheckNextSyms("begin") && !scfailed)
 	{
 		SkipSpaces();
 		if (CheckNextSyms("int "))
 		{
 			scptr += 4;
-			while (!CheckNextSyms(";") && !failed)
+			while (!CheckNextSyms(";") && !scfailed)
 			{
 				VM_DeclareVariable(ParseName(), BPC_ReturnsInt);
 				if (scr[scptr] != ',' && scr[scptr] != ';')
-					failed = 1;
+					scfailed = 1;
 				if (scr[scptr] == ',')
 					scptr++;
 			}
@@ -394,11 +411,11 @@ int EvalScript(char* script)
 		if (CheckNextSyms("double "))
 		{
 			scptr += 7;
-			while (!CheckNextSyms(";") && !failed)
+			while (!CheckNextSyms(";") && !scfailed)
 			{
 				VM_DeclareVariable(ParseName(), BPC_ReturnsDouble);
 				if (scr[scptr] != ',' && scr[scptr] != ';')
-					failed = 1;
+					scfailed = 1;
 				if (scr[scptr] == ',')
 					scptr++;
 			}
@@ -407,11 +424,11 @@ int EvalScript(char* script)
 		if (CheckNextSyms("string "))
 		{
 			scptr += 7;
-			while (!CheckNextSyms(";") && !failed)
+			while (!CheckNextSyms(";") && !scfailed)
 			{
 				VM_DeclareVariable(ParseName(), BPC_ReturnsString);
 				if (scr[scptr] != ',' && scr[scptr] != ';')
-					failed = 1;
+					scfailed = 1;
 				if (scr[scptr] == ',')
 					scptr++;
 			}
@@ -420,20 +437,20 @@ int EvalScript(char* script)
 	}
 
 	if (!CheckNextSyms("begin"))
-		failed = 1;
+		scfailed = 1;
 
 	scptr += 5;
 
-	while (!CheckNextSyms("end") && !failed)
+	while (!CheckNextSyms("end") && !scfailed)
 	{
 		Block();
 		SkipSpaces();
 	}
 
-	if (failed)
-		printf("Failed on %d\n\n", scptr);
+	if (scfailed)
+		printf("scfailed on %d\n\n", scptr);
 
 	getch();
 
-	return !failed;
+	return !scfailed;
 }
