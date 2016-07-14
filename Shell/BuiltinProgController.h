@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "LinkedList.h"
+#include "Trie.h"
 
 //встроенные программы:
 #include "HelloWorld.h"

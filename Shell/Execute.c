@@ -52,4 +52,3 @@ ExecResult FileExecute(char* nameProc, char* parametrs)
 			return ExecResult_UnknownError;
 		}
 }
-

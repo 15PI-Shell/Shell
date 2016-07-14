@@ -2,8 +2,8 @@
 
 void* MkMemCopy(void* str, int length)
 {
-	void* new_str = malloc(length);
-	memcpy(new_str, str, length);
+	void* new_str = malloc(length + 1);//чтобы упростить работу со строками
+	memcpy(new_str, str, length + 1);
 	return new_str;
 }
 

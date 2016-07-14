@@ -98,7 +98,7 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
-	DoubleLinklistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
+	DoubleLinklistAddUpmost(&CurrHist, "", 1);//добавляем "ничто" в историю
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
 	ReprintConsoleBuffer();
@@ -187,7 +187,7 @@ void ConsoleEnter()
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
-		DoubleLinklistInsertAbove(CurrHist, Buff);
+		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
 	}
 	CursorOnEndString();
 	printf("\n");
@@ -301,7 +301,7 @@ void ConsoleAutocompletion()
 		int k = 0;
 		for (int i = posEntry; i < len + posEntry; i++)
 		{
-			Buff[i] = LastFoundList->value[k];
+			Buff[i] = ((char*)LastFoundList->value)[k];
 			k++;
 		}
 
@@ -354,4 +354,3 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
-

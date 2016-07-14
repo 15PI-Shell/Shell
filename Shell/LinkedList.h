@@ -5,7 +5,7 @@
 #include <assert.h>
 
 //делает копию строки
-void* MkMemCopy(void* str);
+void* MkMemCopy(void* str, int length);
 
 //структура, описывающая объект односвязного списка
 typedef struct SingleLinklistNode
