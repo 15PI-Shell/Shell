@@ -1,20 +1,19 @@
-п»ї#include "WorkWithConsole.h"
+#include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
-DoubleListStringNode *CurrHist = 0;
-SingleListStringNode *LastFoundList = 0;
+DoubleLinklistNode *CurrHist = 0;
+SingleLinklistNode *LastFoundList = 0;
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
-WIN32_FIND_DATA FileData;
-HANDLE hHistory;
-DWORD dwAttrs;
 int cur;
 int FlagAutocompletions = 0;
 int DoubleTabFlag = 0;
+int cnt=0;
+FILE *fpHistory;
 char *HistoryPath;
-int cntHist = 0;
-/*-----------------------------------------Р¤СѓРЅРєС†РёРё СЂР°Р±РѕС‚С‹ СЃ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРѕР№---------------------------------------------------------------*/
+COORD XYlist;
+/*-----------------------------------------Функции работы с командной строкой---------------------------------------------------------------*/
 void ClearComline()
 {
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
@@ -29,13 +28,13 @@ void ReprintConsoleBuffer()
 	printf("%s", Buff);
 	SetConsoleCursorPosition(hConsole, cor);
 }
-/*----------------------------------------Р¤СѓРЅРєС†РёРё СЂР°Р±РѕС‚С‹ СЃ РєСѓСЂСЃРѕСЂРѕРј------------------------------------*/
+/*----------------------------------------Функции работы с курсором------------------------------------*/
 void GetConsoleCursorPosition()
 {
 	CONSOLE_SCREEN_BUFFER_INFO inf;
 	GetConsoleScreenBufferInfo(hConsole, &inf);
 	cor = inf.dwCursorPosition;
-}// РїРѕРєР° С‡С‚Рѕ РЅРµ РЅСѓР¶РЅР°, РїРѕРЅР°РґРѕР±РёС‚СЃСЏ РєРѕРіРґР° Р·Р°СЂР°Р±РѕС‚Р°РµС‚ РёРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂ
+}// пока что не нужна, понадобится когда заработает интерпретатор
 
 
 void IncCursor()
@@ -84,9 +83,9 @@ void ConsolePrintChar(int key)
 {
 	DoubleTabFlag = 0;
 	int buffLen = strlen(Buff);
-	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'Р°' && key <= 'СЏ') && !(key >= 'Рђ' && key <= 'РЇ'))
+	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'а' && key <= 'я') && !(key >= 'А' && key <= 'Я'))
 	{
-		//РµСЃР»Рё СЃРёРјРІРѕР» РїРµС‡Р°С‚Р°РµРј Рё РЅРµ РєРёСЂРёР»Р»РёС†Р° (РЅСѓ РµС‘)
+		//если символ печатаем и не кириллица (ну её)
 		for (int i = buffLen; i > cur; --i)
 			Buff[i] = Buff[i - 1];
 		Buff[cur] = (char)key;
@@ -94,87 +93,65 @@ void ConsolePrintChar(int key)
 		ReprintConsoleBuffer();
 	}
 }
-/*-----------------------------------------Р Р°Р±РѕС‚Р° СЃ С„Р°Р№Р»РѕРј РёСЃС‚РѕСЂРёРё---------------------------------------*/
+/*------------------------------------------Инициализация консоли-----------------------------------------*/
 void ReadHistory()
 {
-	cntHist = 0;
-	char *str = (char*)malloc(MAX_CONSOLE_INPUT);
-	hHistory = fopen(HistoryPath, "r");
-	if (hHistory == NULL) return;
-	fseek(hHistory, 0, SEEK_END);
-	long pos = ftell(hHistory);
-	if (pos > 0)
+	fpHistory=fopen(HistoryPath, "r");
+	if (fpHistory)
 	{
-		rewind(hHistory);
-		while (!(feof(hHistory))) // С„Р°Р№Р» РЅРµРїСѓСЃС‚РѕР№.
-		{
-			cntHist++;
-			fgets(hHistory, str, MAX_CONSOLE_INPUT);
-			DoubleStrlistInsertAbove(CurrHist, str);
-		}
+		fseek(fpHistory, 0, SEEK_END);
+		long pos = ftell(fpHistory);
+		if (pos>0)
+		{	
+			rewind(fpHistory); 
+			char *str=(char*)malloc(MAX_CONSOLE_INPUT);
+			while (!(feof(fpHistory))) 
+			{
+				fgets(fpHistory, str, MAX_CONSOLE_INPUT);
+	DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
+				cnt++;
+			}
+			free(str);
+		fclose(fpHistory);}
 	}
-	free(str);
-	fclose(hHistory);
-}
-void WriteHistory()
-{
 	
-	while (CurrHist->down != 0)
-	{
-		CurrHist = CurrHist->down;
-	}
-	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
-	{
-		DoubleStrlistInsertAbove(CurrHist, Buff);
-		cntHist++;
-		if (cntHist > 100)DoubleStrlistRemoveUpmost(CurrHist);
-	}
-	while (CurrHist->up != 0)
-	{
-		CurrHist = CurrHist->up;
-	}
-	SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
-	hHistory = fopen(HistoryPath, "w");
-	while (CurrHist != NULL)
-	{
-		if (CurrHist->value!="")
-		{
-			fprintf(hHistory,"%s\n", CurrHist->value);
-		}
-		
-		CurrHist = CurrHist->down;
-	}
-		SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
 }
-void HistoryInitialisation()
+void WriteHistory
 {
-	DoubleStrlistAddUpmost(&CurrHist, "");//РґРѕР±Р°РІР»СЏРµРј "РЅРёС‡С‚Рѕ" РІ РёСЃС‚РѕСЂРёСЋ
-	HistoryPath = getenv("USERPROFILE");
-	strcat(HistoryPath, "\\Documents\\15PI - SHELL");// РїРѕР»СѓС‡Р°РµРј РґРёСЂРµРєС‚РѕСЂРёСЋ
-	CreateDirectoryA(HistoryPath, NULL);
-	strcat(HistoryPath, "\history.txt");//РґРѕР±Р°РІР»СЏРµРј РёРјСЏ С„Р°Р№Р»Р° С‡С‚РѕР±С‹ РїРѕР»СѓС‡РёР»СЃСЏ РїСѓС‚СЊ Рє РЅРµРјСѓ
-	hHistory = FindFirstFile(HistoryPath, &FileData);// РёС‰РµРј РІ РЅРµР№ С„Р°Р№Р» РёСЃС‚РѕСЂРёРё
-	if (hHistory != INVALID_HANDLE_VALUE) // РЅРµ РЅР°С€Р»Рё, СЃРѕР·РґР°РµРј
-	{
-		ReadHistory();
-	}
+SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
+fpHistory=fopen(HistoryPath, "w");
+while(CurrHist)
+{
+CurrHist=CurrHist->up;
 }
-/*------------------------------------------РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅСЃРѕР»Рё-----------------------------------------*/
+while (CurrHist)
+{
+fprintf(fpHistory, "%s/n", CurrHist->value);
+CurrHist=CurrHist->down;
+}
+fclose(fpHistory);
+ SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
+}
 void ConsoleInitialisation()
 {
-	HistoryInitialisation();
 	CurrentDirectory = (char*)malloc(MAX_PATH + 1);
 	GetCurrentDirectoryA(MAX_PATH, CurrentDirectory);
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
+ 	HistoryPath = getenv("USERPROFILE");
+    	strcat(HistoryPath, "<\\Documents\\15PI - SHELL>");//получаем директорию
+    CreateDirectoryA(HistoryPath, NULL);
+    strcat(HistoryPath, "\history.txt");//добавляем имя файла чтобы получился путь к нему
+ReadHistory();
+	DoubleLinklistAddUpmost(&CurrHist, "", 1);//добавляем "ничто" в историю
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//РїРѕРїСЂР°РІРєР° РЅР° РїРµСЂРµС‚Р°СЃРєРёРІР°РЅРёРµ СЃРёРјРІРѕР»РѕРІ backspace'РѕРј
+	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
 	ReprintConsoleBuffer();
 }
 
-/*---------------------------------------РћР±СЂР°Р±РѕС‚РєР° СЃРїРµС†РёР°Р»СЊРЅС‹С… РєР»Р°РІРёС€------------------------------------*/
+/*---------------------------------------Обработка специальных клавиш------------------------------------*/
 
 void ConsoleCursorMoveLeft()
 {
@@ -253,7 +230,20 @@ void ConsoleEnter()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	WriteHistory();
+	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
+		CurrHist = CurrHist->down;
+	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
+	{
+cnt++;
+if (cnt>100)
+{
+DoubleLinklistRemoveUpmost(&CurrHist);
+cnt--;
+}
+
+		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
+WriteHistory();
+	}
 	CursorOnEndString();
 	printf("\n");
 	CmdInterpretator(Buff);
@@ -305,21 +295,24 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				*PosEntryStart = i + 1; int k = 0;
 				for (int j = i + 1; j < Buflen; j++)
 				{
+
 					entry[k] = Buff[j]; k++;
-				}
-				return 2;
+				} printf("\n%s", entry); return 2;
+
 			}
 			else return 0;
 		}
-		if (((Buff[i] == '&') || (Buff[i] == '|')) || (Buff[i]=='>'))
-		{
-			*PosEntryStart = i + 1; int k = 0;
-			for (int j = i + 1; j < Buflen; j++)
+		if ((Buff[i]=='&')||(Buff[i]=='|')||(Buff[i]=='>'))
 			{
-				entry[k] = Buff[j]; k++;
+			*PosEntryStart = i + 1; int k = 0;
+				for (int j = i + 1; j < Buflen; j++)
+				{
+
+					entry[k] = Buff[j]; k++;
+				} printf("\n%s", entry); return 1;
+
 			}
-			return 1;
-		}
+	
 	}
 	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
 }
@@ -337,14 +330,14 @@ void ConsoleAutocompletion()
 	DeleteListOfAutocomletion();
 	while (LastFoundList != 0)
 	{
-		SingleStrlistRemoveDownmost(&LastFoundList);
+		SingleLinklistRemoveDownmost(&LastFoundList);
 	}
 	int Buflen = strlen(Buff);
 	char *entry;
 	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
-	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
+	SingleLinklistNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
 	list = DetermineEntry(entry, &posEntry);
 	EnLen = strlen(entry);
 	if (0 != *entry)
@@ -358,12 +351,12 @@ void ConsoleAutocompletion()
 			break;
 		default: return;
 		}
-	SingleStrlistConcat(LastFoundFile, &LastFoundList);
+	SingleLinklistConcat(LastFoundFile, &LastFoundList);
 	if (LastFoundList == NULL) {
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, pos);
 		return;
-	} // РґРѕРїРѕР»РЅРµРЅРёСЏ РЅРµ РЅР°Р№РґРµРЅС‹
+	} // дополнения не найдены
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
 		if (len > MAX_CONSOLE_INPUT - posEntry) {
@@ -374,19 +367,18 @@ void ConsoleAutocompletion()
 		int k = 0;
 		for (int i = posEntry; i < len + posEntry; i++)
 		{
-			Buff[i] = LastFoundList->value[k];
+			Buff[i] = ((char*)LastFoundList->value)[k];
 			k++;
 		}
 
 		CursorOnEndString();
 		ConsolePrintChar(' ');
-	} //РґРѕРїРѕР»РЅРµРЅРёРµ РµРґРёРЅСЃС‚РІРµРЅРЅРѕРµ, РїРµС‡Р°С‚Р°РµРј
+	} //дополнение единственное, печатаем
 	else {
 		FlagAutocompletions = 1;
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, cor);
 	}
-	
 	DoubleTabFlag = 1;
 	free(entry);
 	return;
@@ -396,15 +388,17 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
-		FlagAutocompletions = 4;
-		printf("\n\n\n\n ____________________________________________________________________________");
+		
+		XYlist.X=0;
+		XYlist.Y=StartPrintPoint.Y+5;
+		FlagAutocompletions = 1;
+	SetConsoleCursorPosition(hConsole, XYlist); 	printf("____________________________________________________");
 		while (LastFoundList != NULL) {
 			printf("\n%s", LastFoundList->value);
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
-		cor = startPrintPoint; cur = 0;
-		SetConsoleCursorPosition(hConsole, cor);
+		SetConsoleCursorPosition(hConsole, startPrintPoint); cor = startPrintPoint; cur = 0;
 	}
 }
 void DeleteListOfAutocomletion()
@@ -414,7 +408,7 @@ void DeleteListOfAutocomletion()
 		COORD posPrint = startPrintPoint, posCor = cor;
 		char*tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 		strcpy(tmp, Buff);
-
+		startPrintPoint=XYlist;
 		for (int i = 0; i < FlagAutocompletions; i++)
 		{
 			startPrintPoint.Y++;

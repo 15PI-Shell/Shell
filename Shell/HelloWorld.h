@@ -1,6 +1,6 @@
 ﻿#pragma once
 
 #include <stdio.h>
-#include "StringList.h"
+#include "LinkedList.h"
 
 char* HelloWorldProc(char* args);

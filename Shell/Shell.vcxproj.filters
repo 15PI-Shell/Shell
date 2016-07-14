@@ -19,93 +19,117 @@
     <Filter Include="Файлы исходного кода\BuiltinPrograms">
       <UniqueIdentifier>{f1104af2-cc46-4c5a-b6a2-ea94bf022018}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\Filesystem">
+      <UniqueIdentifier>{e86f3ca8-afd0-4077-847b-4436d9c42676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Filesystem">
+      <UniqueIdentifier>{d1aa95fb-e3ae-4a3c-bf64-24ed28cff77e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Console">
+      <UniqueIdentifier>{2564723f-fed8-4938-af6b-cfd4aec9091a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Console">
+      <UniqueIdentifier>{4b1e0720-9d06-4942-adbf-ab6459f0e2ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\DataStructures">
+      <UniqueIdentifier>{eefb1dfc-7f39-4f3a-a1e5-6aa299dab482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\DataStructures">
+      <UniqueIdentifier>{6127402d-8b5e-47b0-954a-18fd0653728b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StringList.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="Shell.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="BuiltinProgController.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="HelloWorld.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="BuiltinProgInterpretator.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="sum.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="Execute.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="FindFile.c">
-      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="Binary.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="DirectoryExists.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkWithConsole.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="GetClipboardContent.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="ChangeDirectory.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="BuiltinProgController.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Execute.c">
+      <Filter>Файлы исходного кода\Filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FindFile.c">
+      <Filter>Файлы исходного кода\Filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectoryExists.c">
+      <Filter>Файлы исходного кода\Filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="BuiltinProgInterpretator.c">
+      <Filter>Файлы исходного кода\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="GetClipboardContent.c">
+      <Filter>Файлы исходного кода\Console</Filter>
+    </ClCompile>
     <ClCompile Include="ParserOfArguments.c">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkWithConsole.c">
+      <Filter>Файлы исходного кода\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedList.c">
+      <Filter>Файлы исходного кода\DataStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="Trie.c">
+      <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BuiltinProgController.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="HelloWorld.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
-    <ClInclude Include="StringList.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="Shell.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="BuiltinProgInterpretator.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="sum.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
-    <ClInclude Include="FindFile.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="ParserOfArguments.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="Binary.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyDefines.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkWithConsole.h">
-      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="ChangeDirectory.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
+    <ClInclude Include="BuiltinProgController.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
     <ClInclude Include="DirectoryExists.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Заголовочные файлы\Filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FindFile.h">
+      <Filter>Заголовочные файлы\Filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="BuiltinProgInterpretator.h">
+      <Filter>Заголовочные файлы\Console</Filter>
     </ClInclude>
     <ClInclude Include="GetClipboardContent.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Заголовочные файлы\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyDefines.h">
+      <Filter>Заголовочные файлы\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="ParserOfArguments.h">
+      <Filter>Заголовочные файлы\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkWithConsole.h">
+      <Filter>Заголовочные файлы\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Trie.h">
+      <Filter>Заголовочные файлы\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Заголовочные файлы\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

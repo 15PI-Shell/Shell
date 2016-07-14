@@ -2,17 +2,14 @@
 #define FindFile
 
 #include <windows.h>
-#include "StringList.h"
+#include "LinkedList.h"
 #include <string.h>
 
 //результаты, возвращаемые функцией FileExecute
 typedef enum
 {
-	ExecResult_NotEnoughResources,
-	ExecResult_FileNotFound,
-	ExecResult_WrongExe,
-	ExecResult_AccessDenied,
-	ExecResult_WrongAssociation,
+	ExecResult_BadReturnCode,
+	ExecResult_ExecuteFailed,
 	ExecResult_UnknownError,
 	ExecResult_Success,
 }ExecResult;
@@ -28,12 +25,17 @@ typedef enum
 char *CurrentDirectory;
 
 //функция поиска файлов и папок по префиксу
-SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile);
+SingleLinklistNode* FindFilesAndDirsPrefix(char* PrefixFile);
 
 //функция поиска файлов по маске в указанной директории с указанием типа 
-SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type, SingleListStringNode** last);
+SingleLinklistNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type, SingleLinklistNode** last);
 
 //функция запуска любых файлов (обязательно указывать расширение)
 ExecResult FileExecute(char* nameProc, char* parametrs);
-
+//функция запуска любых файлов, кромe exe
+ExecResult FileExecuteShell(char* nameProc, char* parametrs);
+//функция запуска exe файлов
+ExecResult FileExecuteCreate(char* nameProc, char* parametrs);
+//попытка запуска exe файла и ожидание возвращаемого значения
+ExecResult AttemptCreation(char* FileName);
 #endif
