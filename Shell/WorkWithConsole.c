@@ -116,7 +116,7 @@ void ReadHistory()
 	}
 	
 }
-void WriteHistory
+void WriteHistory()
 {
 SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
 fpHistory=fopen(HistoryPath, "w");
@@ -390,7 +390,7 @@ void  PrintListOfAutocompletion()
 	{
 		
 		XYlist.X=0;
-		XYlist.Y=StartPrintPoint.Y+5;
+		XYlist.Y=startPrintPoint.Y+5;
 		FlagAutocompletions = 1;
 	SetConsoleCursorPosition(hConsole, XYlist); 	printf("____________________________________________________");
 		while (LastFoundList != NULL) {
