@@ -2,7 +2,7 @@
 
 char* ChangeDirectory(char* str)
 {
-	SingleListStringNode* dir;
+	SingleLinklistNode* dir;
 	if (!ParsOfArgs(str, &dir))
 		return -1;
 	if (0 == dir)

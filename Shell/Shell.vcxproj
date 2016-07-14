@@ -88,8 +88,9 @@
     <ClCompile Include="FindFile.c" />
     <ClCompile Include="HelloWorld.c" />
     <ClCompile Include="Shell.c" />
-    <ClCompile Include="StringList.c" />
+    <ClCompile Include="LinkedList.c" />
     <ClCompile Include="GetClipboardContent.c" />
+    <ClCompile Include="Trie.c" />
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +105,10 @@
     <ClInclude Include="MathInterpreter.h" />
     <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="Shell.h" />
-    <ClInclude Include="StringList.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />
+    <ClInclude Include="Trie.h" />
     <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

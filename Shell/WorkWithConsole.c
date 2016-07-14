@@ -1,8 +1,8 @@
 ﻿#include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
-DoubleListStringNode *CurrHist = 0;
-SingleListStringNode *LastFoundList = 0;
+DoubleLinklistNode *CurrHist = 0;
+SingleLinklistNode *LastFoundList = 0;
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
@@ -98,7 +98,7 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
-	DoubleStrlistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
+	DoubleLinklistAddUpmost(&CurrHist, "", 1);//добавляем "ничто" в историю
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
 	ReprintConsoleBuffer();
@@ -187,7 +187,7 @@ void ConsoleEnter()
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
-		DoubleStrlistInsertAbove(CurrHist, Buff);
+		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
 	}
 	CursorOnEndString();
 	printf("\n");
@@ -264,14 +264,14 @@ void ConsoleAutocompletion()
 	DeleteListOfAutocomletion();
 	while (LastFoundList != 0)
 	{
-		SingleStrlistRemoveDownmost(&LastFoundList);
+		SingleLinklistRemoveDownmost(&LastFoundList);
 	}
 	int Buflen = strlen(Buff);
 	char *entry;
 	entry = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(entry, 0, MAX_CONSOLE_INPUT + 2);
 	int list, EnLen, posEntry;
-	SingleListStringNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
+	SingleLinklistNode *LastFoundFile = NULL, *LastFoundCommand = NULL;
 	list = DetermineEntry(entry, &posEntry);
 	EnLen = strlen(entry);
 	if (0 != *entry)
@@ -285,7 +285,7 @@ void ConsoleAutocompletion()
 			break;
 		default: return;
 		}
-	SingleStrlistConcat(LastFoundFile, &LastFoundList);
+	SingleLinklistConcat(LastFoundFile, &LastFoundList);
 	if (LastFoundList == NULL) {
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, pos);
@@ -301,7 +301,7 @@ void ConsoleAutocompletion()
 		int k = 0;
 		for (int i = posEntry; i < len + posEntry; i++)
 		{
-			Buff[i] = LastFoundList->value[k];
+			Buff[i] = ((char*)LastFoundList->value)[k];
 			k++;
 		}
 
@@ -354,4 +354,3 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
-

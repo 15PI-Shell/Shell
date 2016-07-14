@@ -1,6 +1,6 @@
 ﻿#include "ParserOfArguments.h"
 
-int ParsOfArgs(char* str, SingleListStringNode** args)
+int ParsOfArgs(char* str, SingleLinklistNode** args)
 {
 	int flag = 0;
 	char* sp;
@@ -37,7 +37,7 @@ int ParsOfArgs(char* str, SingleListStringNode** args)
 			}
 			if (sp != 0)//wtf?
 			{
-				SingleStrlistAddDownmost(args, sp); //кладем в список аргументы
+				SingleLinklistAddDownmost(args, sp, strlen(sp)); //кладем в список аргументы
 				len -= strlen(sp) + cnt_spc;		//длина строки высчитывается заново, вычитая предыдущее содержимое строки
 				str += strlen(sp);					//прыгаем через слово, которое уже внесено в список
 				cnt_spc = 0;
