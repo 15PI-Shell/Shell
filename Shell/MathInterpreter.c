@@ -1,24 +1,30 @@
 ﻿#include "MathInterpreter.h"
 
-int ptr = 0, failed = 0;
+int ptr = -1, failed = 0;
 char* str;
 
 double Term();
 double Summand();
 double Multipler();
 double Const();
-double Function();
-double Variable;//им всем не нужна видимость извне, поэтому тут
+double Function(char* funct);
+double Variable(); //им всем не нужна видимость извне, поэтому тут
 
 double Term()//Выражение = Слагаемое [+/- Выражение]
 {
+
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
+	while (str[ptr] == ' ')
+		ptr++;
+
 	double ans;
 	ans = Summand();
-	if (str[ptr] == ' ')
+
+	while (str[ptr] == ' ')
 		ptr++;
+
 	switch (str[ptr])
 	{
 	case '-'://два case указывающих на одно место, хорошая штука
@@ -26,6 +32,7 @@ double Term()//Выражение = Слагаемое [+/- Выражение]
 		ans += Term();
 		break;
 	case '\0':
+		break;
 	case ')':
 		ptr++;//пропускаем )
 			  //выражение закончилось
@@ -42,8 +49,9 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	if (str[ptr] == ' ')
+	while (str[ptr] == ' ')
 		ptr++;
+
 	int modify = 1;
 	switch (str[ptr])
 	{
@@ -58,13 +66,15 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 
 	double ans;
 	ans = Multipler();
-	if (str[ptr] == ' ')
+
+	while (str[ptr] == ' ')
 		ptr++;
+
 	switch (str[ptr])
 	{
 	case '*':
 		ptr++;//пропускаем *
-		ans *= Multipler();
+		ans *= Summand();
 		break;
 	case '/':
 		ptr++;
@@ -85,17 +95,51 @@ double Multipler()//Множитель = Константа | Выражение
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	if (str[ptr] == ' ')
+	while (str[ptr] == ' ')
 		ptr++;
+
 	double ans;
 	if (str[ptr] == '(')//выражение в скобках
 	{
 		ptr++;//пропускаем (
 		ans = Term();
 	}
+	else if (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
+	{
+		char str2[20];
+		int i = 0;
+		while (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
+		{
+			str2[i] = str[ptr];
+			ptr++;
+			i++;
+		}
+		str2[i] = 0;
+		if (str[ptr] >= '0'&&str[ptr] <= '9')
+		{
+			failed = 1;
+			return 0;
+		}
+		if (str[ptr] == '(')
+			ans = Function(str2);
+		else
+			ans = Variable();
+	}
 	else
 		ans = Const();
 	return ans;
+}
+
+double Function(char* funct)
+{
+	char* fun = (char*)malloc(strlen(funct) + 1);
+	double ans = Term();
+	return ans;
+}
+
+double Variable()
+{
+	return 1;
 }
 
 double Const()
@@ -103,7 +147,7 @@ double Const()
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	if (str[ptr] == ' ')
+	while (str[ptr] == ' ')
 		ptr++;
 	if (str[ptr] < '0' || str[ptr] > '9')
 	{

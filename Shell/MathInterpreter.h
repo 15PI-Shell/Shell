@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <stdio.h>//не нужен, но для дебага мб
+#include <stdlib.h>
 
 typedef long long lld;
 
