@@ -6,7 +6,7 @@ int scptr, scfailed;
 char* ParseName();
 char* ParseBeforeSemi();
 char* ParseInsideBrackets();
-
+char* ProcFunction(char* name, BPC_Returns* type);
 
 int CheckNextSyms(char* syms)
 {
@@ -52,7 +52,7 @@ void SkipSpaces()
 		SkipSpaces();
 }
 
-char* StringTermProc(char* term)
+char* StringTermProc(int from, char* term)
 {
 	if (term[0] == '\"')
 	{
@@ -62,18 +62,26 @@ char* StringTermProc(char* term)
 	else
 	{
 		//функция?
-
+		scptr = from + 1;
+		char* funcname = ParseName();
+		if (scr[scptr] != '(')
+		{
+			scfailed = 1;
+			return 0;
+		}
+		BPC_Returns ret;
+		return ProcFunction(funcname, &ret);
 	}
 	return 0;
 }
 
-void GetTerm(char* term, void** result, BPC_Returns *type)
+void GetTerm(int from, char* term, void** result, BPC_Returns *type)
 {
 	if (MathInterpreter(term, result))
 		*type = BPC_ReturnsDouble;
 	else
 	{
-		*result = StringTermProc(term);
+		*result = StringTermProc(from, term);
 		*type = BPC_ReturnsString;
 	}
 }
@@ -82,9 +90,10 @@ char* ProcFunction(char* name, BPC_Returns* type)
 {
 	void* result;
 	char* args = (char*)malloc(1000);
-	GetTerm(ParseInsideBrackets(), &result, type);
+	int from = scptr;
+	GetTerm(from, ParseInsideBrackets(), &result, type);
 	if (scfailed)
-		return;
+		return 0;
 	switch (*type)
 	{
 	case BPC_ReturnsInt:
@@ -101,6 +110,8 @@ char* ProcFunction(char* name, BPC_Returns* type)
 	if (res >= 0)
 	{
 		SkipSpaces();
+		while (scr[scptr] == ')')
+			scptr++;
 		if (scr[scptr] == ';')
 			scptr++;
 		return res;
@@ -173,7 +184,8 @@ void ProcAssignment()
 		scptr = ptrbkp;
 		scfailed = 0;
 		char* bsemi = ParseBeforeSemi();
-		GetTerm(bsemi, &result, &termType);
+		int from = scptr;
+		GetTerm(from, bsemi, &result, &termType);
 	}
 	else
 	{

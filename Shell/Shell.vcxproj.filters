@@ -99,6 +99,9 @@
     <ClCompile Include="MathInterpreter.c">
       <Filter>Файлы исходного кода\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Echo.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="MathInterpreter.h">
       <Filter>Заголовочные файлы\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="echo.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
