@@ -1,9 +1,9 @@
 ﻿#include "FindFile.h"
 
 
-SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile)
+SingleLinklistNode* FindFilesAndDirsPrefix(char* PrefixFile)
 {
-	SingleListStringNode* last = NULL;
+	SingleLinklistNode* last = NULL;
 	if (strlen(PrefixFile) > MAX_PATH)
 		return last;
 	char* cpyPrefix = (char*)malloc(MAX_PATH + 1);
@@ -44,7 +44,7 @@ SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile)
 	return last;
 }
 
-SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type, SingleListStringNode** last)
+SingleLinklistNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type, SingleLinklistNode** last)
 {
 	WIN32_FIND_DATA FileData;
 	HANDLE HandleFile;
@@ -70,15 +70,15 @@ SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, Find
 				switch (type)
 				{
 				case FilesAndFolders:
-					SingleStrlistAddDownmost(last, FileData.cFileName);//добавляем имя файла/папки в список
+					SingleLinklistAddDownmost(last, FileData.cFileName, strlen(FileData.cFileName));//добавляем имя файла/папки в список
 					break;
 				case Files:
 					if (FileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
-						SingleStrlistAddDownmost(last, FileData.cFileName);
+						SingleLinklistAddDownmost(last, FileData.cFileName, strlen(FileData.cFileName));
 					break;
 				case Folders:
 					if (FileData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
-						SingleStrlistAddDownmost(last, FileData.cFileName);
+						SingleLinklistAddDownmost(last, FileData.cFileName, strlen(FileData.cFileName));
 					break;
 				}
 		} while (FindNextFileA(HandleFile, &FileData) != 0); //продолжаем поиск
@@ -87,6 +87,6 @@ SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, Find
 	free(WhereFind);
 	if (*last)
 		while ((*last)->up && !strcmp((*last)->value, (*last)->up->value))
-			SingleStrlistRemoveDownmost(last);
+			SingleLinklistRemoveDownmost(last);
 	return *last;
 }

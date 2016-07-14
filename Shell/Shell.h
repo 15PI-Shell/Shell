@@ -2,7 +2,7 @@
 
 #include "BuiltinProgController.h"
 #include "BuiltinProgInterpretator.h"
-#include "StringList.h"
+#include "LinkedList.h"
 #include "KeyDefines.h"
 #include "FindFile.h"
 #include "WorkWithConsole.h"

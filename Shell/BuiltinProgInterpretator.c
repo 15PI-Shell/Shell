@@ -2,7 +2,7 @@
 
 void CmdInterpretator(char* mas)
 {
-	mas = MkStrCopy(mas);
+	mas = MkMemCopy(mas, strlen(mas));
 	int p = 0, lenname = 0, lenarg = 0, flag = 0;
 	BPC_Returns TypeOfResult;
 	char* result1 = NULL, *result2 = NULL;
@@ -75,7 +75,7 @@ void CmdInterpretator(char* mas)
 					// search builtin programs with the same prefix
 					lenname--;
 					mas[lenname] = '\0';
-					SingleListStringNode* ptrListOfProg = BPC_GetHints(mas);
+					SingleLinklistNode* ptrListOfProg = BPC_GetHints(mas);
 					while ((ptrListOfProg == 0) && (lenname > 0))
 					{
 						lenname--;

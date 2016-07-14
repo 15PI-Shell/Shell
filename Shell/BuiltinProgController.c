@@ -72,7 +72,7 @@ void RegisterProgram(char* name, char* (*procFuncPtr)(char* args), BPC_Returns r
 }
 
 //функция, реализующая обход в глубину и сохраняющая все найденные названия программ в список
-void FindAllValuesInSubtree(TrieNode* node, char* prefix, int prefixLen, SingleListStringNode** values)
+void FindAllValuesInSubtree(TrieNode* node, char* prefix, int prefixLen, SingleLinklistNode** values)
 {
 	if (0 == node)
 		return;//тупик
@@ -82,7 +82,7 @@ void FindAllValuesInSubtree(TrieNode* node, char* prefix, int prefixLen, SingleL
 	if (node->hasAValue)//если в этом узле содержится описание программы, значит путь который мы прошли - её название
 	{
 		prefix[prefixLen + 1] = 0;//устанавливаем финальный 0
-		SingleStrlistAddDownmost(values, prefix);//помещаем в конец списка
+		SingleLinklistAddDownmost(values, prefix, strlen(prefix));//помещаем в конец списка
 	}
 
 	for (int i = 0; i < 26; ++i)
@@ -115,12 +115,12 @@ char* BPC_Execute(char* program, char* args, BPC_Returns* returns)
 	return tn->functionDesc.procFuncPtr(args);//вызываем обработчик программы
 }
 
-SingleListStringNode* BPC_GetHints(char* prefix)
+SingleLinklistNode* BPC_GetHints(char* prefix)
 {
 	TrieNode* tn = FindInTrie(prefix);//находим узел, на котором заканчивается заданный префикс
 	if (0 == tn)
 		return 0;//такого префикса нет в дереве
-	SingleListStringNode* hints = 0;//инициализируем список строк нулём
+	SingleLinklistNode* hints = 0;//инициализируем список строк нулём
 	char* extPrefix = (char*)malloc(sizeof(char) * 100);//предполагаемая максимальная длина названия программы - 100 символов
 	strcpy(extPrefix, prefix);//создаём за префиксом свободное место для записи туда результата передвижения по дереву
 	int prefixLen = strlen(prefix);

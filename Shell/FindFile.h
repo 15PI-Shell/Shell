@@ -2,7 +2,7 @@
 #define FindFile
 
 #include <windows.h>
-#include "StringList.h"
+#include "LinkedList.h"
 #include <string.h>
 
 //результаты, возвращаемые функцией FileExecute
@@ -28,10 +28,10 @@ typedef enum
 char *CurrentDirectory;
 
 //функция поиска файлов и папок по префиксу
-SingleListStringNode* FindFilesAndDirsPrefix(char* PrefixFile);
+SingleLinklistNode* FindFilesAndDirsPrefix(char* PrefixFile);
 
 //функция поиска файлов по маске в указанной директории с указанием типа 
-SingleListStringNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type, SingleListStringNode** last);
+SingleLinklistNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindType type, SingleLinklistNode** last);
 
 //функция запуска любых файлов (обязательно указывать расширение)
 ExecResult FileExecute(char* nameProc, char* parametrs);

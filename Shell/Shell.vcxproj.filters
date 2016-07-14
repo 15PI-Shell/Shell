@@ -78,7 +78,10 @@
     <ClCompile Include="WorkWithConsole.c">
       <Filter>Файлы исходного кода\Console</Filter>
     </ClCompile>
-    <ClCompile Include="StringList.c">
+    <ClCompile Include="LinkedList.c">
+      <Filter>Файлы исходного кода\DataStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="Trie.c">
       <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,7 +125,10 @@
     <ClInclude Include="WorkWithConsole.h">
       <Filter>Заголовочные файлы\Console</Filter>
     </ClInclude>
-    <ClInclude Include="StringList.h">
+    <ClInclude Include="Trie.h">
+      <Filter>Заголовочные файлы\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>

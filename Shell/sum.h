@@ -1,5 +1,5 @@
 ﻿
 #include <stdio.h>
-#include "StringList.h"
+#include "LinkedList.h"
 
 char* sumProc(char* arg);

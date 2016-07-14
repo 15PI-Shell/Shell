@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "StringList.h"
+#include "LinkedList.h"
 
 //встроенные программы:
 #include "HelloWorld.h"
@@ -29,4 +29,4 @@ char* BPC_Execute(char* program, char* args, BPC_Returns* returns);
 
 //функция, возвращающая список всех встроенных программ, начинающихся с заданного префикса
 //при префиксе равном имени программы функция не вернёт её саму, тк дополнять больше нечего
-SingleListStringNode* BPC_GetHints(char* prefix);
+SingleLinklistNode* BPC_GetHints(char* prefix);
