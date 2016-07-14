@@ -60,15 +60,8 @@ int InstallKeyRegistry()
 	RegFunStatus = RegSetValueExA(shellRegKey, "EstimatedSize", NULL, REG_DWORD, &size, sizeof(size));
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
-	//добавление History (путь к папке с историей)
-	RegFunStatus = RegSetValueExA(shellRegKey, "History", NULL, REG_SZ, HistoryDir, strlen(HistoryDir)+1);
-	if (RegFunStatus != ERROR_SUCCESS)
-		return 0;
 	//создание папки в документах для истории
-	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
-	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
-	strcpy(HistoryDir, "C:");
-	strcat(HistoryDir, user);
+	char* HistoryDir = geteven("USERPROFILE");
 	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
 	int FunRes = CreateDirectoryA(HistoryDir, NULL);
 	if (!FunRes)
@@ -126,9 +119,7 @@ int UninstallKeyRegistry()
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
 	//удаление папки с историей
-	RegOpenKeyExA(HKEY_CURRENT_USER, "Volatile Environment", 0, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &userRegKey);
-	RegGetValueA(userRegKey, 0, "HOMEPATH", RRF_RT_ANY, 0, user, &sizeUser);
-	strcat(HistoryDir, user);
+	char* HistoryDir = geteven("USERPROFILE");
 	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
 	int FunRes = RemoveDirectoryA(HistoryDir);
 	if (!FunRes)
