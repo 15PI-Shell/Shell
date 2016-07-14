@@ -21,7 +21,7 @@ int InstallModifyPath()
 int InstallKeyRegistry()
 {
 	char user[100];
-	char HistoryDir[MAX_PATH + 1] = "";
+	char HistoryDir[MAX_PATH + 1];
 	DWORD sizeUser = sizeof(user);
 	char copyInstalPath[MAX_PATH + 1];
 	RegCloseKey(shellRegKey);
@@ -61,7 +61,7 @@ int InstallKeyRegistry()
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
 	//создание папки в документах для истории
-	char* HistoryDir = geteven("USERPROFILE");
+	strcpy(HistoryDir, getenv("USERPROFILE"));
 	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
 	int FunRes = CreateDirectoryA(HistoryDir, NULL);
 	if (!FunRes)
@@ -111,7 +111,7 @@ int UninstallModifyPath()
 int UninstallKeyRegistry()
 {
 	char user[100];
-	char HistoryDir[MAX_PATH + 1] = "C:";
+	char HistoryDir[MAX_PATH + 1];
 	DWORD sizeUser = sizeof(user);
 	RegCloseKey(shellRegKey);
 	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", 0, KEY_ALL_ACCESS | KEY_WOW64_64KEY, &shellRegKey);
@@ -119,7 +119,7 @@ int UninstallKeyRegistry()
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
 	//удаление папки с историей
-	char* HistoryDir = geteven("USERPROFILE");
+	strcpy(HistoryDir, getenv("USERPROFILE"));
 	strcat(HistoryDir, "\\Documents\\15PI-SHELL");
 	int FunRes = RemoveDirectoryA(HistoryDir);
 	if (!FunRes)

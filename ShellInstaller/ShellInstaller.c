@@ -51,6 +51,16 @@ void Uninstall()
 
 int main(int argc, char* argv[])
 {
+	//демо архива
+	SingleListStringNode* listOfFiles = 0;
+	SingleStrlistAddDownmost(&listOfFiles, "StringList.c");
+	SingleStrlistAddDownmost(&listOfFiles, "StringList.h");
+	SingleStrlistAddDownmost(&listOfFiles, "ShellInstaller.c");
+	SingleStrlistAddDownmost(&listOfFiles, "ShellInstaller.h");
+	char infoPart[] = {1,2,3,4,5,6,7,8,9,10};
+	CreateFileArch(listOfFiles, infoPart, 10);
+	return 0;
+
 	if (1 == argc)
 	{
 		//открытие раздела Environment и проверка на запуск от администратора
