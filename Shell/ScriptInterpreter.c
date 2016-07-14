@@ -7,6 +7,7 @@ char* ParseName();
 char* ParseBeforeSemi();
 char* ParseInsideBrackets();
 char* ProcFunction(char* name, BPC_Returns* type);
+int ProcCondition();
 
 int CheckNextSyms(char* syms)
 {
@@ -296,41 +297,6 @@ void ProcAssignment()
 	}
 }
 
-void Block()
-{
-	SkipSpaces();
-	if (0 == scr[scptr])
-		return;
-
-	if (CheckNextSyms("if"))
-	{
-		scptr += 2;
-		SkipSpaces();
-
-
-	}
-	else
-		if (CheckNextSyms("while"))
-		{
-			scptr += 5;
-			SkipSpaces();
-
-
-		}
-		else
-			if (CheckNextSyms("for"))
-			{
-				scptr += 3;
-				SkipSpaces();
-
-
-			}
-			else
-			{
-				ProcAssignment();
-			}
-}
-
 char* ParseBeforeSemi()
 {
 	SkipSpaces();
@@ -397,6 +363,109 @@ char* ParseInsideBrackets()
 	SkipSpaces();
 
 	return data;
+}
+
+char* ParseSingleCondition()
+{
+	int start = scptr;
+	while (scr[scptr] && (!CheckNextSyms("&&") && !CheckNextSyms("||") && !CheckNextSyms(")")))
+		scptr++;
+
+	char* data = (char*)malloc(scptr - start + 1);
+	strncpy(data, scr + start, scptr - start);
+	data[scptr - start] = 0;
+	SkipSpaces();
+
+	return data;
+}
+
+//уже без (
+int ProcCondition()
+{
+	SkipSpaces();
+	//void* Lresult, *Rresult;
+	//BPC_Returns* Ltype, Rtype;
+	//int from = scptr;
+	char* parsed = ParseSingleCondition();
+
+	printf("Parsed condition element: %s\n", parsed);
+
+	/*char* left = parsed;
+	char* right = parsed;
+
+
+	GetTerm(from, left, &Lresult, &Ltype);//TODO: избавится от from
+	GetTerm(from, right, &Rresult, &Rtype);*/
+	if (CheckNextSyms("&&"))
+	{
+		scptr += 2;
+		int rightPart = ProcCondition();
+		return 1;
+	} 
+	else
+	if (CheckNextSyms("||"))
+	{
+		scptr += 2;
+		int rightPart = ProcCondition();
+		return 1;
+	}
+	else
+	if (CheckNextSyms(")"))
+	{
+		scptr++;
+		//последнее
+		return 1;
+	}
+	scfailed = 1;
+	return 0;
+}
+
+
+void Block()
+{
+	SkipSpaces();
+	if (0 == scr[scptr])
+		return;
+
+	if (CheckNextSyms("if"))
+	{
+		scptr += 2;
+		SkipSpaces();
+		if (scr[scptr] == '(')
+			scptr++;
+		else
+		{
+			scfailed = 1;
+			return;
+		}
+		int result = ProcCondition();
+	}
+	else
+		if (CheckNextSyms("while"))
+		{
+			scptr += 5;
+			SkipSpaces();
+			if (scr[scptr] == '(')
+				scptr++;
+			else
+			{
+				scfailed = 1;
+				return;
+			}
+			int result = ProcCondition();
+		}
+		else
+			if (CheckNextSyms("for"))
+			{
+				scptr += 3;
+				SkipSpaces();
+
+
+			}
+			else
+			{
+				ProcAssignment();
+			}
 }
 
 int EvalScript(char* script)

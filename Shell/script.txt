@@ -19,6 +19,11 @@ begin
 	str1 = binary(34);
 	str1 += binary(10);
 	str2 = "teststring?";
-	echo(binary(binary(8)));
+	echo(binary(  binary(8)  ));
 	//сама€ внутренн€€ binary даЄт 1000, внешн€€ уже 1111101000
+	
+	if (5 == 4 || 5*0 == 4||/*не зависит от пробелов*/     4 == 4)
+	//{
+		
+	//}
 end
