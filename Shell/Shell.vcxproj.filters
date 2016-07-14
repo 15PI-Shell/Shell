@@ -37,6 +37,12 @@
     <Filter Include="Файлы исходного кода\DataStructures">
       <UniqueIdentifier>{6127402d-8b5e-47b0-954a-18fd0653728b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы исходного кода\Script">
+      <UniqueIdentifier>{f1abcd9c-e738-4686-822e-59fc155f971a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Script">
+      <UniqueIdentifier>{f0c9fe4b-6d7d-4a50-9c15-88558530fc7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shell.c">
@@ -84,6 +90,15 @@
     <ClCompile Include="Trie.c">
       <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptInterpreter.c">
+      <Filter>Файлы исходного кода\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="VarManager.c">
+      <Filter>Файлы исходного кода\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MathInterpreter.c">
+      <Filter>Файлы исходного кода\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -130,6 +145,15 @@
     </ClInclude>
     <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterpreter.h">
+      <Filter>Заголовочные файлы\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="VarManager.h">
+      <Filter>Заголовочные файлы\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="MathInterpreter.h">
+      <Filter>Заголовочные файлы\Script</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
