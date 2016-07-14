@@ -7,7 +7,7 @@
 #include "GetClipboardContent.h"
 #include <stdio.h>
 #include <string.h>
-//#include "Clipboard.h"
+
 
 #define MAX_CONSOLE_INPUT 300
 void ConsoleInitialisation();

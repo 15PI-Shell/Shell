@@ -311,6 +311,15 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			}
 			else return 0;
 		}
+		if (((Buff[i] == '&') || (Buff[i] == '|')) || (Buff[i]=='>'))
+		{
+			*PosEntryStart = i + 1; int k = 0;
+			for (int j = i + 1; j < Buflen; j++)
+			{
+				entry[k] = Buff[j]; k++;
+			}
+			return 1;
+		}
 	}
 	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
 }
@@ -387,14 +396,15 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
-		FlagAutocompletions = 3;
-		printf("\n\n\n\n____________________________________________________");
+		FlagAutocompletions = 4;
+		printf("\n\n\n\n ____________________________________________________________________________");
 		while (LastFoundList != NULL) {
 			printf("\n%s", LastFoundList->value);
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
-		SetConsoleCursorPosition(hConsole, startPrintPoint); cor = startPrintPoint; cur = 0;
+		cor = startPrintPoint; cur = 0;
+		SetConsoleCursorPosition(hConsole, cor);
 	}
 }
 void DeleteListOfAutocomletion()
