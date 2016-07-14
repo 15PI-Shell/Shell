@@ -97,67 +97,65 @@ void ConsolePrintChar(int key)
 /*-----------------------------------------Работа с файлом истории---------------------------------------*/
 void ReadHistory()
 {
-	int n = 0; cntHist = 0;
+	cntHist = 0;
 	char *str = (char*)malloc(MAX_CONSOLE_INPUT);
-	while (ReadFile(hHistory, str, MAX_CONSOLE_INPUT, n, NULL))//пока не произошла ошибка или не достигнут конец файла
+	hHistory = fopen(HistoryPath, "r");
+	if (hHistory == NULL) return;
+	fseek(hHistory, 0, SEEK_END);
+	long pos = ftell(hHistory);
+	if (pos > 0)
 	{
-		cntHist++;
-		_llseek(hHistory, cntHist*MAX_CONSOLE_INPUT, SEEK_SET);// позиционируем курсор на новую строку
-		DoubleStrlistInsertAbove(CurrHist, str);
-		while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
-			CurrHist = CurrHist->down;
+		rewind(hHistory);
+		while (!(feof(hHistory))) // файл непустой.
+		{
+			cntHist++;
+			fgets(hHistory, str, MAX_CONSOLE_INPUT);
+			DoubleStrlistInsertAbove(CurrHist, str);
+		}
 	}
 	free(str);
+	fclose(hHistory);
 }
 void WriteHistory()
 {
-	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
+	
+	while (CurrHist->down != 0)
+	{
 		CurrHist = CurrHist->down;
+	}
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
 		DoubleStrlistInsertAbove(CurrHist, Buff);
 		cntHist++;
 		if (cntHist > 100)DoubleStrlistRemoveUpmost(CurrHist);
 	}
-	SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
-	int i = 0, n = 0;
-	char *str= (char*)malloc(MAX_CONSOLE_INPUT);
-		while (CurrHist->up!=0)
-		{
-			CurrHist = CurrHist->up;
-		}
-		strcpy(str, CurrHist->value);
-		while (WriteFile(HistoryPath, str, MAX_CONSOLE_INPUT, n, NULL))
+	while (CurrHist->up != 0)
 	{
-		i++;
-		strcpy(str, CurrHist->value);
-		_llseek(hHistory, i*MAX_CONSOLE_INPUT, SEEK_SET);
+		CurrHist = CurrHist->up;
 	}
-		free(str);
+	SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
+	hHistory = fopen(HistoryPath, "w");
+	while (CurrHist != NULL)
+	{
+		if (CurrHist->value!="")
+		{
+			fprintf(hHistory,"%s\n", CurrHist->value);
+		}
+		
+		CurrHist = CurrHist->down;
+	}
 		SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
 }
 void HistoryInitialisation()
 {
 	DoubleStrlistAddUpmost(&CurrHist, "");//добавляем "ничто" в историю
-	HistoryPath = (char*)malloc(MAX_PATH + 1);
-	HistoryPath = GetAndCheckPathHistory();;// получаем директорию
+	HistoryPath = getenv("USERPROFILE");
+	strcat(HistoryPath, "\\Documents\\15PI - SHELL");// получаем директорию
+	CreateDirectoryA(HistoryPath, NULL);
 	strcat(HistoryPath, "\history.txt");//добавляем имя файла чтобы получился путь к нему
-	
 	hHistory = FindFirstFile(HistoryPath, &FileData);// ищем в ней файл истории
-	if (hHistory == INVALID_HANDLE_VALUE) // не нашли, создаем
+	if (hHistory != INVALID_HANDLE_VALUE) // не нашли, создаем
 	{
-		hHistory = CreateFile(HistoryPath, GENERIC_READ | GENERIC_WRITE, 0, NULL,                  // защита по умолчанию
-			OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
-	}
-	else
-	{
-		hHistory = CreateFile(HistoryPath,
-			GENERIC_READ | GENERIC_WRITE,
-			0, 
-			NULL,                  
-			OPEN_EXISTING, 
-			FILE_ATTRIBUTE_READONLY,
-			NULL);
 		ReadHistory();
 	}
 }
