@@ -15,11 +15,13 @@ int main()
 	string[fsize] = 0;
 
 	VM_Init();
-	
+	BPC_Init();
+
 	EvalScript(string);
 	return 0;
 
-	BPC_Init();
+
+
 	ConsoleInitialisation();
 	int key;
 	while (1)

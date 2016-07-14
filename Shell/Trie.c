@@ -2,11 +2,11 @@
 
 int CharGetIndex(char c)
 {
-	if (c >= 'a' && c <= 'z')
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 		return tolower(c) - 'a';
 	if (c >= '0' && c <= '9')
 		return 26 + c - '0';
-	assert(0);
+	return -1;
 }
 
 //инициализирует и возвращает корень префиксного дерева
@@ -23,7 +23,7 @@ TrieNode* Trie_Create()
 //функция, возвращающая узел дерева, которому соотвествует указанная строка
 TrieNode* FindInTrieRec(TrieNode* node, char* name)
 {
-	if (!(tolower(name[0]) >= 'a' && tolower(name[0]) <= 'z'))
+	if (CharGetIndex(name[0]) == -1)
 		return 0;
 
 	if (0 == node)
@@ -39,7 +39,7 @@ TrieNode* FindInTrieRec(TrieNode* node, char* name)
 //оболочка для запуска рекурсивной функции
 TrieNode* Trie_Find(TrieNode* trieRoot, char* name)
 {
-	if (!(tolower(name[0]) >= 'a' && tolower(name[0]) <= 'z'))
+	if (CharGetIndex(name[0]) == -1)
 		return 0;
 	return FindInTrieRec(trieRoot->children[CharGetIndex(name[0])], name);
 }
@@ -56,12 +56,15 @@ void Trie_RegisterRec(TrieNode** node, char* name, void* data)
 		(*node)->key = *name;//подписываем текущий узел
 	}
 
-	if (0 == *(name + 1))
+	if (0 == name[1])
 	{//если следующий символ строки 0 - мы на месте
 		(*node)->hasAValue = 1;
 		(*node)->data = data;//заполняем поля и отмечаем узел, как содержащий программу
 		return;
 	}
+
+	if (CharGetIndex(name[1]) == -1)
+		return;
 
 	Trie_RegisterRec(&(*node)->children[CharGetIndex(name[1])], name + 1, data);
 }
@@ -69,6 +72,8 @@ void Trie_RegisterRec(TrieNode** node, char* name, void* data)
 //оболочка для запуска рекурсивной функции
 void Trie_Register(TrieNode* trieRoot, char* name, void* data)
 {
+	if (CharGetIndex(name[0]) == -1)
+		return;
 	Trie_RegisterRec(&trieRoot->children[CharGetIndex(name[0])], name, data);
 }
 
