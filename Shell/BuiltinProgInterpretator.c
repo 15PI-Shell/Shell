@@ -102,7 +102,7 @@ void CmdInterpretator(char* mas)
 					printf("Builtin programs with the same prefix don't exist\n");
 
 				// errors of extern files
-				switch (fileresult)
+				/*switch (fileresult)
 				{
 				case ExecResult_NotEnoughResources:
 					printf("_Not enough resources to start external file_\n");
@@ -122,7 +122,7 @@ void CmdInterpretator(char* mas)
 				case ExecResult_UnknownError:
 					printf("_Unknown Error for open external file_\n");
 					break;
-				}
+				}*/
 				return;
 			}
 			result = 0;

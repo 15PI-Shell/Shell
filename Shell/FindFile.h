@@ -8,11 +8,8 @@
 //результаты, возвращаемые функцией FileExecute
 typedef enum
 {
-	ExecResult_NotEnoughResources,
-	ExecResult_FileNotFound,
-	ExecResult_WrongExe,
-	ExecResult_AccessDenied,
-	ExecResult_WrongAssociation,
+	ExecResult_BadReturnCode,
+	ExecResult_ExecuteFailed,
 	ExecResult_UnknownError,
 	ExecResult_Success,
 }ExecResult;
@@ -35,5 +32,10 @@ SingleLinklistNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindTy
 
 //функция запуска любых файлов (обязательно указывать расширение)
 ExecResult FileExecute(char* nameProc, char* parametrs);
-
+//функция запуска любых файлов, кромe exe
+ExecResult FileExecuteShell(char* nameProc, char* parametrs);
+//функция запуска exe файлов
+ExecResult FileExecuteCreate(char* nameProc, char* parametrs);
+//попытка запуска exe файла и ожидание возвращаемого значения
+ExecResult AttemptCreation(char* FileName);
 #endif
