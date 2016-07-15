@@ -1,7 +1,6 @@
 ﻿#include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
-DoubleLinklistNode *CurrHist = 0;
 SingleLinklistNode *LastFoundList = 0;
 char *Buff;
 HANDLE hConsole;
@@ -98,6 +97,7 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
+	CurrHist = 0;
 	DoubleLinklistAddUpmost(&CurrHist, "", 1);//добавляем "ничто" в историю
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом

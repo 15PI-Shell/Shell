@@ -84,6 +84,9 @@
     <ClCompile Include="Trie.c">
       <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
+    <ClCompile Include="History.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="History.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

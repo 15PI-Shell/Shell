@@ -11,7 +11,7 @@
 #include "sum.h"
 #include "Binary.h"
 #include "ChangeDirectory.h"
-
+#include "History.h"
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum
 {
