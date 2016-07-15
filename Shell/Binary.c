@@ -7,22 +7,19 @@ char* BinaryProc(char* arg)
 
 	sscanf(arg,"%d",&a);
 
-	while (a / 2 != 1)
+	while (a != 0)
 	{
 		mas[i] = a % 2;
 		a = a / 2;
 		i++;
 	}
-	mas[i] = a % 2;
-	i++;
-	mas[i] = 1;
 
 	free(arg);
-	arg = (char*)malloc(sizeof(char)*(i+2));
+	arg = (char*)malloc(sizeof(char)*(i+1));
 
-	for (i; i >= 0; i--)
+	for (i; i > 0; i--)
 	{
-		b = b * 10 + mas[i];
+		b = b * 10 + mas[i-1];
 	}
 	
 	sprintf(arg, "%d", b);

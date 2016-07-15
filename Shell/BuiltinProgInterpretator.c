@@ -140,12 +140,12 @@ void CmdInterpretator(char* mas)
 		if ((result != 0) && (result != -1) && (result != -2))
 			strcpy(strresult, result);
 
-		//free(ptrarg);
+		free(ptrarg);
 		free(ptrname);
 		cmd = strtok('\0', del); // search the following comand 
 	}
 
-	if (strresult != 0)
+	if (strlen(strresult) != 0)
 	{
 		printf("\nRESULT: %s\n", strresult);
 	}
