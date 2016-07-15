@@ -1,8 +1,8 @@
-#include "WorkWithConsole.h"
+п»ї#include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
 SingleLinklistNode *LastFoundList = 0;
-DoubleLinklistNode *History;
+DoubleLinklistNode *CurrHist;
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
@@ -13,7 +13,7 @@ int cnt=0;
 FILE *fpHistory = NULL;
 char *HistoryPath;
 COORD XYlist;
-/*-----------------------------------------Функции работы с командной строкой---------------------------------------------------------------*/
+/*-----------------------------------------пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ---------------------------------------------------------------*/
 void ClearComline()
 {
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
@@ -28,13 +28,13 @@ void ReprintConsoleBuffer()
 	printf("%s", Buff);
 	SetConsoleCursorPosition(hConsole, cor);
 }
-/*----------------------------------------Функции работы с курсором------------------------------------*/
+/*----------------------------------------пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ------------------------------------*/
 void GetConsoleCursorPosition()
 {
 	CONSOLE_SCREEN_BUFFER_INFO inf;
 	GetConsoleScreenBufferInfo(hConsole, &inf);
 	cor = inf.dwCursorPosition;
-}// пока что не нужна, понадобится когда заработает интерпретатор
+}// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 
 void IncCursor()
@@ -83,9 +83,9 @@ void ConsolePrintChar(int key)
 {
 	DoubleTabFlag = 0;
 	int buffLen = strlen(Buff);
-	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'а' && key <= 'я') && !(key >= 'А' && key <= 'Я'))
+	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'пїЅ' && key <= 'пїЅ') && !(key >= 'пїЅ' && key <= 'пїЅ'))
 	{
-		//если символ печатаем и не кириллица (ну её)
+		//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅ)
 		for (int i = buffLen; i > cur; --i)
 			Buff[i] = Buff[i - 1];
 		Buff[cur] = (char)key;
@@ -93,7 +93,7 @@ void ConsolePrintChar(int key)
 		ReprintConsoleBuffer();
 	}
 }
-/*------------------------------------------Инициализация консоли-----------------------------------------*/
+/*------------------------------------------пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ-----------------------------------------*/
 void ReadHistory()
 {
 	fpHistory=fopen(HistoryPath, "r");
@@ -108,7 +108,8 @@ void ReadHistory()
 			while (!(feof(fpHistory))) 
 			{
 				fgets( str, MAX_CONSOLE_INPUT, fpHistory);
-	DoubleLinklistInsertAbove(History, str, strlen(str));
+				str[strlen(str) - 1] = '\0';
+	DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
 				cnt++;
 			}
 			free(str);
@@ -119,21 +120,23 @@ void ReadHistory()
 }
 void WriteHistory()
 {
-//SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
+SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
 fpHistory=fopen(HistoryPath, "w");
 
-while(History->up)
+while(CurrHist->up)
 {
-History=History->up;
+CurrHist=CurrHist->up;
 }
-while (History->down)
+while (CurrHist->down)
 {
-	if (History->value != "")
-		fprintf(fpHistory, "%s\n", History->value);
-	History=History->down;
+	if ((char*)CurrHist->value != "")
+	{
+		fprintf(fpHistory, "%s\n", (char*)CurrHist->value);
+	}
+	CurrHist=CurrHist->down;
 }
 fclose(fpHistory);
- //SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
+ SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
 }
 void ConsoleInitialisation()
 {
@@ -144,17 +147,17 @@ void ConsoleInitialisation()
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
  	HistoryPath = getenv("USERPROFILE");
-    	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//получаем директорию
+    	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     CreateDirectoryA(HistoryPath, NULL);
-    strcat(HistoryPath, "\\history.txt");//добавляем имя файла чтобы получился путь к нему
-	DoubleLinklistAddUpmost(&History, "", 1);//добавляем "ничто" в историю
+    strcat(HistoryPath, "\\history.txt");//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
+	DoubleLinklistAddUpmost(&CurrHist, "", 1);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅ" пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	ReadHistory();
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
+	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ backspace'пїЅпїЅ
 	ReprintConsoleBuffer();
 }
 
-/*---------------------------------------Обработка специальных клавиш------------------------------------*/
+/*---------------------------------------пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ------------------------------------*/
 
 void ConsoleCursorMoveLeft()
 {
@@ -180,10 +183,10 @@ void ConsoleGetNextHistory()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	if (History->down != NULL)
+	if (CurrHist->down != NULL)
 	{
-		History = History->down;
-		strcpy(Buff, History->value);
+		CurrHist = CurrHist->down;
+		strcpy(Buff, CurrHist->value);
 		ResetCursor();
 		cur = 0;
 		ReprintConsoleBuffer();
@@ -194,10 +197,10 @@ void ConsoleGetPrewHistory()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	if (History->up != NULL)
+	if (CurrHist->up != NULL)
 	{
-		History = History->up;
-		strcpy(Buff, History->value);
+		CurrHist= CurrHist->up;
+		strcpy(Buff, CurrHist->value);
 		ResetCursor();
 		cur = 0;
 		ReprintConsoleBuffer();
@@ -233,18 +236,18 @@ void ConsoleEnter()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	while (History->down)//сбрасываем указатель истории, всегда сидим в самом низу
-		History = History->down;
-	if ((History->up == NULL) || ((History->up != 0) && (strcmp(History->up->value, Buff))))
+	while (CurrHist->down)//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+		CurrHist = CurrHist->down;
+	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
 		cnt++;
 		if (cnt>100)
 			{
-				DoubleLinklistRemoveUpmost(&History);
+				DoubleLinklistRemoveUpmost(&CurrHist);
 				cnt--;
 			}
 		
-		DoubleLinklistInsertAbove(History, Buff, strlen(Buff));
+		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
 		WriteHistory();
 	}
 	CursorOnEndString();
@@ -359,7 +362,7 @@ void ConsoleAutocompletion()
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, pos);
 		return;
-	} // дополнения не найдены
+	} // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
 		if (len > MAX_CONSOLE_INPUT - posEntry) {
@@ -376,7 +379,7 @@ void ConsoleAutocompletion()
 
 		CursorOnEndString();
 		ConsolePrintChar(' ');
-	} //дополнение единственное, печатаем
+	} //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	else {
 		FlagAutocompletions = 1;
 		cur = crn; cor = pos;
