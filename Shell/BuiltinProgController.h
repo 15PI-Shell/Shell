@@ -13,6 +13,7 @@
 #include "ChangeDirectory.h"
 #include "History.h"
 #include "tail.h"
+#include "cat.h"
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum
 {

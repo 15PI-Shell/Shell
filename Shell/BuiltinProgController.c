@@ -29,6 +29,7 @@ void BPC_Init()
 	RegisterProgram("cd", ChangeDirectory, BPC_ReturnsNothing);
 	RegisterProgram("History", PrintHistory, BPC_ReturnsString);
 	RegisterProgram("tail", TailOfFile, BPC_ReturnsNothing);
+	RegisterProgram("cat", cat, BPC_ReturnsNothing);
 }
 
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)
