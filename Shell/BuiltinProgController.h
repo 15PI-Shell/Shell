@@ -12,6 +12,7 @@
 #include "Binary.h"
 #include "ChangeDirectory.h"
 #include "History.h"
+#include "tail.h"
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum
 {
