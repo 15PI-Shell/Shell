@@ -23,6 +23,5 @@ char* BinaryProc(char* arg)
 	}
 	
 	sprintf(arg, "%d", b);
-
 	return arg;
 }
