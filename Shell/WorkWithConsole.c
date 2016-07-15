@@ -1,8 +1,8 @@
 #include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
-DoubleLinklistNode *CurrHist = 0;
 SingleLinklistNode *LastFoundList = 0;
+DoubleLinklistNode *History = 0;
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
@@ -10,7 +10,7 @@ int cur;
 int FlagAutocompletions = 0;
 int DoubleTabFlag = 0;
 int cnt=0;
-FILE *fpHistory;
+FILE *fpHistory = NULL;
 char *HistoryPath;
 COORD XYlist;
 /*-----------------------------------------Функции работы с командной строкой---------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void ConsolePrintChar(int key)
 void ReadHistory()
 {
 	fpHistory=fopen(HistoryPath, "r");
-	if (fpHistory)
+	if (fpHistory!=NULL)
 	{
 		fseek(fpHistory, 0, SEEK_END);
 		long pos = ftell(fpHistory);
@@ -107,30 +107,32 @@ void ReadHistory()
 			char *str=(char*)malloc(MAX_CONSOLE_INPUT);
 			while (!(feof(fpHistory))) 
 			{
-				fgets(fpHistory, str, MAX_CONSOLE_INPUT);
-	DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
+				fgets( str, MAX_CONSOLE_INPUT, fpHistory);
+	DoubleLinklistInsertAbove(History, str, strlen(str));
 				cnt++;
 			}
 			free(str);
-		fclose(fpHistory);}
+	}
+		fclose(fpHistory);
 	}
 	
 }
 void WriteHistory()
 {
-SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
+//SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
 fpHistory=fopen(HistoryPath, "w");
-while(CurrHist)
+
+while(History)
 {
-CurrHist=CurrHist->up;
+History=History->up;
 }
-while (CurrHist)
+while (History)
 {
-fprintf(fpHistory, "%s/n", CurrHist->value);
-CurrHist=CurrHist->down;
+	if (History->value != "") fprintf(fpHistory, "%s\n", History->value);
+		History = History->down;
 }
 fclose(fpHistory);
- SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
+ //SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
 }
 void ConsoleInitialisation()
 {
@@ -141,11 +143,11 @@ void ConsoleInitialisation()
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
  	HistoryPath = getenv("USERPROFILE");
-    	strcat(HistoryPath, "<\\Documents\\15PI - SHELL>");//получаем директорию
+    	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//получаем директорию
     CreateDirectoryA(HistoryPath, NULL);
-    strcat(HistoryPath, "\history.txt");//добавляем имя файла чтобы получился путь к нему
-ReadHistory();
-	DoubleLinklistAddUpmost(&CurrHist, "", 1);//добавляем "ничто" в историю
+    strcat(HistoryPath, "\\history.txt");//добавляем имя файла чтобы получился путь к нему
+	DoubleLinklistAddUpmost(&History, "", 1);//добавляем "ничто" в историю
+	ReadHistory();
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
 	ReprintConsoleBuffer();
@@ -177,10 +179,10 @@ void ConsoleGetNextHistory()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	if (CurrHist->down != NULL)
+	if (History->down != NULL)
 	{
-		CurrHist = CurrHist->down;
-		strcpy(Buff, CurrHist->value);
+		History = History->down;
+		strcpy(Buff, History->value);
 		ResetCursor();
 		cur = 0;
 		ReprintConsoleBuffer();
@@ -191,10 +193,10 @@ void ConsoleGetPrewHistory()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	if (CurrHist->up != NULL)
+	if (History->up != NULL)
 	{
-		CurrHist = CurrHist->up;
-		strcpy(Buff, CurrHist->value);
+		History = History->up;
+		strcpy(Buff, History->value);
 		ResetCursor();
 		cur = 0;
 		ReprintConsoleBuffer();
@@ -230,19 +232,19 @@ void ConsoleEnter()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
-		CurrHist = CurrHist->down;
-	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
+	while (History->down)//сбрасываем указатель истории, всегда сидим в самом низу
+		History = History->down;
+	if ((History->up == NULL) || ((History->up != 0) && (strcmp(History->up->value, Buff))))
 	{
-cnt++;
-if (cnt>100)
-{
-DoubleLinklistRemoveUpmost(&CurrHist);
-cnt--;
-}
+		cnt++;
+		if (cnt>100)
+			{
+				DoubleLinklistRemoveUpmost(&History);
+				cnt--;
+			}
 
-		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
-WriteHistory();
+		DoubleLinklistInsertAbove(History, Buff, strlen(Buff));
+	WriteHistory();
 	}
 	CursorOnEndString();
 	printf("\n");
@@ -392,9 +394,10 @@ void  PrintListOfAutocompletion()
 		XYlist.X=0;
 		XYlist.Y=startPrintPoint.Y+5;
 		FlagAutocompletions = 1;
-	SetConsoleCursorPosition(hConsole, XYlist); 	printf("____________________________________________________");
+	SetConsoleCursorPosition(hConsole, XYlist); 	
+	printf("____________________________________________________");
 		while (LastFoundList != NULL) {
-			printf("\n%s", LastFoundList->value);
+			printf("\n%s",(char*)LastFoundList->value);
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
