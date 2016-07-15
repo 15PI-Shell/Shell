@@ -2,7 +2,7 @@
 
 void DeleteListOfAutocomletion();
 SingleLinklistNode *LastFoundList = 0;
-DoubleLinklistNode *History = 0;
+DoubleLinklistNode *History;
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
@@ -122,14 +122,15 @@ void WriteHistory()
 //SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
 fpHistory=fopen(HistoryPath, "w");
 
-while(History)
+while(History->up)
 {
 History=History->up;
 }
-while (History)
+while (History->down)
 {
-	if (History->value != "") fprintf(fpHistory, "%s\n", History->value);
-		History = History->down;
+	if (History->value != "")
+		fprintf(fpHistory, "%s\n", History->value);
+	History=History->down;
 }
 fclose(fpHistory);
  //SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
@@ -242,9 +243,9 @@ void ConsoleEnter()
 				DoubleLinklistRemoveUpmost(&History);
 				cnt--;
 			}
-
+		
 		DoubleLinklistInsertAbove(History, Buff, strlen(Buff));
-	WriteHistory();
+		WriteHistory();
 	}
 	CursorOnEndString();
 	printf("\n");
