@@ -3,11 +3,6 @@
 int main()
 {
 	BPC_Init();
-
-	char* arg = " sum 15 100 >sum 25";
-	CmdInterpretator(arg);
-	getch();
-	/*
 	ConsoleInitialisation();
 	int key;
 	while (1)
@@ -31,7 +26,7 @@ int main()
 		case keys_ctrl_v: PastInConsole(); break;
 		default:ConsolePrintChar(key); break;
 		}
-	}*/
+	}
 
 	return 0;
 }

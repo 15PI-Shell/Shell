@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <Windows.h>
-#include "StringList.h"
+#include "LinkedList.h"
 #include "KeyDefines.h"
 #include "FindFile.h"
-#include"BuiltinProgController.h"
+#include "BuiltinProgController.h"
+#include "BuiltinProgInterpretator.h"
 #include "GetClipboardContent.h"
 #include <stdio.h>
 #include <string.h>
@@ -19,7 +20,7 @@ void ConsoleGetPrewHistory();//обработка клавиши стрелка 
 void ConsoleBackSpace();// обработка клавиши бекспейс, удаление элемента слева от курсора
 void ConsoleDeleteCurElem();//обрабока клавиши del, удаление текущего элемента
 void ConsoleEnter();//обработка клавиши Enter, передача введеной команды интерпетатору, доавление ее в историю и переход на новую строку
-void ConsolePrintChar();//обработка неслужебных клавиш, вывод символа соответств этой клавише
+void ConsolePrintChar(int key);//обработка неслужебных клавиш, вывод символа соответств этой клавише
 void PrintListOfAutocompletion();//распечатка всезх найденных вариантов автодополнений, возвращает кол-во занимаемых строк
 void ConsoleAutocompletion() ;// основная функция автодополнения, в флаге отражего напечатан ли список автодополнений, нет-0, да-кол-во занимаемых строк 
 

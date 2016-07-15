@@ -1,17 +1,17 @@
-﻿#include "StringList.h"
+﻿#include "LinkedList.h"
 
-char* MkStrCopy(char* str)
+void* MkMemCopy(void* str, int length)
 {
-	char* new_str = (char*)malloc(strlen(str) + 1);
-	strcpy(new_str, str);
+	void* new_str = malloc(length + 1);//чтобы упростить работу со строками
+	memcpy(new_str, str, length + 1);
 	return new_str;
 }
 
 //односвязный список:
 
-SingleListStringNode* SingleCreateAndLink(char* value, SingleListStringNode* down, SingleListStringNode* up)
+SingleLinklistNode* SingleCreateAndLink(void* value, SingleLinklistNode* down, SingleLinklistNode* up)
 {
-	SingleListStringNode* newnode = (SingleListStringNode*)malloc(sizeof(SingleListStringNode));
+	SingleLinklistNode* newnode = (SingleLinklistNode*)malloc(sizeof(SingleLinklistNode));
 	newnode->up = up;
 	newnode->value = value;
 	if (down)
@@ -19,23 +19,23 @@ SingleListStringNode* SingleCreateAndLink(char* value, SingleListStringNode* dow
 	return newnode;
 }
 
-void SingleStrlistAddDownmost(SingleListStringNode** downmost, char* value)
+void SingleLinklistAddDownmost(SingleLinklistNode** downmost, void* value, int length)
 {
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 
 	*downmost = SingleCreateAndLink(value, 0, *downmost);
 }
 
-void SingleStrlistInsertAbove(SingleListStringNode* node, char* value)
+void SingleLinklistInsertAbove(SingleLinklistNode* node, void* value, int length)
 {
 	assert(node);//нельзя ничего вставить над нулём
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 	SingleCreateAndLink(value, node, node->up);
 }
 
-void SingleStrlistAddUpmost(SingleListStringNode** node, char* value)
+void SingleLinklistAddUpmost(SingleLinklistNode** node, void* value, int length)
 {
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 
 	if (0 == *node)
 	{
@@ -43,35 +43,35 @@ void SingleStrlistAddUpmost(SingleListStringNode** node, char* value)
 		return;
 	}
 
-	SingleListStringNode* iter = *node;
+	SingleLinklistNode* iter = *node;
 	while (iter->up)
 		iter = iter->up;
-	SingleStrlistInsertAbove(iter, value);
+	SingleLinklistInsertAbove(iter, value, length);
 }
 
-void SingleStrlistRemoveDownmost(SingleListStringNode** downmost)
+void SingleLinklistRemoveDownmost(SingleLinklistNode** downmost)
 {
-	SingleListStringNode* reassign = (*downmost)->up;
+	SingleLinklistNode* reassign = (*downmost)->up;
 	free(*downmost);
 	*downmost = reassign;
 }
 
-void SingleStrlistRemoveUpmost(SingleListStringNode* node)
+void SingleLinklistRemoveUpmost(SingleLinklistNode* node)
 {
 	assert(node && node->up);//нельзя ничего удалить над нулём и самым верхним элементом
 
-	SingleListStringNode* iter = node;
+	SingleLinklistNode* iter = node;
 	while (iter->up->up)
 		iter = iter->up;
 
-	SingleStrlistRemoveNextUp(iter);
+	SingleLinklistRemoveNextUp(iter);
 }
 
-void SingleStrlistRemoveNextUp(SingleListStringNode* node)
+void SingleLinklistRemoveNextUp(SingleLinklistNode* node)
 {
 	assert(node && node->up);//нельзя ничего удалить над нулём и самым верхним элементом
 
-	SingleListStringNode* reassign = 0;
+	SingleLinklistNode* reassign = 0;
 	if (node->up->up)
 		reassign = node->up->up;
 
@@ -79,7 +79,7 @@ void SingleStrlistRemoveNextUp(SingleListStringNode* node)
 	node->up = reassign;
 }
 
-void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode** down)
+void SingleLinklistConcat(SingleLinklistNode* up, SingleLinklistNode** down)
 {
 	if (0 == up)
 		return;
@@ -88,7 +88,7 @@ void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode** down)
 		*down = up;
 		return;
 	}
-	SingleListStringNode* iter1 = *down;
+	SingleLinklistNode* iter1 = *down;
 	while (iter1->up)
 		iter1 = iter1->up;
 	iter1->up = up;
@@ -96,9 +96,9 @@ void SingleStrlistConcat(SingleListStringNode* up, SingleListStringNode** down)
 
 //двусвязный список:
 
-DoubleListStringNode* DoubleCreateAndLink(char* value, DoubleListStringNode* down, DoubleListStringNode* up)
+DoubleLinklistNode* DoubleCreateAndLink(void* value, DoubleLinklistNode* down, DoubleLinklistNode* up)
 {
-	DoubleListStringNode* newnode = (DoubleListStringNode*)malloc(sizeof(DoubleListStringNode));
+	DoubleLinklistNode* newnode = (DoubleLinklistNode*)malloc(sizeof(DoubleLinklistNode));
 	
 	newnode->value = value;
 
@@ -120,23 +120,23 @@ DoubleListStringNode* DoubleCreateAndLink(char* value, DoubleListStringNode* dow
 	return newnode;
 }
 
-void DoubleStrlistInsertUnder(DoubleListStringNode* node, char* value)
+void DoubleLinklistInsertUnder(DoubleLinklistNode* node, void* value, int length)
 {
 	assert(node);//нельзя ничего вставить над нулём
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 	DoubleCreateAndLink(value, node->down, node);
 }
 
-void DoubleStrlistInsertAbove(DoubleListStringNode* node, char* value)
+void DoubleLinklistInsertAbove(DoubleLinklistNode* node, void* value, int length)
 {
 	assert(node);//нельзя ничего вставить над нулём
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 	DoubleCreateAndLink(value, node, node->up);
 }
 
-void DoubleStrlistAddDownmost(DoubleListStringNode** node, char* value)
+void DoubleLinklistAddDownmost(DoubleLinklistNode** node, void* value, int length)
 {
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 
 	if (0 == *node)
 	{
@@ -144,16 +144,16 @@ void DoubleStrlistAddDownmost(DoubleListStringNode** node, char* value)
 		return;
 	}
 
-	DoubleListStringNode* iter = *node;
+	DoubleLinklistNode* iter = *node;
 	while (iter->down)
 		iter = iter->down;
 
 	DoubleCreateAndLink(value, 0, iter);
 }
 
-void DoubleStrlistAddUpmost(DoubleListStringNode** node, char* value)
+void DoubleLinklistAddUpmost(DoubleLinklistNode** node, void* value, int length)
 {
-	value = MkStrCopy(value);
+	value = MkMemCopy(value, length);
 
 	if (0 == *node)
 	{
@@ -161,19 +161,19 @@ void DoubleStrlistAddUpmost(DoubleListStringNode** node, char* value)
 		return;
 	}
 
-	DoubleListStringNode* iter = *node;
+	DoubleLinklistNode* iter = *node;
 	while (iter->up)
 		iter = iter->up;
 
 	DoubleCreateAndLink(value, iter, 0);
 }
 
-void DoubleStrlistRemoveDownmost(DoubleListStringNode** node)
+void DoubleLinklistRemoveDownmost(DoubleLinklistNode** node)
 {
 	if (0 == *node)
 		return;
 
-	DoubleListStringNode** iter = node;
+	DoubleLinklistNode** iter = node;
 	while ((*iter)->down)
 		(*iter) = (*iter)->down;
 
@@ -184,12 +184,12 @@ void DoubleStrlistRemoveDownmost(DoubleListStringNode** node)
 	*iter = 0;
 }
 
-void DoubleStrlistRemoveUpmost(DoubleListStringNode** node)
+void DoubleLinklistRemoveUpmost(DoubleLinklistNode** node)
 {
 	if (0 == *node)
 		return;
 
-	DoubleListStringNode** iter = node;
+	DoubleLinklistNode** iter = node;
 	while ((*iter)->up)
 		(*iter) = (*iter)->up;
 
@@ -200,12 +200,12 @@ void DoubleStrlistRemoveUpmost(DoubleListStringNode** node)
 	*iter = 0;
 }
 
-void DoubleStrlistRemove(DoubleListStringNode** node)
+void DoubleLinklistRemove(DoubleLinklistNode** node)
 {
 	if (0 == *node)
 		return;
 
-	DoubleListStringNode* assign;
+	DoubleLinklistNode* assign;
 
 	if ((*node)->down)
 	{
@@ -223,7 +223,7 @@ void DoubleStrlistRemove(DoubleListStringNode** node)
 	*node = assign;
 }
 
-void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode** down)
+void DoubleLinklistConcat(DoubleLinklistNode* up, DoubleLinklistNode** down)
 {
 	if (0 == up)
 		return;
@@ -232,10 +232,10 @@ void DoubleStrlistConcat(DoubleListStringNode* up, DoubleListStringNode** down)
 		*down = up;
 		return;
 	}
-	DoubleListStringNode* iter1 = *down;
+	DoubleLinklistNode* iter1 = *down;
 	while (iter1->up)
 		iter1 = iter1->up;
-	DoubleListStringNode* iter2 = up;
+	DoubleLinklistNode* iter2 = up;
 	while (iter2->down)
 		iter2 = iter2->down;
 	iter1->up = iter2;
