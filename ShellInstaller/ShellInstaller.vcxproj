@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArchieveFile.h" />
+    <ClInclude Include="InstallerConfig.h" />
     <ClInclude Include="ModifyingRegistry.h" />
     <ClInclude Include="ShellInstaller.h" />
     <ClInclude Include="StringList.h" />
