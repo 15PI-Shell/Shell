@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "ModifyingRegistry.h"
 #include "ArchieveFile.h"
+#include "INI.h"
 
 int InstallResult;
 

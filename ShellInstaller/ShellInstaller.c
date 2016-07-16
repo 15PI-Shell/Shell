@@ -52,6 +52,13 @@ void Uninstall()
 int main(int argc, char* argv[])
 {
 	//демо архива
+	
+	//
+	/*InstallerConfig* Conf= (InstallerConfig*)malloc(sizeof(InstallerConfig));
+	char PathToFolder[MAX_PATH + 1];
+	GetCurrentDirectoryA(sizeof(PathToFolder), PathToFolder);
+	ReadInstConfig(PathToFolder, Conf);*/
+
 	SingleListStringNode* listOfFiles = 0;
 	SingleStrlistAddDownmost(&listOfFiles, "StringList.c");
 	SingleStrlistAddDownmost(&listOfFiles, "StringList.h");
