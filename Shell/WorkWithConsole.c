@@ -1,15 +1,20 @@
-﻿#include "WorkWithConsole.h"
+#include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
-DoubleLinklistNode *CurrHist = 0;
 SingleLinklistNode *LastFoundList = 0;
+DoubleLinklistNode *CurrHist;
 char *Buff;
 HANDLE hConsole;
 COORD cor, startPrintPoint;
 int cur;
 int FlagAutocompletions = 0;
 int DoubleTabFlag = 0;
-/*-----------------------------------------Функции работы с командной строкой---------------------------------------------------------------*/
+int cnt = 0;
+FILE *fpHistory = NULL;
+char *HistoryPath;
+COORD XYlist;
+LPCWSTR History;
+/*-----------------------------------------������� ������ � ��������� �������---------------------------------------------------------------*/
 void ClearComline()
 {
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
@@ -24,13 +29,13 @@ void ReprintConsoleBuffer()
 	printf("%s", Buff);
 	SetConsoleCursorPosition(hConsole, cor);
 }
-/*----------------------------------------Функции работы с курсором------------------------------------*/
+/*----------------------------------------������� ������ � ��������------------------------------------*/
 void GetConsoleCursorPosition()
 {
 	CONSOLE_SCREEN_BUFFER_INFO inf;
 	GetConsoleScreenBufferInfo(hConsole, &inf);
 	cor = inf.dwCursorPosition;
-}// пока что не нужна, понадобится когда заработает интерпретатор
+}// ���� ��� �� �����, ����������� ����� ���������� �������������
 
 
 void IncCursor()
@@ -79,9 +84,9 @@ void ConsolePrintChar(int key)
 {
 	DoubleTabFlag = 0;
 	int buffLen = strlen(Buff);
-	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'а' && key <= 'я') && !(key >= 'А' && key <= 'Я'))
+	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= '�' && key <= '�') && !(key >= '�' && key <= '�'))
 	{
-		//если символ печатаем и не кириллица (ну её)
+		//���� ������ �������� � �� ��������� (�� �)
 		for (int i = buffLen; i > cur; --i)
 			Buff[i] = Buff[i - 1];
 		Buff[cur] = (char)key;
@@ -89,7 +94,49 @@ void ConsolePrintChar(int key)
 		ReprintConsoleBuffer();
 	}
 }
-/*------------------------------------------Инициализация консоли-----------------------------------------*/
+/*------------------------------------------������������� �������-----------------------------------------*/
+void ReadHistory()
+{
+	fpHistory = fopen(HistoryPath, "r");
+	if (fpHistory != NULL)
+	{
+		fseek(fpHistory, 0, SEEK_END);
+		long pos = ftell(fpHistory);
+		if (pos>0)
+		{
+			rewind(fpHistory);
+			char *str = (char*)malloc(MAX_CONSOLE_INPUT);
+			while (fgets(str, MAX_CONSOLE_INPUT, fpHistory))
+			{
+
+				str[strlen(str) - 1] = '\0';
+				DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
+				cnt++;
+			}
+			free(str);
+		}
+		fclose(fpHistory);
+	}
+
+}
+void WriteHistory()
+{
+	fpHistory = fopen(HistoryPath, "w");
+
+	while (CurrHist->up)
+	{
+		CurrHist = CurrHist->up;
+	}
+	while (CurrHist->down)
+	{
+		if (strcmp((char*)CurrHist->value, ""))
+		{
+			fprintf(fpHistory, "%s\n", (char*)CurrHist->value);
+		}
+		CurrHist = CurrHist->down;
+	}
+	fclose(fpHistory);
+}
 void ConsoleInitialisation()
 {
 	CurrentDirectory = (char*)malloc(MAX_PATH + 1);
@@ -98,13 +145,20 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
-	DoubleLinklistAddUpmost(&CurrHist, "", 1);//добавляем "ничто" в историю
+	HistoryPath = getenv("USERPROFILE");
+	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//�������� ����������
+
+	CreateDirectoryA(HistoryPath, NULL);
+	SetFileAttributesA(HistoryPath, FILE_ATTRIBUTE_HIDDEN);
+	strcat(HistoryPath, "\\history.txt");//��������� ��� ����� ����� ��������� ���� � ����
+	DoubleLinklistAddUpmost(&CurrHist, "", 1);//��������� "�����" � �������
+	ReadHistory();
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//поправка на перетаскивание символов backspace'ом
+	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//�������� �� �������������� �������� backspace'��
 	ReprintConsoleBuffer();
 }
 
-/*---------------------------------------Обработка специальных клавиш------------------------------------*/
+/*---------------------------------------��������� ����������� ������------------------------------------*/
 
 void ConsoleCursorMoveLeft()
 {
@@ -183,11 +237,19 @@ void ConsoleEnter()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	while (CurrHist->down)//сбрасываем указатель истории, всегда сидим в самом низу
+	while (CurrHist->down)//���������� ��������� �������, ������ ����� � ����� ����
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
+		cnt++;
+		if (cnt>100)
+		{
+			DoubleLinklistRemoveUpmost(&CurrHist);
+			cnt--;
+		}
+
 		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
+		WriteHistory();
 	}
 	CursorOnEndString();
 	printf("\n");
@@ -247,6 +309,17 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			}
 			else return 0;
 		}
+		if ((Buff[i] == '&') || (Buff[i] == '|') || (Buff[i] == '>'))
+		{
+			*PosEntryStart = i + 1; int k = 0;
+			for (int j = i + 1; j < Buflen; j++)
+			{
+
+				entry[k] = Buff[j]; k++;
+			} printf("\n%s", entry); return 1;
+
+		}
+
 	}
 	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
 }
@@ -290,7 +363,7 @@ void ConsoleAutocompletion()
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, pos);
 		return;
-	} // дополнения не найдены
+	} // ���������� �� �������
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
 		if (len > MAX_CONSOLE_INPUT - posEntry) {
@@ -307,7 +380,7 @@ void ConsoleAutocompletion()
 
 		CursorOnEndString();
 		ConsolePrintChar(' ');
-	} //дополнение единственное, печатаем
+	} //���������� ������������, ��������
 	else {
 		FlagAutocompletions = 1;
 		cur = crn; cor = pos;
@@ -322,10 +395,14 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
-		FlagAutocompletions = 3;
-		printf("\n\n\n\n____________________________________________________");
+
+		XYlist.X = 0;
+		XYlist.Y = startPrintPoint.Y + 5;
+		FlagAutocompletions = 1;
+		SetConsoleCursorPosition(hConsole, XYlist);
+		printf("____________________________________________________");
 		while (LastFoundList != NULL) {
-			printf("\n%s", LastFoundList->value);
+			printf("\n%s", (char*)LastFoundList->value);
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
@@ -339,7 +416,7 @@ void DeleteListOfAutocomletion()
 		COORD posPrint = startPrintPoint, posCor = cor;
 		char*tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 		strcpy(tmp, Buff);
-
+		startPrintPoint = XYlist;
 		for (int i = 0; i < FlagAutocompletions; i++)
 		{
 			startPrintPoint.Y++;

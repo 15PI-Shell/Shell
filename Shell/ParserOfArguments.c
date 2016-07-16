@@ -42,7 +42,8 @@ int ParsOfArgs(char* str, SingleLinklistNode** args)
 			{
 				SingleLinklistAddDownmost(args, sp, strlen(sp)); //кладем в список аргументы
 				cnt_args++;
-				len -= strlen(sp) + cnt_spc+ cnt_quo;	//длина строки высчитывается заново, вычитая предыдущее содержимое строки
+				
+				len -= strlen(sp) + cnt_spc + cnt_quo;	//длина строки высчитывается заново, вычитая предыдущее содержимое строки
 				str += strlen(sp);					//прыгаем через слово, которое уже внесено в список
 				cnt_spc = 0;
 				cnt_quo = 0;
