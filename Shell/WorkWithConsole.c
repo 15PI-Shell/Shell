@@ -13,6 +13,7 @@ int cnt=0;
 FILE *fpHistory = NULL;
 char *HistoryPath;
 COORD XYlist;
+LPCWSTR History;
 /*-----------------------------------------������� ������ � ��������� �������---------------------------------------------------------------*/
 void ClearComline()
 {
@@ -105,9 +106,9 @@ void ReadHistory()
 		{	
 			rewind(fpHistory); 
 			char *str=(char*)malloc(MAX_CONSOLE_INPUT);
-			while (!(feof(fpHistory))) 
+			while (fgets(str, MAX_CONSOLE_INPUT, fpHistory))
 			{
-				fgets( str, MAX_CONSOLE_INPUT, fpHistory);
+				
 				str[strlen(str) - 1] = '\0';
 	DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
 				cnt++;
@@ -120,23 +121,21 @@ void ReadHistory()
 }
 void WriteHistory()
 {
-SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_NORMAL);
-fpHistory=fopen(HistoryPath, "w");
+	fpHistory = fopen(HistoryPath, "w");
 
-while(CurrHist->up)
-{
-CurrHist=CurrHist->up;
-}
-while (CurrHist->down)
-{
-	if ((char*)CurrHist->value != "")
+	while (CurrHist->up)
 	{
-		fprintf(fpHistory, "%s\n", (char*)CurrHist->value);
+		CurrHist = CurrHist->up;
 	}
-	CurrHist=CurrHist->down;
-}
-fclose(fpHistory);
- SetFileAttributes(HistoryPath, FILE_ATTRIBUTE_READONLY);
+	while (CurrHist->down)
+	{
+		if (strcmp((char*)CurrHist->value, ""))
+		{
+			fprintf(fpHistory, "%s\n", (char*)CurrHist->value);
+		}
+		CurrHist = CurrHist->down;
+	}
+	fclose(fpHistory);
 }
 void ConsoleInitialisation()
 {
@@ -148,7 +147,9 @@ void ConsoleInitialisation()
 	startPrintPoint = cor;
  	HistoryPath = getenv("USERPROFILE");
     	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//�������� ����������
+	
     CreateDirectoryA(HistoryPath, NULL);
+	SetFileAttributesA(HistoryPath, FILE_ATTRIBUTE_HIDDEN);
     strcat(HistoryPath, "\\history.txt");//��������� ��� ����� ����� ��������� ���� � ����
 	DoubleLinklistAddUpmost(&CurrHist, "", 1);//��������� "�����" � �������
 	ReadHistory();
