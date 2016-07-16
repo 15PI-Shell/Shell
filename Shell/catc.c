@@ -3,7 +3,17 @@
 char* cat(char* arg)
 {
 	FILE *fp = NULL;
-	fp = fopen(arg, "r");
+	SingleLinklistNode *ARList=NULL;
+	int n_ar;
+	n_ar = ParsOfArgs(arg, &ARList);
+	if (n_ar < 1)
+	{
+		printf("The number of arguments is not enough\n");
+		return -1;
+	}
+	char *fileName = (char*)malloc(strlen(arg));
+	strcpy(fileName, ARList->value);
+	fp = fopen(fileName, "r");
 	if (fp == NULL)
 	{
 		printf("FILe Openning Error\n");
@@ -13,13 +23,15 @@ char* cat(char* arg)
 	long pos = ftell(fp);
 	if (pos > 0)
 	{
+		rewind(fp);
 		char c;
-		while (!feof(fp))
+		while (!eof(fp))
 		{
 			fscanf(fp, "%c", &c);
 			printf("%c", c);
 		}
 	}
-	else return 0;
+	free(fileName);
 	fclose(fp);
+	return 0;
 }
