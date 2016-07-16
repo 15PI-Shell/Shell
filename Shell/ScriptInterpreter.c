@@ -82,9 +82,10 @@ int StringTermProc(TrieNode* VM, char* term, void** result)
 		if (scr[scptr] != '(')//TODO: переменная ещё!
 		{
 			int constant;
-			VM_GetVariable(VM, funcname, &constant, &ret);
-			scfailed = 1;
-			return 0;
+			*result = VM_GetVariable(VM, funcname, &constant, &ret);
+			if (scfailed)
+				return 1;
+			return 1;
 		}
 		else
 		{
@@ -269,7 +270,7 @@ void ProcAssignment(TrieNode* VM)
 
 	SkipSpaces();
 
-	GetTerm(ParseBeforeSemi(), &result, &termType);
+	GetTerm(VM, ParseBeforeSemi(), &result, &termType);
 	if (scr[scptr] == ';')
 		IncPtr();
 	else
