@@ -1,4 +1,4 @@
-﻿#include "WorkWithConsole.h"
+#include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
 SingleLinklistNode *LastFoundList = 0;
@@ -9,7 +9,7 @@ COORD cor, startPrintPoint;
 int cur;
 int FlagAutocompletions = 0;
 int DoubleTabFlag = 0;
-int cnt=0;
+int cnt = 0;
 FILE *fpHistory = NULL;
 char *HistoryPath;
 COORD XYlist;
@@ -97,27 +97,27 @@ void ConsolePrintChar(int key)
 /*------------------------------------------������������� �������-----------------------------------------*/
 void ReadHistory()
 {
-	fpHistory=fopen(HistoryPath, "r");
-	if (fpHistory!=NULL)
+	fpHistory = fopen(HistoryPath, "r");
+	if (fpHistory != NULL)
 	{
 		fseek(fpHistory, 0, SEEK_END);
 		long pos = ftell(fpHistory);
 		if (pos>0)
-		{	
-			rewind(fpHistory); 
-			char *str=(char*)malloc(MAX_CONSOLE_INPUT);
+		{
+			rewind(fpHistory);
+			char *str = (char*)malloc(MAX_CONSOLE_INPUT);
 			while (fgets(str, MAX_CONSOLE_INPUT, fpHistory))
 			{
-				
+
 				str[strlen(str) - 1] = '\0';
-	DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
+				DoubleLinklistInsertAbove(CurrHist, str, strlen(str));
 				cnt++;
 			}
 			free(str);
-	}
+		}
 		fclose(fpHistory);
 	}
-	
+
 }
 void WriteHistory()
 {
@@ -145,12 +145,12 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
- 	HistoryPath = getenv("USERPROFILE");
-    	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//�������� ����������
-	
-    CreateDirectoryA(HistoryPath, NULL);
+	HistoryPath = getenv("USERPROFILE");
+	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//�������� ����������
+
+	CreateDirectoryA(HistoryPath, NULL);
 	SetFileAttributesA(HistoryPath, FILE_ATTRIBUTE_HIDDEN);
-    strcat(HistoryPath, "\\history.txt");//��������� ��� ����� ����� ��������� ���� � ����
+	strcat(HistoryPath, "\\history.txt");//��������� ��� ����� ����� ��������� ���� � ����
 	DoubleLinklistAddUpmost(&CurrHist, "", 1);//��������� "�����" � �������
 	ReadHistory();
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
@@ -200,7 +200,7 @@ void ConsoleGetPrewHistory()
 	DeleteListOfAutocomletion();
 	if (CurrHist->up != NULL)
 	{
-		CurrHist= CurrHist->up;
+		CurrHist = CurrHist->up;
 		strcpy(Buff, CurrHist->value);
 		ResetCursor();
 		cur = 0;
@@ -243,11 +243,11 @@ void ConsoleEnter()
 	{
 		cnt++;
 		if (cnt>100)
-			{
-				DoubleLinklistRemoveUpmost(&CurrHist);
-				cnt--;
-			}
-		
+		{
+			DoubleLinklistRemoveUpmost(&CurrHist);
+			cnt--;
+		}
+
 		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
 		WriteHistory();
 	}
@@ -309,17 +309,17 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			}
 			else return 0;
 		}
-		if ((Buff[i]=='&')||(Buff[i]=='|')||(Buff[i]=='>'))
-			{
+		if ((Buff[i] == '&') || (Buff[i] == '|') || (Buff[i] == '>'))
+		{
 			*PosEntryStart = i + 1; int k = 0;
-				for (int j = i + 1; j < Buflen; j++)
-				{
+			for (int j = i + 1; j < Buflen; j++)
+			{
 
-					entry[k] = Buff[j]; k++;
-				} printf("\n%s", entry); return 1;
+				entry[k] = Buff[j]; k++;
+			} printf("\n%s", entry); return 1;
 
-			}
-	
+		}
+
 	}
 	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
 }
@@ -395,14 +395,14 @@ void  PrintListOfAutocompletion()
 {
 	if (FlagAutocompletions)
 	{
-		
-		XYlist.X=0;
-		XYlist.Y=startPrintPoint.Y+5;
+
+		XYlist.X = 0;
+		XYlist.Y = startPrintPoint.Y + 5;
 		FlagAutocompletions = 1;
-	SetConsoleCursorPosition(hConsole, XYlist); 	
-	printf("____________________________________________________");
+		SetConsoleCursorPosition(hConsole, XYlist);
+		printf("____________________________________________________");
 		while (LastFoundList != NULL) {
-			printf("\n%s",(char*)LastFoundList->value);
+			printf("\n%s", (char*)LastFoundList->value);
 			FlagAutocompletions++;
 			LastFoundList = LastFoundList->up;
 		}
@@ -416,7 +416,7 @@ void DeleteListOfAutocomletion()
 		COORD posPrint = startPrintPoint, posCor = cor;
 		char*tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
 		strcpy(tmp, Buff);
-		startPrintPoint=XYlist;
+		startPrintPoint = XYlist;
 		for (int i = 0; i < FlagAutocompletions; i++)
 		{
 			startPrintPoint.Y++;
@@ -431,4 +431,3 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
-
