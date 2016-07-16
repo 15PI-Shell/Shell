@@ -6,6 +6,7 @@ int ParsOfArgs(char* str, SingleLinklistNode** args)
 	int len = strlen(str);
 	char*str1;
 	str1 = str;
+	int cnt_args = 0;  //подсчет аргументов
 	int cnt_quo = 0; //подсчет кавычек
 	int cnt_spc = 0; //переменная для подсчета пробелов
 
@@ -40,7 +41,9 @@ int ParsOfArgs(char* str, SingleLinklistNode** args)
 			if (sp != 0)//wtf?
 			{
 				SingleLinklistAddDownmost(args, sp, strlen(sp)); //кладем в список аргументы
-				len -= strlen(sp) + cnt_spc+ cnt_quo;	//длина строки высчитывается заново, вычитая предыдущее содержимое строки
+				cnt_args++;
+				
+				len -= strlen(sp) + cnt_spc + cnt_quo;	//длина строки высчитывается заново, вычитая предыдущее содержимое строки
 				str += strlen(sp);					//прыгаем через слово, которое уже внесено в список
 				cnt_spc = 0;
 				cnt_quo = 0;
@@ -48,5 +51,5 @@ int ParsOfArgs(char* str, SingleLinklistNode** args)
 		}
 		else cnt_spc++; //иначе считаем количество пробелов
 	}
-	return 1;
+	return cnt_args;
 }
