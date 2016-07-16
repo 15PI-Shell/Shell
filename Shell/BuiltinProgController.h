@@ -11,6 +11,8 @@
 #include "sum.h"
 #include "Binary.h"
 #include "ChangeDirectory.h"
+#include "MathFunction.h"
+#include "StringFunction.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

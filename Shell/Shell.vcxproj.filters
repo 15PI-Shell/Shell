@@ -87,6 +87,12 @@
     <ClCompile Include="MathInterpreter.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="MathFunction.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="StringFunction.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -136,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="MathInterpreter.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunction.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="StringFunction.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

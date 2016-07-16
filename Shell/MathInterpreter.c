@@ -1,6 +1,7 @@
 ﻿#include "MathInterpreter.h"
+#include "BuiltinProgController.h"
 
-int ptr = -1, failed = 0;
+int ptr = -1, failed = 0, bracets = 0;
 char* str;
 
 double Term();
@@ -10,20 +11,23 @@ double Const();
 double Function(char* funct);
 double Variable(); //им всем не нужна видимость извне, поэтому тут
 
+void Pass()
+{
+	while (str[ptr] == ' ')
+		ptr++;
+}
+
 double Term()//Выражение = Слагаемое [+/- Выражение]
 {
 
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
-
-	while (str[ptr] == ' ')
-		ptr++;
+	Pass();
 
 	double ans;
 	ans = Summand();
 
-	while (str[ptr] == ' ')
-		ptr++;
+	Pass();
 
 	switch (str[ptr])
 	{
@@ -34,6 +38,11 @@ double Term()//Выражение = Слагаемое [+/- Выражение]
 	case '\0':
 		break;
 	case ')':
+		if (--bracets < 0)
+		{
+			failed = 1;
+			return 0;
+		}
 		ptr++;//пропускаем )
 			  //выражение закончилось
 		break;
@@ -49,8 +58,7 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	while (str[ptr] == ' ')
-		ptr++;
+	Pass();
 
 	int modify = 1;
 	switch (str[ptr])
@@ -67,8 +75,7 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 	double ans;
 	ans = Multipler();
 
-	while (str[ptr] == ' ')
-		ptr++;
+	Pass();
 
 	switch (str[ptr])
 	{
@@ -78,7 +85,7 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 		break;
 	case '/':
 		ptr++;
-		double checkAns = Multipler();
+		double checkAns = Summand();
 		if (checkAns)
 			ans /= checkAns;
 		else
@@ -94,13 +101,12 @@ double Multipler()//Множитель = Константа | Выражение
 {
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
-
-	while (str[ptr] == ' ')
-		ptr++;
+	Pass();
 
 	double ans;
 	if (str[ptr] == '(')//выражение в скобках
 	{
+		bracets++;
 		ptr++;//пропускаем (
 		ans = Term();
 	}
@@ -120,8 +126,11 @@ double Multipler()//Множитель = Константа | Выражение
 			failed = 1;
 			return 0;
 		}
+		Pass();
 		if (str[ptr] == '(')
+		{
 			ans = Function(str2);
+		}
 		else
 			ans = Variable();
 	}
@@ -132,9 +141,61 @@ double Multipler()//Множитель = Константа | Выражение
 
 double Function(char* funct)
 {
-	char* fun = (char*)malloc(strlen(funct) + 1);
-	double ans = Term();
-	return ans;
+	//char* fun = (char*)malloc(strlen(funct) + 1);
+	//strcpy(fun, funct);
+	//funct = fun;
+	char args[1000] = "";
+	int i = 0;
+	int bracets2 = 1;
+	//int ptr2 = ptr;
+	while ((str[++ptr] != ')') || (bracets2 != 1))
+	{
+		switch (str[ptr])
+		{
+		case '(':
+			bracets2++;
+			break;
+		case ')':
+			bracets2--;
+			break;
+		case 0:
+			failed = 1;
+			return 0;
+		}
+		args[i++] = str[ptr];
+	}
+	args[i] = 0;
+	ptr++;
+	BPC_Returns returns;
+	int copy_ptr = ptr;
+	char* str2 = (char*)malloc(strlen(str));
+	strcpy(str2, str);
+	char* ReturnPtr;
+	ReturnPtr = BPC_Execute(funct, args, &returns);
+	if (ReturnPtr == -1)
+	{
+		//ptr += copy_ptr;
+		failed = 1;
+		return 0;
+	}
+	if (returns == BPC_ReturnsDouble)
+	{
+		double ans = 0;
+		//copy_ptr = copy_ptr + ptr + 1;
+		MathInterpreter(ReturnPtr, &ans);
+		ptr = copy_ptr;
+		strcpy(str, str2);
+		return ans;
+		//free(funct);
+		free(str2);
+	}
+
+	else
+	{
+
+		failed = 1;
+		return 0;
+	}
 }
 
 double Variable()
@@ -147,8 +208,8 @@ double Const()
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	while (str[ptr] == ' ')
-		ptr++;
+	Pass();
+
 	if (str[ptr] < '0' || str[ptr] > '9')
 	{
 		failed = 1;
@@ -183,7 +244,9 @@ double Const()
 int MathInterpreter(char* expression, double* result)
 {
 	ptr = failed = 0;
-	str = expression;
+	str = (char*)malloc(strlen(expression));
+	strcpy(str, expression);
+	expression = str;
 
 	*result = Term();
 

@@ -10,6 +10,7 @@
 //((((5+2)*3)*4)*9 - ошибка, не совпадает колво скобок
 int main()
 {
+	BPC_Init();
 	double result;
 	char* expression = (char*)malloc(1000);
 	while (1)
@@ -24,7 +25,7 @@ int main()
 	return 0;//до остального дело не дойдёт
 
 
-	BPC_Init();
+	
 	ConsoleInitialisation();
 	int key;
 	while (1)
