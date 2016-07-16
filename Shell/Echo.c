@@ -2,5 +2,11 @@
 
 char* Echo(char* args)
 {
-	printf("%s\n", args);
+	while (*args)
+	{
+		if (*args != '"')
+			printf("%c", *args);
+		args++;
+	}
+	printf("\n");
 }

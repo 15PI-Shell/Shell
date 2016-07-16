@@ -14,7 +14,6 @@ int main()
 
 	string[fsize] = 0;
 
-	VM_Init();
 	BPC_Init();
 
 	EvalScript(string);

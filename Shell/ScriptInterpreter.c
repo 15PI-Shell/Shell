@@ -1,13 +1,19 @@
 #include "ScriptInterpreter.h"
 
 char* scr;
-int scptr, scfailed;
+int scptr, scfailed, row, coloumn;
 
 char* ParseName();
 char* ParseBeforeSemi();
 char* ParseInsideBrackets();
-char* ProcFunction(char* name, BPC_Returns* type);
+char* ProcFunction(TrieNode* VM, char* name, BPC_Returns* type);
 int ProcCondition();
+
+void IncPtr()
+{
+	scptr++;
+	coloumn++;
+}
 
 int CheckNextSyms(char* syms)
 {
@@ -23,7 +29,9 @@ void SkipSpaces()
 	int changed = 0;
 	while ((scr[scptr] == ' ' || scr[scptr] == '\t' || scr[scptr] == '\n' || scr[scptr] == '\r'))
 	{
-		scptr++;
+		if (scr[scptr] == '\n')
+			row++, coloumn = 0;
+		IncPtr();
 		changed = 1;
 	}
 
@@ -31,9 +39,10 @@ void SkipSpaces()
 	{
 		scptr += 2;
 		while (scr[scptr] && scr[scptr] != '\n')
-			scptr++;
+			IncPtr();
+		row++, coloumn = 0;
 		if (scr[scptr])
-			scptr++;
+			IncPtr();
 		changed = 1;
 	}
 
@@ -41,7 +50,11 @@ void SkipSpaces()
 	{
 		scptr += 2;
 		while (!CheckNextSyms("*/"))
-			scptr++;
+		{
+			if (scr[scptr] == '\n')
+				row++, coloumn = 0;
+			IncPtr();
+		}
 		if (scr[scptr] && scr[scptr + 1])
 			scptr += 2;
 		else
@@ -53,68 +66,133 @@ void SkipSpaces()
 		SkipSpaces();
 }
 
-char* StringTermProc(int from, char* term)
+int StringTermProc(TrieNode* VM, char* term, void** result)
 {
 	if (term[0] == '\"')
 	{
 		strtok(term, "\"");
-		return term + 1;
+		scptr += strlen(term + 1) + 2;//+"Э
+		*result = term + 1;
 	}
 	else
 	{
+		BPC_Returns ret;
 		//функция?
-		scptr = from + 1;
 		char* funcname = ParseName();
-		if (scr[scptr] != '(')
+		if (scr[scptr] != '(')//TODO: переменная ещё!
+		{
+			int constant;
+			VM_GetVariable(VM, funcname, &constant, &ret);
+			scfailed = 1;
+			return 0;
+		}
+		else
+		{
+			*result = ProcFunction(VM, funcname, &ret);
+		}
+	}
+	return 1;
+}
+
+void GetTerm(TrieNode* VM, char* term, void** result, BPC_Returns *type)
+{
+	SkipSpaces();
+	term = MkMemCopy(term, strlen(term));
+	if (MathInterpreter(term, result))
+	{
+		*type = BPC_ReturnsDouble;
+		scptr += strlen(term);
+	}
+	else
+	{
+		if (!StringTermProc(VM, term, result))
+		{
+			scfailed = 1;
+			return;
+		}
+		*type = BPC_ReturnsString;
+	}
+	//free(term) TODO: memleak
+}
+
+char* ParseBeforeComa()
+{
+	SkipSpaces();
+
+	int start = scptr;
+	int insidePtr = scptr;
+
+	int delta = 0;
+
+	while (scr[insidePtr])
+	{
+		if (scr[insidePtr] == '(')
+			delta++;
+		else if (scr[insidePtr] == ')')
+			delta--;
+		if ((scr[insidePtr] == ',' && delta == 0) || delta < 0)
+			break;
+		insidePtr++;
+	}
+
+	char* data = (char*)malloc(insidePtr - start + 1);
+	strncpy(data, scr + start, insidePtr - start);
+	data[insidePtr - start] = 0;
+
+	return data;
+}
+
+char* ProcFunction(TrieNode* VM, char* name, BPC_Returns* type)
+{
+	void* result;
+	char* args = (char*)malloc(1000);
+	char* tmp = (char*)malloc(1000);
+	*args = 0;
+	char* inside = ParseInsideBrackets();
+	char* part = ParseBeforeComa(inside);
+	int first = 1;
+	do
+	{
+		GetTerm(VM, part, &result, type);
+		if (scfailed)
+			return 0;
+		switch (*type)
+		{
+		case BPC_ReturnsInt:
+			sprintf(tmp, "%d", *((int*)result));
+			break;
+		case BPC_ReturnsDouble:
+			sprintf(tmp, "%lf", *((double*)result));
+			break;
+		case BPC_ReturnsString:
+			strcpy(tmp, "\"");
+			strcat(tmp, (char*)result);
+			strcat(tmp, "\"");
+			break;
+		}
+		if (!first)
+			strcat(args, " ");
+		else
+			first = 0;
+		strcat(args, tmp);
+
+		if (scr[scptr] == ',')
+			scptr++;
+		part = ParseBeforeComa();
+	} while (*part);
+	free(tmp);
+	char* res = BPC_Execute(name, args, type);
+	//TODO: mem leak args
+	if (res >= 0)
+	{
+		SkipSpaces();
+		if (scr[scptr] == ')')
+			IncPtr();
+		else
 		{
 			scfailed = 1;
 			return 0;
 		}
-		BPC_Returns ret;
-		return ProcFunction(funcname, &ret);
-	}
-	return 0;
-}
-
-void GetTerm(int from, char* term, void** result, BPC_Returns *type)
-{
-	if (MathInterpreter(term, result))
-		*type = BPC_ReturnsDouble;
-	else
-	{
-		*result = StringTermProc(from, term);
-		*type = BPC_ReturnsString;
-	}
-}
-
-char* ProcFunction(char* name, BPC_Returns* type)
-{
-	void* result;
-	char* args = (char*)malloc(1000);
-	int from = scptr;
-	GetTerm(from, ParseInsideBrackets(), &result, type);
-	if (scfailed)
-		return 0;
-	switch (*type)
-	{
-	case BPC_ReturnsInt:
-		sprintf(args, "%d", *((int*)result));
-		break;
-	case BPC_ReturnsDouble:
-		sprintf(args, "%lf", *((double*)result));
-		break;
-	case BPC_ReturnsString:
-		strcpy(args, (char*)result);
-		break;
-	}
-	char* res = BPC_Execute(name, args, type);
-	if (res >= 0)
-	{
-		SkipSpaces();
-		while (scr[scptr] == ')')
-			scptr++;
-		if (scr[scptr] == ';')
-			scptr++;
 		return res;
 	}
 	else
@@ -124,30 +202,44 @@ char* ProcFunction(char* name, BPC_Returns* type)
 	}
 }
 
-void ProcAssignment()
+void ProcAssignment(TrieNode* VM)
 {
 	char* name = ParseName();
+
+	void* result;
 
 	if (scfailed)
 		return;
 
-	BPC_Returns outerFuncRet;
+	BPC_Returns termType;
 
 	if (scr[scptr] == '(')
 	{
-		ProcFunction(name, &outerFuncRet);
+		scptr -= strlen(name);
+		GetTerm(VM, ParseBeforeSemi(), &result, &termType);
+		if (scr[scptr] == ';')
+			IncPtr();
+		else
+			scfailed = 1;
 		return;
 	}
 
 	BPC_Returns varType;
+	int constant;
 
-	void* currentVal = VM_GetVariable(name, &varType);
+	void* currentVal = VM_GetVariable(VM, name, &constant, &varType);
+
+	if (constant)
+		scfailed = 1;
+
+	if (scfailed)
+		return;
 
 	int mode;
 
 	if (CheckNextSyms("="))
 	{
-		scptr++;
+		IncPtr();
 		mode = 0;
 	}
 	else
@@ -174,23 +266,16 @@ void ProcAssignment()
 						scptr += 2;
 						mode = 4;
 					}
-	SkipSpaces();
-	void* result;
-	BPC_Returns termType;
 
-	int ptrbkp = scptr;
-	char* funcname = ParseName();
-	if (scfailed || scr[scptr] != '(')
-	{
-		scptr = ptrbkp;
-		scfailed = 0;
-		char* bsemi = ParseBeforeSemi();
-		int from = scptr;
-		GetTerm(from, bsemi, &result, &termType);
-	}
+	SkipSpaces();
+
+	GetTerm(ParseBeforeSemi(), &result, &termType);
+	if (scr[scptr] == ';')
+		IncPtr();
 	else
 	{
-		result = ProcFunction(funcname, &termType);
+		scfailed = 1;
+		return;
 	}
 
 	if (scfailed)
@@ -198,47 +283,36 @@ void ProcAssignment()
 
 	if (varType == BPC_ReturnsString)
 	{
-		char* toAssign = (char*)malloc(1000);
 		char *val = (char*)currentVal;
 
 		switch (mode)
 		{
 		case 0:
-			strcpy(toAssign, (char*)result);
+			strcpy(val, (char*)result);
 			break;
 		case 1:
-			strcpy(toAssign, (char*)val);
-			strcat(toAssign, (char*)result);
+			strcat(val, (char*)result);
 			break;
 		default:
 			scfailed = 1;
 			return;
 		}
-		VM_SetVariable(name, toAssign);
+		printf("Setting %s to %s\n", name, (char*)val);
+		//VM_SetVariable(name, val);//не нужно?
 	}
 	else
 	{
 		if (termType == BPC_ReturnsString)
 		{
 			scfailed = 1;
-			return 0;
+			return;
 		}
 
 		if (varType == BPC_ReturnsInt)
 		{
 			int toAssign = *((double*)result);
-			int *val;
-			if (currentVal)
-				val = ((int*)currentVal);
-			else if (mode != 0)
-			{
-				scfailed = 1;
-				return;
-			}
-			else
-			{
-				val = (int*)malloc(sizeof(int));
-			}
+			int *val = (int*)currentVal;
+
 			switch (mode)
 			{
 			case 0:
@@ -254,26 +328,22 @@ void ProcAssignment()
 				*val *= toAssign;
 				break;
 			case 4:
+				if (!toAssign)
+				{
+					scfailed = 1;
+					return;
+				}
 				*val /= toAssign;
 				break;
 			}
-			VM_SetVariable(name, val);
+			printf("Setting %s to %d\n", name, *((int*)val));
+			//VM_SetVariable(name, val);//не нужно?
 		}
 		else if (varType == BPC_ReturnsDouble)
 		{
 			double toAssign = *((double*)result);
-			double *val;//TODO: Memory leak
-			if (currentVal)
-				val = ((double*)currentVal);
-			else if (mode != 0)
-			{
-				scfailed = 1;
-				return;
-			}
-			else
-			{
-				val = (int*)malloc(sizeof(double));
-			}
+			double *val = (double*)currentVal;
+
 			switch (mode)
 			{
 			case 0:
@@ -289,10 +359,16 @@ void ProcAssignment()
 				*val *= toAssign;
 				break;
 			case 4:
+				if (!toAssign)
+				{
+					scfailed = 1;
+					return;
+				}
 				*val /= toAssign;
 				break;
 			}
-			VM_SetVariable(name, val);
+			printf("Setting %s to %lf\n", name, *((double*)val));
+			//VM_SetVariable(name, val);//не нужно?
 		}
 	}
 }
@@ -302,15 +378,14 @@ char* ParseBeforeSemi()
 	SkipSpaces();
 
 	int start = scptr;
+	int insidePtr = scptr;
 
-	while (!CheckNextSyms(";"))
-		scptr++;
+	while (scr[insidePtr] && (scr[insidePtr] != ';'))
+		insidePtr++;
 
-	char* data = (char*)malloc(scptr - start + 1);
-	strncpy(data, scr + start, scptr - start);
-	data[scptr - start] = 0;
-	scptr++;//за ;
-	SkipSpaces();
+	char* data = (char*)malloc(insidePtr - start + 1);
+	strncpy(data, scr + start, insidePtr - start);
+	data[insidePtr - start] = 0;
 
 	return data;
 }
@@ -327,7 +402,7 @@ char* ParseName()
 
 	int start = scptr;
 	while ((scr[scptr] >= 'A' && scr[scptr] <= 'Z') || (scr[scptr] >= 'a' && scr[scptr] <= 'z') || (scr[scptr] >= '0' && scr[scptr] <= '9'))
-		scptr++;
+		IncPtr();
 	char* varname = (char*)malloc(scptr - start + 1);
 	strncpy(varname, scr + start, scptr - start);
 	varname[scptr - start] = 0;
@@ -339,14 +414,15 @@ char* ParseName()
 
 char* ParseInsideBrackets()
 {
-	scptr++;//пропускаем (
-	int delta = 1, start = scptr;
-	while (delta != 0 && scr[scptr])
+	IncPtr();//пропускаем (
+	int insidePtr = scptr;
+	int delta = 1, start = insidePtr;
+	while (delta != 0 && scr[insidePtr])
 	{
-		scptr++;
-		if (scr[scptr] == '(')
+		insidePtr++;
+		if (scr[insidePtr] == '(')
 			delta++;
-		else if (scr[scptr] == ')')
+		else if (scr[insidePtr] == ')')
 			delta--;
 	}
 
@@ -356,11 +432,10 @@ char* ParseInsideBrackets()
 		return 0;
 	}
 
-	char* data = (char*)malloc(scptr - start + 1);
-	strncpy(data, scr + start, scptr - start);
-	data[scptr - start] = 0;
-	scptr++;
-	SkipSpaces();
+	char* data = (char*)malloc(insidePtr - start + 1);
+	strncpy(data, scr + start, insidePtr - start);
+	data[insidePtr - start] = 0;
+	insidePtr++;
 
 	return data;
 }
@@ -368,8 +443,8 @@ char* ParseInsideBrackets()
 char* ParseSingleCondition()
 {
 	int start = scptr;
-	while (scr[scptr] && (!CheckNextSyms("&&") && !CheckNextSyms("||") && !CheckNextSyms(")")))
-		scptr++;
+	while (!CheckNextSyms("&&") && !CheckNextSyms("||") && !CheckNextSyms(")"))
+		IncPtr();
 
 	char* data = (char*)malloc(scptr - start + 1);
 	strncpy(data, scr + start, scptr - start);
@@ -396,32 +471,32 @@ int ProcCondition()
 
 	GetTerm(from, left, &Lresult, &Ltype);//TODO: избавится от from
 	GetTerm(from, right, &Rresult, &Rtype);*/
+
 	if (CheckNextSyms("&&"))
 	{
 		scptr += 2;
 		int rightPart = ProcCondition();
 		return 1;
-	} 
-	else
-	if (CheckNextSyms("||"))
-	{
-		scptr += 2;
-		int rightPart = ProcCondition();
-		return 1;
 	}
 	else
-	if (CheckNextSyms(")"))
-	{
-		scptr++;
-		//последнее
-		return 1;
-	}
+		if (CheckNextSyms("||"))
+		{
+			scptr += 2;
+			int rightPart = ProcCondition();
+			return 1;
+		}
+		else
+			if (CheckNextSyms(")"))
+			{
+				IncPtr();
+				//последнее
+				return 1;
+			}
 	scfailed = 1;
 	return 0;
 }
 
-
-void Block()
+void Block(TrieNode* VM)
 {
 	SkipSpaces();
 	if (0 == scr[scptr])
@@ -432,7 +507,7 @@ void Block()
 		scptr += 2;
 		SkipSpaces();
 		if (scr[scptr] == '(')
-			scptr++;
+			IncPtr();
 		else
 		{
 			scfailed = 1;
@@ -446,7 +521,7 @@ void Block()
 			scptr += 5;
 			SkipSpaces();
 			if (scr[scptr] == '(')
-				scptr++;
+				IncPtr();
 			else
 			{
 				scfailed = 1;
@@ -464,13 +539,27 @@ void Block()
 			}
 			else
 			{
-				ProcAssignment();
+				ProcAssignment(VM);
 			}
+}
+
+void ParseDeclaresAs(TrieNode* VM, BPC_Returns type)
+{
+	while (!CheckNextSyms(";") && !scfailed)
+	{
+		VM_DeclareVariable(VM, ParseName(), 0, type);
+		if (scr[scptr] != ',' && scr[scptr] != ';')
+			scfailed = 1;
+		if (scr[scptr] == ',')
+			IncPtr();
+	}
 }
 
 int EvalScript(char* script)
 {
-	scptr = scfailed = 0;
+	TrieNode* VM = Trie_Create();//TODO: memleak
+
+	scptr = scfailed = row = coloumn = 0;
 	scr = script;
 
 	while (!CheckNextSyms("begin") && !scfailed)
@@ -479,41 +568,20 @@ int EvalScript(char* script)
 		if (CheckNextSyms("int "))
 		{
 			scptr += 4;
-			while (!CheckNextSyms(";") && !scfailed)
-			{
-				VM_DeclareVariable(ParseName(), BPC_ReturnsInt);
-				if (scr[scptr] != ',' && scr[scptr] != ';')
-					scfailed = 1;
-				if (scr[scptr] == ',')
-					scptr++;
-			}
-			scptr++;
+			ParseDeclaresAs(VM, BPC_ReturnsInt);
+			IncPtr();
 		}
 		if (CheckNextSyms("double "))
 		{
 			scptr += 7;
-			while (!CheckNextSyms(";") && !scfailed)
-			{
-				VM_DeclareVariable(ParseName(), BPC_ReturnsDouble);
-				if (scr[scptr] != ',' && scr[scptr] != ';')
-					scfailed = 1;
-				if (scr[scptr] == ',')
-					scptr++;
-			}
-			scptr++;
+			ParseDeclaresAs(VM, BPC_ReturnsDouble);
+			IncPtr();
 		}
 		if (CheckNextSyms("string "))
 		{
 			scptr += 7;
-			while (!CheckNextSyms(";") && !scfailed)
-			{
-				VM_DeclareVariable(ParseName(), BPC_ReturnsString);
-				if (scr[scptr] != ',' && scr[scptr] != ';')
-					scfailed = 1;
-				if (scr[scptr] == ',')
-					scptr++;
-			}
-			scptr++;
+			ParseDeclaresAs(VM, BPC_ReturnsString);
+			IncPtr();
 		}
 	}
 
@@ -524,12 +592,12 @@ int EvalScript(char* script)
 
 	while (!CheckNextSyms("end") && !scfailed)
 	{
-		Block();
+		Block(VM);
 		SkipSpaces();
 	}
 
 	if (scfailed)
-		printf("scfailed on %d\n\n", scptr);
+		printf("Failed on %d sym \'%c\' (%d row %d col)\n\n", scptr, scr[scptr], row + 1, coloumn + 1);
 
 	getch();
 

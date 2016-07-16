@@ -3,7 +3,5 @@
 #include "BuiltinProgController.h"
 #include "Trie.h"
 
-void* VM_GetVariable(char* name, BPC_Returns* type);
-void VM_SetVariable(char* name, void* value);
-void VM_DeclareVariable(char* name, BPC_Returns type);
-void VM_Init();
+void* VM_GetVariable(TrieNode* trieRoot, char* name, int* constant, BPC_Returns* type);
+void VM_DeclareVariable(TrieNode* trieRoot, char* name, int constant, BPC_Returns type);

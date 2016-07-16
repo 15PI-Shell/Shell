@@ -3,6 +3,9 @@ double a, b;
 string str1, /*кстати это тоже уже работает*/ str2;
 
 begin
+	echo(binary("2"));
+	echo(5*5, "=", 25*1);
+	b = (5/5)*5;
 	i = 2 * 2;
 	a = 0.5 * 50;
 	
