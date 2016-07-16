@@ -6,7 +6,7 @@ int ParsOfArgs(char* str, SingleLinklistNode** args)
 	int len = strlen(str);
 	char*str1;
 	str1 = str;
-	int cnt_args=0;  //подсчет аргументов
+	int cnt_args = 0;  //подсчет аргументов
 	int cnt_quo = 0; //подсчет кавычек
 	int cnt_spc = 0; //переменная для подсчета пробелов
 
