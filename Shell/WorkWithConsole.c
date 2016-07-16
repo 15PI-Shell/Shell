@@ -316,7 +316,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			{
 
 				entry[k] = Buff[j]; k++;
-			} printf("\n%s", entry); return 1;
+			}  return 1;
 
 		}
 
@@ -419,8 +419,8 @@ void DeleteListOfAutocomletion()
 		startPrintPoint = XYlist;
 		for (int i = 0; i < FlagAutocompletions; i++)
 		{
-			startPrintPoint.Y++;
 			ClearComline();
+			startPrintPoint.Y++;
 		}
 		startPrintPoint = posPrint;
 		cor = posCor;
