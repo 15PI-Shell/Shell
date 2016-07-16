@@ -9,7 +9,7 @@ double Summand();
 double Multipler();
 double Const();
 double Function(char* funct);
-double Variable(); //им всем не нужна видимость извне, поэтому тут
+double Variable(char* Var); //им всем не нужна видимость извне, поэтому тут
 
 void Pass()
 {
@@ -132,7 +132,7 @@ double Multipler()//Множитель = Константа | Выражение
 			ans = Function(str2);
 		}
 		else
-			ans = Variable();
+			ans = Variable(str2);
 	}
 	else
 		ans = Const();
@@ -141,13 +141,9 @@ double Multipler()//Множитель = Константа | Выражение
 
 double Function(char* funct)
 {
-	//char* fun = (char*)malloc(strlen(funct) + 1);
-	//strcpy(fun, funct);
-	//funct = fun;
 	char args[1000] = "";
 	int i = 0;
 	int bracets2 = 1;
-	//int ptr2 = ptr;
 	while ((str[++ptr] != ')') || (bracets2 != 1))
 	{
 		switch (str[ptr])
@@ -174,19 +170,16 @@ double Function(char* funct)
 	ReturnPtr = BPC_Execute(funct, args, &returns);
 	if (ReturnPtr == -1)
 	{
-		//ptr += copy_ptr;
 		failed = 1;
 		return 0;
 	}
 	if (returns == BPC_ReturnsDouble)
 	{
 		double ans = 0;
-		//copy_ptr = copy_ptr + ptr + 1;
 		MathInterpreter(ReturnPtr, &ans);
 		ptr = copy_ptr;
 		strcpy(str, str2);
 		return ans;
-		//free(funct);
 		free(str2);
 	}
 
@@ -198,8 +191,9 @@ double Function(char* funct)
 	}
 }
 
-double Variable()
+double Variable(char* Var)
 {
+	//Здесь нужна функция, которая будет возвращать число
 	return 1;
 }
 

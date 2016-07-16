@@ -20,7 +20,7 @@ int main()
 		if (MathInterpreter(expression, &result))
 			printf("Answer: %lf\n", result);
 		else
-			printf("Error on %d\n", (int)result);
+			printf("Error");
 	}
 	return 0;//до остального дело не дойдёт
 

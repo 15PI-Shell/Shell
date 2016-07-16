@@ -93,6 +93,9 @@
     <ClCompile Include="StringFunction.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="Arguments.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="StringFunction.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="Arguments.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

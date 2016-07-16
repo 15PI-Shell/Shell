@@ -2,6 +2,7 @@
 
 #include <stdio.h>//не нужен, но для дебага мб
 #include <stdlib.h>
+#include "Arguments.h"
 
 typedef long long lld;
 

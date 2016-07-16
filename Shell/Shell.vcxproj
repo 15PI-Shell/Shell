@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arguments.c" />
     <ClCompile Include="Binary.c" />
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="DirectoryExists.c" />
@@ -96,6 +97,7 @@
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arguments.h" />
     <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
