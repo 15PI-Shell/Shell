@@ -90,7 +90,19 @@
     <ClCompile Include="Trie.c">
       <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptInterpreter.c">
+    <ClCompile Include="MathInterpreter.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunction.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="StringFunction.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="Arguments.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+	<ClCompile Include="ScriptInterpreter.c">
       <Filter>Файлы исходного кода\Script</Filter>
     </ClCompile>
     <ClCompile Include="VarManager.c">
@@ -158,6 +170,18 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
     </ClInclude>
+    <ClInclude Include="MathInterpreter.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunction.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="StringFunction.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="Arguments.h">
+      <Filter>Заголовочные файлы</Filter>
+	</ClInclude>
     <ClInclude Include="ScriptInterpreter.h">
       <Filter>Заголовочные файлы\Script</Filter>
     </ClInclude>

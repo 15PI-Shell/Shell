@@ -1,34 +1,128 @@
 #include "MathInterpreter.h"
+#include "BuiltinProgController.h"
 
-int ptr = 0, failed = 0;
+int ptr = -1, failed = 0, bracets = 0;
 char* str;
 
 double Term();
 double Summand();
 double Multipler();
 double Const();
-double Variable;//им всем не нужна видимость извне, поэтому тут
+double Function(char* funct);
+double Variable(char* Var); 
+void shift(char* out, int key);
+char* GetRightExpression(char* expression); //РёРј РІСЃРµРј РЅРµ РЅСѓР¶РЅР° РІРёРґРёРјРѕСЃС‚СЊ РёР·РІРЅРµ, РїРѕСЌС‚РѕРјСѓ С‚СѓС‚
 
-double Term()//Выражение = Слагаемое [+/- Выражение]
+void Pass()
 {
+	while (str[ptr] == ' ')
+		ptr++;
+}
+
+void shift(char* out, int key)
+{
+	for (int i = strlen(out); i >= key; i--)
+	{
+		out[i + 1] = out[i];
+	}
+}
+
+char* GetRightExpression(char* expression)
+{
+	int brac = 0;
+	char* out = (char*)malloc(2 * strlen(expression));
+	strcpy(out, expression);
+	int i = -1, open = 0, close = 0;
+	while (out[++i])
+	{
+		switch (out[i])
+		{
+		case '/':
+			if (close == -1)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			else
+			{
+				shift(out, open);
+				out[open] = '(';
+				open = 0;
+				close = -1;
+				i++;
+			}
+			break;
+		case '*':
+			if (close == -1)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			break;
+		case '+':
+		case '-':
+			if (close == -1)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			else if (brac == 0)
+				open = i + 1;
+			break;
+		case '(':
+			if (close == -1)
+				close = -2;
+			else
+				open = i;
+			brac++;
+			break;
+		case ')':
+			if (close == -2)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			brac--;
+			break;
+		}
+	}
+	if (close == -1)
+		strcat(out, ")");
+	return out;
+}
+
+double Term()//Р’С‹СЂР°Р¶РµРЅРёРµ = РЎР»Р°РіР°РµРјРѕРµ [+/- Р’С‹СЂР°Р¶РµРЅРёРµ]
+{
+
 	if (failed)
-		return 0;//если где-то ошибка, то завершаем рекурсию
+		return 0;//РµСЃР»Рё РіРґРµ-С‚Рѕ РѕС€РёР±РєР°, С‚Рѕ Р·Р°РІРµСЂС€Р°РµРј СЂРµРєСѓСЂСЃРёСЋ
+	Pass();
 
 	double ans;
 	ans = Summand();
-	if (str[ptr] == ' ')
-		ptr++;
+
+	Pass();
+
 	switch (str[ptr])
 	{
-	case '-'://два case указывающих на одно место, хорошая штука
+	case '-'://РґРІР° case СѓРєР°Р·С‹РІР°СЋС‰РёС… РЅР° РѕРґРЅРѕ РјРµСЃС‚Рѕ, С…РѕСЂРѕС€Р°СЏ С€С‚СѓРєР°
 	case '+':
 		ans += Term();
 		break;
-	case ')':
-		ptr++;//пропускаем )
-			  //выражение закончилось
-		break;
 	case '\0':
+		break;
+	case ')':
+		if (--bracets < 0)
+		{
+			failed = 1;
+			return 0;
+		}
+		ptr++;//РїСЂРѕРїСѓСЃРєР°РµРј )
+			  //РІС‹СЂР°Р¶РµРЅРёРµ Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ
 		break;
 	default:
 		failed = 1;
@@ -37,13 +131,13 @@ double Term()//Выражение = Слагаемое [+/- Выражение]
 	return ans;
 }
 
-double Summand()//Слагаемое = Множитель [* Слагаемое]
+double Summand()//РЎР»Р°РіР°РµРјРѕРµ = РњРЅРѕР¶РёС‚РµР»СЊ [* РњРЅРѕР¶РёС‚РµР»СЊ]
 {
 	if (failed)
-		return 0;//если где-то ошибка, то завершаем рекурсию
+		return 0;//РµСЃР»Рё РіРґРµ-С‚Рѕ РѕС€РёР±РєР°, С‚Рѕ Р·Р°РІРµСЂС€Р°РµРј СЂРµРєСѓСЂСЃРёСЋ
 
-	if (str[ptr] == ' ')
-		ptr++;
+	Pass();
+
 	int modify = 1;
 	switch (str[ptr])
 	{
@@ -54,16 +148,17 @@ double Summand()//Слагаемое = Множитель [* Слагаемое]
 		modify = -1;
 		ptr++;
 		break;
-	}//иначе это константа без знака
+	}//РёРЅР°С‡Рµ СЌС‚Рѕ РєРѕРЅСЃС‚Р°РЅС‚Р° Р±РµР· Р·РЅР°РєР°
 
 	double ans;
 	ans = Multipler();
-	if (str[ptr] == ' ')
-		ptr++;
+
+	Pass();
+
 	switch (str[ptr])
 	{
 	case '*':
-		ptr++;//пропускаем *
+		ptr++;//РїСЂРѕРїСѓСЃРєР°РµРј *
 		ans *= Summand();
 		break;
 	case '/':
@@ -80,31 +175,114 @@ double Summand()//Слагаемое = Множитель [* Слагаемое]
 	return ans * modify;
 }
 
-double Multipler()//Множитель = Константа | Выражение
+double Multipler()//РњРЅРѕР¶РёС‚РµР»СЊ = РљРѕРЅСЃС‚Р°РЅС‚Р° | Р’С‹СЂР°Р¶РµРЅРёРµ
 {
 	if (failed)
-		return 0;//если где-то ошибка, то завершаем рекурсию
+		return 0;//РµСЃР»Рё РіРґРµ-С‚Рѕ РѕС€РёР±РєР°, С‚Рѕ Р·Р°РІРµСЂС€Р°РµРј СЂРµРєСѓСЂСЃРёСЋ
+	Pass();
 
-	if (str[ptr] == ' ')
-		ptr++;
 	double ans;
-	if (str[ptr] == '(')//выражение в скобках
+	if (str[ptr] == '(')//РІС‹СЂР°Р¶РµРЅРёРµ РІ СЃРєРѕР±РєР°С…
 	{
-		ptr++;//пропускаем (
+		bracets++;
+		ptr++;//РїСЂРѕРїСѓСЃРєР°РµРј (
 		ans = Term();
+	}
+	else if (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
+	{
+		char str2[20];
+		int i = 0;
+		while (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
+		{
+			str2[i] = str[ptr];
+			ptr++;
+			i++;
+		}
+		str2[i] = 0;
+		if (str[ptr] >= '0'&&str[ptr] <= '9')
+		{
+			failed = 1;
+			return 0;
+		}
+		Pass();
+		if (str[ptr] == '(')
+		{
+			ans = Function(str2);
+		}
+		else
+			ans = Variable(str2);
 	}
 	else
 		ans = Const();
 	return ans;
 }
 
+double Function(char* funct)
+{
+	char args[1000] = "";
+	int i = 0;
+	int bracets2 = 1;
+	while ((str[++ptr] != ')') || (bracets2 != 1))
+	{
+		switch (str[ptr])
+		{
+		case '(':
+			bracets2++;
+			break;
+		case ')':
+			bracets2--;
+			break;
+		case 0:
+			failed = 1;
+			return 0;
+		}
+		args[i++] = str[ptr];
+	}
+	args[i] = 0;
+	ptr++;
+	strcpy(args, RetRightArg(args));
+	BPC_Returns returns;
+	int copy_ptr = ptr;
+	char* str2 = (char*)malloc(strlen(str));
+	strcpy(str2, str);
+	char* ReturnPtr;
+	ReturnPtr = BPC_Execute(funct, args, &returns);
+	if (ReturnPtr == -1)
+	{
+		failed = 1;
+		return 0;
+	}
+	if (returns == BPC_ReturnsDouble)
+	{
+		double ans = 0;
+		MathInterpreter(ReturnPtr, &ans);
+		ptr = copy_ptr;
+		strcpy(str, str2);
+		return ans;
+		free(str2);
+	}
+
+	else
+	{
+
+		failed = 1;
+		return 0;
+	}
+}
+
+double Variable(char* Var)
+{
+	//Р—РґРµСЃСЊ РЅСѓР¶РЅР° С„СѓРЅРєС†РёСЏ, РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РІРѕР·РІСЂР°С‰Р°С‚СЊ С‡РёСЃР»Рѕ
+	return 1;
+}
+
 double Const()
 {
 	if (failed)
-		return 0;//если где-то ошибка, то завершаем рекурсию
+		return 0;//РµСЃР»Рё РіРґРµ-С‚Рѕ РѕС€РёР±РєР°, С‚Рѕ Р·Р°РІРµСЂС€Р°РµРј СЂРµРєСѓСЂСЃРёСЋ
 
-	if (str[ptr] == ' ')
-		ptr++;
+	Pass();
+
 	if (str[ptr] < '0' || str[ptr] > '9')
 	{
 		failed = 1;
@@ -136,21 +314,17 @@ double Const()
 	return ans;
 }
 
-int MathInterpreter(char* expression, double** result)
+int MathInterpreter(char* expression, double* result)
 {
 	ptr = failed = 0;
-	str = expression;
-	
-	double* ans = (double*)malloc(sizeof(double));
-	*ans = Term();
+	str = GetRightExpression(expression);
+	*result = Term();
 
-	if (str[ptr] != 0)//остались ещё какие-то символы, например лишние закрывающие скобки
+	if (str[ptr] != 0)//РѕСЃС‚Р°Р»РёСЃСЊ РµС‰С‘ РєР°РєРёРµ-С‚Рѕ СЃРёРјРІРѕР»С‹, РЅР°РїСЂРёРјРµСЂ Р»РёС€РЅРёРµ Р·Р°РєСЂС‹РІР°СЋС‰РёРµ СЃРєРѕР±РєРё
 		failed = 1;
 
-	*result = ans;
-
 	if (failed)
-		*result = ptr;//сохраним где упали
+		*result = ptr;//СЃРѕС…СЂР°РЅРёРј РіРґРµ СѓРїР°Р»Рё
 
 	return !failed;
 }

@@ -76,9 +76,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arguments.c" />
     <ClCompile Include="Binary.c" />
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="DirectoryExists.c" />
+    <ClCompile Include="MathFunction.c" />
+    <ClCompile Include="MathInterpreter.c" />
+    <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="StringFunction.c" />
     <ClCompile Include="Echo.c" />
     <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
@@ -100,6 +105,7 @@
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arguments.h" />
     <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
@@ -109,6 +115,7 @@
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="MathFunction.h" />
     <ClInclude Include="MathInterpreter.h" />
     <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="ScriptInterpreter.h" />
@@ -117,6 +124,7 @@
     <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="StringFunction.h" />
     <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />
     <ClInclude Include="Trie.h" />
