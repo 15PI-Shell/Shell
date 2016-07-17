@@ -79,6 +79,7 @@
     <ClCompile Include="Binary.c" />
     <ClCompile Include="catc.c" />
     <ClCompile Include="ChangeDirectory.c" />
+    <ClCompile Include="diff.c" />
     <ClCompile Include="DirectoryExists.c" />
     <ClCompile Include="History.c" />
     <ClCompile Include="ParserOfArguments.c" />
@@ -101,6 +102,7 @@
     <ClInclude Include="BuiltinProgInterpretator.h" />
     <ClInclude Include="cat.h" />
     <ClInclude Include="ChangeDirectory.h" />
+    <ClInclude Include="diff.h" />
     <ClInclude Include="DirectoryExists.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="GetClipboardContent.h" />

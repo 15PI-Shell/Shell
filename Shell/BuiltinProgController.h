@@ -14,6 +14,8 @@
 #include "History.h"
 #include "tail.h"
 #include "cat.h"
+#include "diff.h"
+
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum
 {
