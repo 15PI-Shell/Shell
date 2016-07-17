@@ -102,6 +102,12 @@
     <ClCompile Include="Echo.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptParsers.c">
+      <Filter>Файлы исходного кода\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptProcessors.c">
+      <Filter>Файлы исходного кода\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -160,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="echo.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptProcessors.h">
+      <Filter>Заголовочные файлы\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptParsers.h">
+      <Filter>Заголовочные файлы\Script</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
