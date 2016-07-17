@@ -27,17 +27,19 @@ void BPC_Init()
 	RegisterProgram("Sum", sumProc, BPC_ReturnsInt);
 	RegisterProgram("Binary", BinaryProc, BPC_ReturnsString);
 	RegisterProgram("cd", ChangeDirectory, BPC_ReturnsNothing);
-	RegisterProgram  ("sin", MathFun_sin, BPC_ReturnsDouble);
-	RegisterProgram  ("cos", MathFun_cos, BPC_ReturnsDouble);
-	RegisterProgram  ("tan", MathFun_tan, BPC_ReturnsDouble);
-	RegisterProgram  ("cot", MathFun_cot, BPC_ReturnsDouble);
-	RegisterProgram  ("log", MathFun_log, BPC_ReturnsDouble);
-	RegisterProgram  ("exp", MathFun_exp, BPC_ReturnsDouble);
+
+	RegisterProgram("sin", MathFun_sin, BPC_ReturnsDouble);
+	RegisterProgram("cos", MathFun_cos, BPC_ReturnsDouble);
+	RegisterProgram("tan", MathFun_tan, BPC_ReturnsDouble);
+	RegisterProgram("cot", MathFun_cot, BPC_ReturnsDouble);
+	RegisterProgram("log", MathFun_log, BPC_ReturnsDouble);
+	RegisterProgram("exp", MathFun_exp, BPC_ReturnsDouble);
 	RegisterProgram("sqrt", MathFun_sqrt, BPC_ReturnsDouble);
-	RegisterProgram  ("pow", MathFun_pow, BPC_ReturnsDouble);
-	RegisterProgram  ("max", MathFun_max, BPC_ReturnsDouble);
-	RegisterProgram  ("min", MathFun_min, BPC_ReturnsDouble);
+	RegisterProgram("pow", MathFun_pow, BPC_ReturnsDouble);
+	RegisterProgram("max", MathFun_max, BPC_ReturnsDouble);
+	RegisterProgram("min", MathFun_min, BPC_ReturnsDouble);
 	RegisterProgram("strlen", StringFun_strlen, BPC_ReturnsInt);
+	RegisterProgram("echo", Echo, BPC_ReturnsNothing);
 }
 
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)

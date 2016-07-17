@@ -13,6 +13,7 @@
 #include "ChangeDirectory.h"
 #include "MathFunction.h"
 #include "StringFunction.h"
+#include "echo.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

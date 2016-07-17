@@ -1,4 +1,4 @@
-﻿#include "MathInterpreter.h"
+#include "MathInterpreter.h"
 #include "BuiltinProgController.h"
 
 int ptr = -1, failed = 0, bracets = 0;

@@ -84,6 +84,13 @@
     <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="StringFunction.c" />
+    <ClCompile Include="Echo.c" />
+    <ClCompile Include="MathInterpreter.c" />
+    <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="ScriptInterpreter.c" />
+    <ClCompile Include="ScriptParsers.c" />
+    <ClCompile Include="ScriptProcessors.c" />
+    <ClCompile Include="SearchLogicalSymbol.c" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
@@ -94,6 +101,7 @@
     <ClCompile Include="LinkedList.c" />
     <ClCompile Include="GetClipboardContent.c" />
     <ClCompile Include="Trie.c" />
+    <ClCompile Include="VarManager.c" />
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
@@ -103,18 +111,24 @@
     <ClInclude Include="BuiltinProgInterpretator.h" />
     <ClInclude Include="ChangeDirectory.h" />
     <ClInclude Include="DirectoryExists.h" />
+    <ClInclude Include="echo.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="MathFunction.h" />
     <ClInclude Include="MathInterpreter.h" />
     <ClInclude Include="ParserOfArguments.h" />
+    <ClInclude Include="ScriptInterpreter.h" />
+    <ClInclude Include="ScriptParsers.h" />
+    <ClInclude Include="ScriptProcessors.h" />
+    <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="StringFunction.h" />
     <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />
     <ClInclude Include="Trie.h" />
+    <ClInclude Include="VarManager.h" />
     <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

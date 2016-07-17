@@ -2,7 +2,6 @@
 
 ExecResult FileExecute(char* nameProc, char* parametrs)
 {
-	UINT result; //переменная для возвращения результата запуска файла
 	char check[] = ".exe";
 	int lenName = strlen(nameProc);
 	int i;
@@ -24,8 +23,15 @@ ExecResult FileExecute(char* nameProc, char* parametrs)
 ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 {
 	UINT result;
+	SingleLinklistNode* list = NULL;
+	int Find = 0;
 	if ((tolower(nameProc[0]) >= 'a') && (tolower(nameProc[0]) <= 'z') && (nameProc[1] == ':')) //если указан путь C:\...
+	{
+		Find = FileExistenceCheck(nameProc);
+		if (Find)
+			return ExecResult_ExecuteFailed;
 		result = ShellExecuteA(0, "open", nameProc, parametrs, NULL, 1); //запускаем файл по переданному пути
+	}
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{
 		char CurDir[MAX_PATH] = "";
@@ -33,6 +39,9 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 		if ((CurDir[strlen(CurDir) - 1] != '\\') && (nameProc[0] != '\\')) //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
 			strcat(CurDir, "\\");
 		strcat(CurDir, nameProc); //добавляем к текущей дирректории то, что было введено пользователем
+		Find = FileExistenceCheck(CurDir);
+		if (Find)
+			return ExecResult_ExecuteFailed;
 		result = ShellExecuteA(0, "open", CurDir, parametrs, NULL, 1);
 		if (result < 33) //если файл не был запущен
 		{
@@ -47,7 +56,12 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 				}
 			}
 			if (i != -1) //если передано только имя файла, то ищем его по путям в PATH
+			{
+				Find = FileExistenceCheck(nameProc);
+				if (Find)
+					return ExecResult_ExecuteFailed;
 				result = ShellExecuteA(0, "open", nameProc, parametrs, NULL, 1);
+			}
 		}
 	}
 	if (result > 32)
@@ -115,4 +129,36 @@ ExecResult AttemptCreation(char* FileName)
 			return ExecResult_UnknownError;
 	}
 	else return ExecResult_ExecuteFailed;
+}
+
+int FileExistenceCheck(char *Path)
+{
+	int k = 1;
+	SingleLinklistNode* list = FindFilesAndDirsPrefix(Path);
+	char Name[100];
+	int i = -1, j = -1;
+	while (Path[++i])
+	{
+		if (Path[i] == '\\')
+			j = -1;
+		else
+			Name[++j] = Path[i];
+	}
+	Name[++j] = 0;
+	if (list == NULL)
+		return k;
+	else
+	{
+		while (list != NULL)
+		{
+			if (strcmp((char*)list->value, Name) == 0)
+			{
+				k = 0;
+				break;
+			}
+			else
+				SingleLinklistRemoveDownmost(&list);
+		}
+	}
+	return k;
 }

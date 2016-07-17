@@ -1,31 +1,26 @@
 ﻿#include "Shell.h"
-#include "MathInterpreter.h"//временно
+#include "ScriptInterpreter.h"
 
-
-//((2+7)*2-65)+((4523-542)*8-34)-256*(5+(234-56)*(345+34)) = -17239785
-//(123-12)*1024-34*42+(144*12-6*31)*17+28*(56-91) = 137470
-//-(-1)*(-3) = -3
-//-5*(50+7*0) = -250
-//((((5+2)*3)*4)*9)+0 = 756
-//((((5+2)*3)*4)*9 - ошибка, не совпадает колво скобок
 int main()
 {
+	FILE *f = fopen("script.txt", "rb");
+	fseek(f, 0, SEEK_END);
+	long fsize = ftell(f);
+	fseek(f, 0, SEEK_SET);
+
+	char *string = malloc(fsize + 1);
+	fread(string, fsize, 1, f);
+	fclose(f);
+
+	string[fsize] = 0;
+
 	BPC_Init();
-	double result;
-	char* expression = (char*)malloc(1000);
-	while (1)
-	{
-		fgets(expression, 1000, stdin);
-		expression[strlen(expression) - 1] = 0;
-		if (MathInterpreter(expression, &result))
-			printf("Answer: %lf\n", result);
-		else
-			printf("Error");
-	}
-	return 0;//до остального дело не дойдёт
+
+	EvalScript(string);
+	return 0;
 
 
-	
+
 	ConsoleInitialisation();
 	int key;
 	while (1)
@@ -50,6 +45,6 @@ int main()
 		default:ConsolePrintChar(key); break;
 		}
 	}
-
+	
 	return 0;
 }
