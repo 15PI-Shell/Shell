@@ -1,3 +1,4 @@
+
 #include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
@@ -316,7 +317,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			{
 
 				entry[k] = Buff[j]; k++;
-			} printf("\n%s", entry); return 1;
+			}  return 1;
 
 		}
 
@@ -431,3 +432,4 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
+>>>>>>> refs/remotes/origin/master
