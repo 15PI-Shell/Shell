@@ -30,7 +30,7 @@ void SetVar(InterpData* inter, char* name, void* currentVal, void* result, BPC_R
 	{
 		if (termType == BPC_ReturnsString)
 		{
-			inter->scfailed = 1;
+			inter->scfailed = 1;//TODO: tostr conv
 			return;
 		}
 
@@ -170,6 +170,7 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 		{
 			int constant;
 			ret = VM_GetVariable(VM, funcname, &constant, &retType);
+			//TODO: tostr conv
 			if (ret == 0)
 			{
 				inter->scfailed = 1;
@@ -181,7 +182,7 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 		}
 		else
 		{
-			ret = ProcFunction(inter, VM, funcname, &ret);
+			ret = ProcFunction(inter, VM, funcname, &retType);
 			if (ret)
 				strcpy(res, ret);
 			free(ret);
@@ -205,8 +206,9 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 	return 1;
 }
 
-char* ProcFunction(InterpData* inter, TrieNode* VM, char* name, BPC_Returns* type)
+char* ProcArgumets(InterpData* inter, TrieNode* VM)
 {
+	BPC_Returns type;
 	void* result;
 	char* args = (char*)malloc(1000);
 	char* tmp = (char*)malloc(1000);
@@ -216,10 +218,10 @@ char* ProcFunction(InterpData* inter, TrieNode* VM, char* name, BPC_Returns* typ
 	int first = 1;
 	do
 	{
-		GetTerm(inter, VM, part, &result, type);
+		GetTerm(inter, VM, part, &result, &type);
 		if (inter->scfailed)
 			return 0;
-		switch (*type)
+		switch (type)
 		{
 		case BPC_ReturnsInt:
 			sprintf(tmp, "%d", *((int*)result));
@@ -244,6 +246,12 @@ char* ProcFunction(InterpData* inter, TrieNode* VM, char* name, BPC_Returns* typ
 		part = ParseBeforeComa(inter);
 	} while (*part);
 	free(tmp);
+	return args;
+}
+
+char* ProcFunction(InterpData* inter, TrieNode* VM, char* name, BPC_Returns* type)
+{
+	char* args = ProcArgumets(inter, VM);
 	char* res = BPC_Execute(name, args, type);
 	//TODO: mem leak args
 	if (res >= 0)
