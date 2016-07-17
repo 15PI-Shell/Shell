@@ -154,7 +154,7 @@ void CmdInterpretator(char* mas)
 			ExecResult fileresult = FileExecute(ptrname, ptrarg);
 			if (fileresult != ExecResult_Success)
 			{
-				printf("_This Builtin program doesn't exist_\n");
+				printf("_This Builtin program '%s' doesn't exist_\n", ptrname);
 
 				// search builtin programs with the same prefix
 				SingleLinklistNode* ptrListOfProg = BPC_GetHints(ptrname);
@@ -209,8 +209,9 @@ void CmdInterpretator(char* mas)
 		if ((result != 0) && (result != -1) && (result != -2))
 			strcpy(strresult, result);
 
-		free(ptrarg);
 		free(ptrname);
+		//printf("%s",ptrarg);
+		free(ptrarg);
 		cmd = strtok('\0', del); // search the following comand 
 	}
 
