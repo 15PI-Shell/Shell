@@ -55,7 +55,7 @@ SingleLinklistNode* FindFilesAndDirsMask(char* FileMask, char* WhereFind, FindTy
 		strcpy(WhereFind, FileMask);
 	else
 	{
-		if (WhereFind[strlen(WhereFind) - 1] != '\\' && FileMask[0] != "\\") //если текущий путь не заканчивается слешом и введенный им не начинается то его нужно добавить
+		if (WhereFind[strlen(WhereFind) - 1] != '\\' && FileMask[0] != '\\') //если текущий путь не заканчивается слешом и введенный им не начинается то его нужно добавить
 			strcat(WhereFind, "\\"); //создаем путь для функции
 		strcat(WhereFind, FileMask); //добавляем нашу маску	
 	}
