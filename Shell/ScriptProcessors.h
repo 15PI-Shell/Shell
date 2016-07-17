@@ -1,6 +1,7 @@
 #pragma once
 #include "ScriptParsers.h"
 #include "VarManager.h"
+#include <math.h>
 
 void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type);
 
@@ -15,4 +16,4 @@ void ProcAssignment(InterpData* inter, TrieNode* VM);
 char* ProcSingleCondition(InterpData* inter);
 
 //уже без (
-int ProcCondition(InterpData* inter);
+int ProcCondition(InterpData* inter, TrieNode* VM);

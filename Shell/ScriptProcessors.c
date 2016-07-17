@@ -30,7 +30,7 @@ void SetVar(InterpData* inter, char* name, void* currentVal, void* result, BPC_R
 	{
 		if (termType == BPC_ReturnsString)
 		{
-			inter->scfailed = 1;//TODO: tostr conv
+			inter->scfailed = 1;
 			return;
 		}
 
@@ -170,7 +170,11 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 		{
 			int constant;
 			ret = VM_GetVariable(VM, funcname, &constant, &retType);
-			//TODO: tostr conv
+			if (retType != BPC_ReturnsString)
+			{
+				inter->scfailed = 1;
+				return;
+			}
 			if (ret == 0)
 			{
 				inter->scfailed = 1;
@@ -183,6 +187,11 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 		else
 		{
 			ret = ProcFunction(inter, VM, funcname, &retType);
+			if (retType != BPC_ReturnsString && retType != BPC_ReturnsNothing)
+			{
+				inter->scfailed = 1;
+				return;
+			}
 			if (ret)
 				strcpy(res, ret);
 			free(ret);
@@ -372,43 +381,239 @@ char* ProcSingleCondition(InterpData* inter)
 	return data;
 }
 
-//уже без (
-int ProcCondition(InterpData* inter)
+int ProcCondition(InterpData* inter, TrieNode* VM)
 {
+	int result;
 	SkipSpaces(inter);
-	//void* Lresult, *Rresult;
-	//BPC_Returns* Ltype, Rtype;
-	//int from = scptr;
+	if (CheckNextSyms(inter, "("))
+	{
+		inter->scptr++;
+		result = ProcCondition(inter, VM);
+		SkipSpaces(inter);
+		if (!CheckNextSyms(inter, ")"))
+		{
+			inter->scfailed = 1;
+			return 0;
+		}
+		inter->scptr++;
+		return result;
+	}
+	SkipSpaces(inter);
+
 	char* parsed = ProcSingleCondition(inter);
 
-	printf("Parsed condition element: %s\n", parsed);
+	BPC_Returns leftType, rightType;
+	void* resL, *resR;
 
-	/*char* left = parsed;
-	char* right = parsed;
+	int innerPtr = 0;
+	int startLeft = 0, startRight;
 
+	while (!CheckNextSymsFree(innerPtr, parsed, "<") && !CheckNextSymsFree(innerPtr, parsed, "!") && !CheckNextSymsFree(innerPtr, parsed, "=") && !CheckNextSymsFree(innerPtr, parsed, ">"))
+		innerPtr++;
 
-	GetTerm(from, left, &Lresult, &Ltype);//TODO: избавится от from
-	GetTerm(from, right, &Rresult, &Rtype);*/
+	char* left = (char*)malloc(innerPtr - startLeft + 1);
+	strncpy(left, parsed + startLeft, innerPtr - startLeft);
+	left[innerPtr - startLeft] = 0;
+
+	InterpData id;
+	id.row = id.scfailed = id.scptr = 0;
+	id.scr = left;
+
+	GetTerm(&id, VM, left, &resL, &leftType);
+
+	inter->scfailed = id.scfailed;
+
+	if (inter->scfailed)
+		return 0;
+
+	if (parsed[innerPtr])
+	{
+		char mode[2];
+		if (parsed[innerPtr + 1] == '=')
+		{
+			mode[0] = parsed[innerPtr];
+			mode[1] = parsed[innerPtr + 1];
+			innerPtr += 2;
+		}
+		else
+		{
+			mode[0] = parsed[innerPtr];
+			mode[1] = 0;
+			innerPtr++;
+		}
+
+		startRight = innerPtr;
+		int delta = 0;
+
+		while (parsed[innerPtr])
+		{
+			if (parsed[innerPtr] == '(')
+				delta++;
+			else if (parsed[innerPtr] == ')')
+				delta--;
+			if (delta < 0)
+				break;
+			innerPtr++;
+		}
+
+		char* right = (char*)malloc(innerPtr - startRight + 1);
+		strncpy(right, parsed + startRight, innerPtr - startRight);
+		right[innerPtr - startRight] = 0;
+
+		id.row = id.scfailed = id.scptr = 0;
+		id.scr = right;
+
+		GetTerm(&id, VM, right, &resR, &rightType);
+
+		inter->scfailed = id.scfailed;
+
+		if (inter->scfailed)
+			return 0;
+
+		if (leftType == BPC_ReturnsInt && rightType == BPC_ReturnsDouble)
+		{
+			rightType = BPC_ReturnsDouble;
+			int trint = *(double*)resR;
+			resR = &trint;
+		}
+
+		if (rightType == BPC_ReturnsInt && leftType == BPC_ReturnsDouble)
+		{
+			leftType = BPC_ReturnsDouble;
+			int trint = *(double*)resL;
+			resL = &trint;
+		}
+
+		if (leftType != rightType)
+			result = 0;
+		else
+		{
+			switch (mode[0] * 2 + mode[1])//hack
+			{
+			case '=' * 2 + '=':
+				switch (leftType)
+				{
+				case BPC_ReturnsInt:
+					result = (*(int*)resL) == (*(int*)resR);
+					break;
+				case BPC_ReturnsDouble:
+					result = fabs((*(double*)resL) - (*(double*)resR)) < 0.00001;
+					break;
+				case BPC_ReturnsString:
+					result = !strcmp((char*)resL, (char*)resR);
+					break;
+				}
+				break;
+			case '!' * 2 + '=':
+				switch (leftType)
+				{
+				case BPC_ReturnsInt:
+					result = (*(int*)resL) != (*(int*)resR);
+					break;
+				case BPC_ReturnsDouble:
+					result = fabs((*(double*)resL) - (*(double*)resR)) >= 0.00001;
+					break;
+				case BPC_ReturnsString:
+					result = !!strcmp((char*)resL, (char*)resR);
+					break;
+				}
+				break;
+			case '<' * 2:
+				switch (leftType)
+				{
+				case BPC_ReturnsInt:
+					result = (*(int*)resL) < (*(int*)resR);
+					break;
+				case BPC_ReturnsDouble:
+					result = (*(double*)resL) < (*(double*)resR);
+					break;
+				case BPC_ReturnsString:
+					result = strcmp((char*)resL, (char*)resR) < 0;
+					break;
+				}
+				break;
+			case '>' * 2:
+				switch (leftType)
+				{
+				case BPC_ReturnsInt:
+					result = (*(int*)resL) > (*(int*)resR);
+					break;
+				case BPC_ReturnsDouble:
+					result = (*(double*)resL) > (*(double*)resR);
+					break;
+				case BPC_ReturnsString:
+					result = strcmp((char*)resL, (char*)resR) > 0;
+					break;
+				}
+				break;
+			case '>' * 2 + '=':
+				switch (leftType)
+				{
+				case BPC_ReturnsInt:
+					result = (*(int*)resL) >= (*(int*)resR);
+					break;
+				case BPC_ReturnsDouble:
+					result = (*(double*)resL) >= (*(double*)resR);
+					break;
+				case BPC_ReturnsString:
+					result = strcmp((char*)resL, (char*)resR) >= 0;
+					break;
+				}
+				break;
+			case '<' * 2 + '=':
+				switch (leftType)
+				{
+				case BPC_ReturnsInt:
+					result = (*(int*)resL) <= (*(int*)resR);
+					break;
+				case BPC_ReturnsDouble:
+					result = (*(double*)resL) <= (*(double*)resR);
+					break;
+				case BPC_ReturnsString:
+					result = strcmp((char*)resL, (char*)resR) <= 0;
+					break;
+				}
+				break;
+			}
+		}
+	}
+	else
+	{
+		switch (leftType)
+		{
+		case BPC_ReturnsString:
+			result = !!*(char*)resL;
+			break;
+		case BPC_ReturnsInt:
+			result = !!*(int*)resL;
+			break;
+		case BPC_ReturnsDouble:
+			result = !!*(double*)resL;
+			break;
+		}
+	}
+
+	printf("Parsed condition element: %s (%s)\n", parsed, result ? "TRUE" : "FALSE");
 
 	if (CheckNextSyms(inter, "&&"))
 	{
 		inter->scptr += 2;
-		int rightPart = ProcCondition(inter);
-		return 1;
+		int rightPart = ProcCondition(inter, VM);
+		return result && rightPart;
 	}
 	else
 		if (CheckNextSyms(inter, "||"))
 		{
 			inter->scptr += 2;
-			int rightPart = ProcCondition(inter);
-			return 1;
+			int rightPart = ProcCondition(inter, VM);
+			return result || rightPart;
 		}
 		else
 			if (CheckNextSyms(inter, ")"))
 			{
 				inter->scptr++;
 				//последнее
-				return 1;
+				return result;
 			}
 	inter->scfailed = 1;
 	return 0;

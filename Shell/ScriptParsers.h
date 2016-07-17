@@ -6,7 +6,11 @@ typedef struct
 {
 	char* scr;
 	int scptr, scfailed, row;
+	int insideLevel;
+	int retBackTo[100];
 } InterpData;
+
+int CheckNextSymsFree(int ptr, char* where, char* syms);
 
 int CheckNextSyms(InterpData* inter, char* syms);
 

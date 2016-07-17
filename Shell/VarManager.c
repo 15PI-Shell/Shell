@@ -52,3 +52,9 @@ void VM_DeclareVariable(TrieNode* trieRoot, char* name, int constant, BPC_Return
 
 	Trie_Register(trieRoot, name, v);
 }
+
+TrieNode* VM_Create()
+{
+	TrieNode* root = Trie_Create();
+	return root;
+}

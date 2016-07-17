@@ -1,5 +1,14 @@
 #include "ScriptParsers.h"
 
+int CheckNextSymsFree(int ptr, char* where, char* syms)
+{
+	int len = strlen(syms);
+	for (int i = 0; i < len; ++i)
+		if (0 == where[ptr + i] || where[ptr + i] != syms[i])
+			return 0;
+	return 1;
+}
+
 int CheckNextSyms(InterpData* inter, char* syms)
 {
 	int len = strlen(syms);

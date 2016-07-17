@@ -23,14 +23,14 @@ TrieNode* Trie_Create()
 //функция, возвращающая узел дерева, которому соотвествует указанная строка
 TrieNode* FindInTrieRec(TrieNode* node, char* name)
 {
-	if (CharGetIndex(name[0]) == -1)
-		return 0;
-
 	if (0 == node)
 		return 0;//узел не найден
 
 	if (0 == *(name + 1))
 		return node;//если следующий символ строки - 0, то возвращаем этот узел - работа закончена.
+
+	if (CharGetIndex(name[1]) == -1)
+		return 0;
 
 					//name + 1 каждую итерацию как бы откусывает первый символ от строки
 	return FindInTrieRec(node->children[CharGetIndex(name[1])], name + 1);//дерево регистронезависимо, поэтому переводим любой символ в нижний регистр
