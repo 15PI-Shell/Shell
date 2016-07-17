@@ -15,6 +15,7 @@
 #include "tail.h"
 #include "cat.h"
 #include "diff.h"
+#include "ls.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum
