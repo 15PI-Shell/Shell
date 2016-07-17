@@ -9,12 +9,90 @@ double Summand();
 double Multipler();
 double Const();
 double Function(char* funct);
-double Variable(char* Var); //им всем не нужна видимость извне, поэтому тут
+double Variable(char* Var); 
+void shift(char* out, int key);
+char* GetRightExpression(char* expression); //им всем не нужна видимость извне, поэтому тут
 
 void Pass()
 {
 	while (str[ptr] == ' ')
 		ptr++;
+}
+
+void shift(char* out, int key)
+{
+	for (int i = strlen(out); i >= key; i--)
+	{
+		out[i + 1] = out[i];
+	}
+}
+
+char* GetRightExpression(char* expression)
+{
+	int brac = 0;
+	char* out = (char*)malloc(2 * strlen(expression));
+	strcpy(out, expression);
+	int i = -1, open = 0, close = 0;
+	while (out[++i])
+	{
+		switch (out[i])
+		{
+		case '/':
+			if (close == -1)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			else
+			{
+				shift(out, open);
+				out[open] = '(';
+				open = 0;
+				close = -1;
+				i++;
+			}
+			break;
+		case '*':
+			if (close == -1)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			break;
+		case '+':
+		case '-':
+			if (close == -1)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			else if (brac == 0)
+				open = i + 1;
+			break;
+		case '(':
+			if (close == -1)
+				close = -2;
+			else
+				open = i;
+			brac++;
+			break;
+		case ')':
+			if (close == -2)
+			{
+				shift(out, i);
+				out[i] = ')';
+				close = i;
+			}
+			brac--;
+			break;
+		}
+	}
+	if (close == -1)
+		strcat(out, ")");
+	return out;
 }
 
 double Term()//Выражение = Слагаемое [+/- Выражение]
@@ -162,6 +240,7 @@ double Function(char* funct)
 	}
 	args[i] = 0;
 	ptr++;
+	strcpy(args, RetRightArg(args));
 	BPC_Returns returns;
 	int copy_ptr = ptr;
 	char* str2 = (char*)malloc(strlen(str));
@@ -238,10 +317,7 @@ double Const()
 int MathInterpreter(char* expression, double* result)
 {
 	ptr = failed = 0;
-	str = (char*)malloc(strlen(expression));
-	strcpy(str, expression);
-	expression = str;
-
+	str = GetRightExpression(expression);
 	*result = Term();
 
 	if (str[ptr] != 0)//остались ещё какие-то символы, например лишние закрывающие скобки

@@ -2,7 +2,6 @@
 
 char* StringFun_strlen(char* arg)
 {
-	char* RightArg = RetRightArg(arg);
 	SingleLinklistNode* ArgList = NULL;
 	if (ParsOfArgs(arg, &ArgList))
 	{

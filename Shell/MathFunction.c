@@ -3,10 +3,9 @@
 
 char* MathFun_sin(char* arg)
 {
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up==NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up==NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			sprintf(arg, "%lf", sin(ans));
@@ -22,10 +21,9 @@ char* MathFun_sin(char* arg)
 
 char* MathFun_cos(char* arg)
 {
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up == NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			sprintf(arg, "%lf", cos(ans));
@@ -41,11 +39,9 @@ char* MathFun_cos(char* arg)
 
 char* MathFun_tan(char* arg)
 {
-
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up == NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			sprintf(arg, "%lf", tan(ans));
@@ -61,11 +57,9 @@ char* MathFun_tan(char* arg)
 
 char* MathFun_cot(char* arg)
 {
-
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up == NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			ans = tan(ans);
@@ -87,11 +81,9 @@ char* MathFun_cot(char* arg)
 
 char* MathFun_log(char* arg)
 {
-
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up == NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			sprintf(arg, "%lf", log(ans));
@@ -107,11 +99,9 @@ char* MathFun_log(char* arg)
 
 char* MathFun_exp(char* arg)
 {
-
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up == NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			sprintf(arg, "%lf", exp(ans));
@@ -127,10 +117,9 @@ char* MathFun_exp(char* arg)
 
 char* MathFun_sqrt(char* arg)
 {
-	char* RightArgs = RetRightArg(arg);
 	double ans;
 	SingleLinklistNode* ArgList = NULL;
-	if (ParsOfArgs(RightArgs, &ArgList) && ArgList->up == NULL)
+	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter((char*)ArgList->value, &ans))
 		{
 			sprintf(arg, "%lf", sqrt(ans));
@@ -146,7 +135,6 @@ char* MathFun_sqrt(char* arg)
 
 char* MathFun_pow(char* arg)
 {
-	char* RightArgs = RetRightArg(arg);
 	SingleLinklistNode* ArgList=NULL;
 	int k = ParsOfArgs(arg, &ArgList);
 	double arg1, arg2;
@@ -165,7 +153,6 @@ char* MathFun_pow(char* arg)
 
 char* MathFun_max(char* arg)
 {
-	char* RightArgs = RetRightArg(arg);
 	SingleLinklistNode* ArgList = NULL;
 	int k = ParsOfArgs(arg, &ArgList);
 	double arg1, arg2;
@@ -184,7 +171,6 @@ char* MathFun_max(char* arg)
 
 char* MathFun_min(char* arg)
 {
-	char* RightArgs = RetRightArg(arg);
 	SingleLinklistNode* ArgList = NULL;
 	int k = ParsOfArgs(arg, &ArgList);
 	double arg1, arg2;
