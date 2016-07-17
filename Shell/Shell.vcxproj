@@ -80,6 +80,7 @@
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="DirectoryExists.c" />
     <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="SearchLogicalSymbol.c" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
@@ -102,6 +103,7 @@
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="ParserOfArguments.h" />
+    <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="sum.h" />

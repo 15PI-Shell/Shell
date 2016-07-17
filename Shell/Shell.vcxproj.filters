@@ -84,6 +84,9 @@
     <ClCompile Include="Trie.c">
       <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
+    <ClCompile Include="SearchLogicalSymbol.c">
+      <Filter>Файлы исходного кода\Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchLogicalSymbol.h">
+      <Filter>Заголовочные файлы\Console</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
