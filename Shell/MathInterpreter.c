@@ -4,12 +4,12 @@
 int ptr = -1, failed = 0, bracets = 0;
 char* str;
 
-double Term();
-double Summand();
-double Multipler();
+double Term(TrieNode* VM);
+double Summand(TrieNode* VM);
+double Multipler(TrieNode* VM);
 double Const();
-double Function(char* funct);
-double Variable(char* Var); 
+double Function(TrieNode* VM, char* funct);
+double Variable(TrieNode* VM, char* Var);
 void shift(char* out, int key);
 char* GetRightExpression(char* expression); //им всем не нужна видимость извне, поэтому тут
 
@@ -95,7 +95,7 @@ char* GetRightExpression(char* expression)
 	return out;
 }
 
-double Term()//Выражение = Слагаемое [+/- Выражение]
+double Term(TrieNode* VM)//Выражение = Слагаемое [+/- Выражение]
 {
 
 	if (failed)
@@ -103,7 +103,7 @@ double Term()//Выражение = Слагаемое [+/- Выражение]
 	Pass();
 
 	double ans;
-	ans = Summand();
+	ans = Summand(VM);
 
 	Pass();
 
@@ -111,7 +111,7 @@ double Term()//Выражение = Слагаемое [+/- Выражение]
 	{
 	case '-'://два case указывающих на одно место, хорошая штука
 	case '+':
-		ans += Term();
+		ans += Term(VM);
 		break;
 	case '\0':
 		break;
@@ -131,7 +131,7 @@ double Term()//Выражение = Слагаемое [+/- Выражение]
 	return ans;
 }
 
-double Summand()//Слагаемое = Множитель [* Множитель]
+double Summand(TrieNode* VM)//Слагаемое = Множитель [* Множитель]
 {
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
@@ -151,7 +151,7 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 	}//иначе это константа без знака
 
 	double ans;
-	ans = Multipler();
+	ans = Multipler(VM);
 
 	Pass();
 
@@ -159,11 +159,11 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 	{
 	case '*':
 		ptr++;//пропускаем *
-		ans *= Summand();
+		ans *= Summand(VM);
 		break;
 	case '/':
 		ptr++;
-		double checkAns = Summand();
+		double checkAns = Summand(VM);
 		if (checkAns)
 			ans /= checkAns;
 		else
@@ -175,7 +175,7 @@ double Summand()//Слагаемое = Множитель [* Множитель]
 	return ans * modify;
 }
 
-double Multipler()//Множитель = Константа | Выражение
+double Multipler(TrieNode* VM)//Множитель = Константа | Выражение
 {
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
@@ -186,7 +186,7 @@ double Multipler()//Множитель = Константа | Выражение
 	{
 		bracets++;
 		ptr++;//пропускаем (
-		ans = Term();
+		ans = Term(VM);
 	}
 	else if (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
 	{
@@ -207,17 +207,17 @@ double Multipler()//Множитель = Константа | Выражение
 		Pass();
 		if (str[ptr] == '(')
 		{
-			ans = Function(str2);
+			ans = Function(VM, str2);
 		}
 		else
-			ans = Variable(str2);
+			ans = Variable(VM, str2);
 	}
 	else
 		ans = Const();
 	return ans;
 }
 
-double Function(char* funct)
+double Function(TrieNode* VM, char* funct)
 {
 	char args[1000] = "";
 	int i = 0;
@@ -255,7 +255,7 @@ double Function(char* funct)
 	if (returns == BPC_ReturnsDouble)
 	{
 		double ans = 0;
-		MathInterpreter(ReturnPtr, &ans);
+		MathInterpreter(VM, ReturnPtr, &ans);
 		ptr = copy_ptr;
 		strcpy(str, str2);
 		return ans;
@@ -270,10 +270,22 @@ double Function(char* funct)
 	}
 }
 
-double Variable(char* Var)
+double Variable(TrieNode* VM, char* Var)
 {
-	//Здесь нужна функция, которая будет возвращать число
-	return 1;
+	int constant;
+	BPC_Returns type;
+	void* result = VM_GetVariable(VM, Var, &constant, &type);
+	double toRet;
+	if (type == BPC_ReturnsString)
+	{
+		failed = 1;
+		return 1;
+	}
+	if (type == BPC_ReturnsInt)
+		toRet = *(int*)result;
+	if (type == BPC_ReturnsDouble)
+		toRet = *(double*)result;
+	return toRet;
 }
 
 double Const()
@@ -314,14 +326,17 @@ double Const()
 	return ans;
 }
 
-int MathInterpreter(char* expression, double* result)
+int MathInterpreter(TrieNode* VM, char* expression, double** result)
 {
 	ptr = failed = 0;
 	str = GetRightExpression(expression);
-	*result = Term();
+	double* ans = (double*)malloc(sizeof(double));
+	*ans = Term(VM);
 
 	if (str[ptr] != 0)//остались ещё какие-то символы, например лишние закрывающие скобки
 		failed = 1;
+
+	*result = ans;
 
 	if (failed)
 		*result = ptr;//сохраним где упали

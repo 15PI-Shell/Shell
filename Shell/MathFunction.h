@@ -7,6 +7,9 @@
 #include "ParserOfArguments.h"
 #include "LinkedList.h"
 #include "Arguments.h"
+#include "VarManager.h"
+
+TrieNode* Basic_VM;
 
 char* MathFun_sin (char* arg);
 char* MathFun_cos (char* arg);

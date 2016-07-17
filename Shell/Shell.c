@@ -3,6 +3,8 @@
 
 int main()
 {
+	Basic_VM = VM_Create();//вынести?
+
 	FILE *f = fopen("script.txt", "rb");
 	fseek(f, 0, SEEK_END);
 	long fsize = ftell(f);

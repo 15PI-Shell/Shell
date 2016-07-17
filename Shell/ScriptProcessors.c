@@ -128,7 +128,7 @@ void GetTerm(InterpData* inter, TrieNode* VM, char* term, void** result, BPC_Ret
 {
 	SkipSpaces(inter);
 	term = MkMemCopy(term, strlen(term));
-	if (MathInterpreter(term, result))
+	if (MathInterpreter(VM, term, result))
 	{
 		*type = BPC_ReturnsDouble;
 		inter->scptr += strlen(term);

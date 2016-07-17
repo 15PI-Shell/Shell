@@ -81,10 +81,10 @@
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="DirectoryExists.c" />
     <ClCompile Include="MathFunction.c" />
+    <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="StringFunction.c" />
     <ClCompile Include="Echo.c" />
-    <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="ScriptInterpreter.c" />
     <ClCompile Include="ScriptParsers.c" />
     <ClCompile Include="ScriptProcessors.c" />
