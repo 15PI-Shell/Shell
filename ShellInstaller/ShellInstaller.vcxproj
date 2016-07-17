@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArchieveFile.c" />
+    <ClCompile Include="InfoSection.c" />
     <ClCompile Include="INI.c" />
     <ClCompile Include="ModifyingRegistry.c" />
     <ClCompile Include="ShellInstaller.c" />
@@ -84,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArchieveFile.h" />
+    <ClInclude Include="InfoSection.c.h" />
     <ClInclude Include="InstallerConfig.h" />
     <ClInclude Include="INI.h" />
     <ClInclude Include="ModifyingRegistry.h" />

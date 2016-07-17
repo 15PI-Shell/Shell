@@ -1,4 +1,4 @@
-#include "ArchieveFile.h"
+п»ї#include "ArchieveFile.h"
 
 void PasteFile(HANDLE File, HANDLE pFile)
 {
@@ -29,7 +29,7 @@ int CreateFileArch(SingleListStringNode* FilesPaths, char * mas, int Size)
 
 	if ((File == INVALID_HANDLE_VALUE) || (ShellFile == INVALID_HANDLE_VALUE))
 	{
-		printf("Could not open 15PIShellInstaller.exe or ShellInstaller.exe");  // обработка ошибки 
+		printf("Could not open 15PIShellInstaller.exe or ShellInstaller.exe");  // РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РєРё 
 		return 0;
 	}
 	
@@ -45,7 +45,7 @@ int CreateFileArch(SingleListStringNode* FilesPaths, char * mas, int Size)
 			NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (Paths == INVALID_HANDLE_VALUE)
 		{
-			printf("Could not open %s", GetName);  // обработка ошибки 
+			printf("Could not open %s", GetName);  // РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РєРё 
 			return 0;
 		}
 
