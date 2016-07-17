@@ -114,6 +114,8 @@ void Block(InterpData* inter, TrieNode* VM)
 		else
 			inter->scptr++;
 		inter->insideLevel--;
+		if (inter->insideLevel < 0)
+			inter->scfailed = 1;
 		return;
 	}
 
@@ -133,6 +135,9 @@ int EvalScript(char* script)
 		Block(&data, VM);
 		SkipSpaces(&data);
 	}
+
+	if (data.insideLevel > 0)
+		data.scfailed = 1;
 
 	if (data.scfailed)
 		printf("Failed on %d line, near '%c'\n\n", data.row + 1, data.scr[data.scptr]);
