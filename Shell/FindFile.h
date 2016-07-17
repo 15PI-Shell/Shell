@@ -38,4 +38,6 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs);
 ExecResult FileExecuteCreate(char* nameProc, char* parametrs);
 //попытка запуска exe файла и ожидание возвращаемого значения
 ExecResult AttemptCreation(char* FileName);
+//функция проверки на существование запускаемого файла (во избежание падений)
+int FileExistenceCheck(char* Path);
 #endif
