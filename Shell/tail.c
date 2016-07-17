@@ -4,8 +4,10 @@ char* TailOfFile(char *args)
 {
 	SingleLinklistNode *ArgumentsList = NULL; // создаем список для парсинга аргументов
 	char *fileName = (char*)malloc(MAX_PATH + 1);// строка под имя файла
+	strcpy(fileName, "");
 	int n = 0;// счетчик считываемых строк
 	int n_args;
+	int spaces;
 	FILE *fp = NULL;
 	n_args = ParsOfArgs(args, &ArgumentsList);
 	if (n_args != 2)
@@ -13,7 +15,7 @@ char* TailOfFile(char *args)
 		printf("list of arguments is wrong\n");
 		return -1;
 	}
-	sscanf((char*)ArgumentsList->value, "%d", n);//определяем кол-во строк
+	sscanf((char*)ArgumentsList->value, "%d", &n);//определяем кол-во строк
 	if (n <= 0)// что-то не так с аргументом
 	{
 		printf("Incorrect argument\n");
@@ -31,25 +33,44 @@ char* TailOfFile(char *args)
 	if (pos > 0)// проверяем на пустоту
 	{
 		rewind(fp);
-		char **mas = (char **)calloc(n, sizeof(char *));//выделяем памято под массив
-		int size = 0;
-		while (!feof(fp))
-		{
-			fgets(mas[size% n], 255, fp);
-			size++;
-		}
+		char **mas = (char **)malloc(n*sizeof(char *));//выделяем память под массив
 		for (int i = 0; i < n; i++)
 		{
-			printf("%s\n", *mas[i]);
+			mas[i]=(char*)malloc(pos);//выделяем память под строки и инициализируем их
+			memset(mas[i], 0, pos);
+		}
+		int size = 0;
+		int j = 0;
+		char c;
+		do {
+			c = fgetc(fp);//read 
+			mas[size%n][j]=c;//заполняем строку в закольцованном массиве, пока \n
+			j++;
+			if (c=='\n')
+			{
+				size++;
+				j = 0;
+			}
+		} while (c!= EOF);
+		for (int i = 0; i < n; i++)
+		{
+			printf("%s", mas[i]);//печатаем строки
+		}
+		for (int i = 0; i < n; i++)// освобождаем память
+		{
+			free(mas[i]);
 		}
 		free(mas);
+		free(fileName);
+		fclose(fp);
 		return 0;
 	}
 	else
 	{
 		printf("%s file is empty\n", fileName);
+		free(fileName);
+		fclose(fp);
 		return 0;
 	}
-	close(fp);
-	free(fileName);
+	
 }

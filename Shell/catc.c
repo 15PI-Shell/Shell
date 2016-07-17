@@ -24,12 +24,12 @@ char* cat(char* arg)
 	if (pos > 0)
 	{
 		rewind(fp);
-		char c;
-		while (!eof(fp))
+		char *str=(char*)malloc(300);
+		while (fgets(str, 300,fp))
 		{
-			fscanf(fp, "%c", &c);
-			printf("%c", c);
+			printf("%s", str);
 		}
+		free(str);
 	}
 	free(fileName);
 	fclose(fp);
