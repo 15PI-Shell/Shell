@@ -108,6 +108,9 @@
     <ClCompile Include="ScriptProcessors.c">
       <Filter>Файлы исходного кода\Script</Filter>
     </ClCompile>
+	<ClCompile Include="SearchLogicalSymbol.c">
+      <Filter>Файлы исходного кода\Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="ScriptParsers.h">
       <Filter>Заголовочные файлы\Script</Filter>
+	</ClInclude>
+    <ClInclude Include="SearchLogicalSymbol.h">
+      <Filter>Заголовочные файлы\Console</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -45,6 +45,6 @@ int main()
 		default:ConsolePrintChar(key); break;
 		}
 	}
-
+	
 	return 0;
 }

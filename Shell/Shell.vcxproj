@@ -85,6 +85,7 @@
     <ClCompile Include="ScriptInterpreter.c" />
     <ClCompile Include="ScriptParsers.c" />
     <ClCompile Include="ScriptProcessors.c" />
+    <ClCompile Include="SearchLogicalSymbol.c" />
     <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
@@ -113,6 +114,7 @@
     <ClInclude Include="ScriptInterpreter.h" />
     <ClInclude Include="ScriptParsers.h" />
     <ClInclude Include="ScriptProcessors.h" />
+    <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="sum.h" />

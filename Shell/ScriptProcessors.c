@@ -158,6 +158,7 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 		free(ret);
 		if (inter->scfailed)
 			return 0;
+		return 1;
 	}
 	else
 	{
@@ -173,7 +174,7 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 			if (retType != BPC_ReturnsString)
 			{
 				inter->scfailed = 1;
-				return;
+				return 0;
 			}
 			if (ret == 0)
 			{
@@ -190,7 +191,7 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 			if (retType != BPC_ReturnsString && retType != BPC_ReturnsNothing)
 			{
 				inter->scfailed = 1;
-				return;
+				return 0;
 			}
 			if (ret)
 				strcpy(res, ret);

@@ -2,6 +2,7 @@
 #include "ScriptParsers.h"
 #include "VarManager.h"
 #include <math.h>
+#include "MathInterpreter.h"
 
 void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type);
 
