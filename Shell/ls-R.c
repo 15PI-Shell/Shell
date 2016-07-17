@@ -3,7 +3,7 @@
 FindFilesRecursive(char *Directory, char * mask, SingleLinklistNode **last)
 {
 	SingleLinklistNode *folders=NULL;
-	FindFilesAndDirsMask(mask, Directory, 3, &last);
+	FindFilesAndDirsMask(mask, Directory, 3, last);
 	FindFilesAndDirsMask("*", Directory, 2, &folders);
 	char *dircopy = (char*)malloc(MAX_PATH);
 	strcpy(dircopy, Directory);
