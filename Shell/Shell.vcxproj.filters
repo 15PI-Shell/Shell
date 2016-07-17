@@ -84,23 +84,8 @@
     <ClCompile Include="Trie.c">
       <Filter>Файлы исходного кода\DataStructures</Filter>
     </ClCompile>
-    <ClCompile Include="History.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="tail.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="catc.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="diff.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="ls.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="ls-R.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    <ClCompile Include="SearchLogicalSymbol.c">
+      <Filter>Файлы исходного кода\Console</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +134,7 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="History.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
@@ -166,6 +152,10 @@
     </ClInclude>
     <ClInclude Include="ls-R.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+=======
+    <ClInclude Include="SearchLogicalSymbol.h">
+      <Filter>Заголовочные файлы\Console</Filter>
+>>>>>>> refs/remotes/origin/master
     </ClInclude>
   </ItemGroup>
 </Project>
