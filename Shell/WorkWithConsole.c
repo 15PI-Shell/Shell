@@ -127,6 +127,7 @@ void WriteHistory()
 	{
 		CurrHist = CurrHist->up;
 	}
+
 	while (CurrHist->down)
 	{
 		if (strcmp((char*)CurrHist->value, ""))
@@ -145,7 +146,8 @@ void ConsoleInitialisation()
 	printf("%s>", CurrentDirectory);
 	GetConsoleCursorPosition();
 	startPrintPoint = cor;
-	HistoryPath = getenv("USERPROFILE");
+	HistoryPath = malloc(MAX_PATH);
+	strcpy(HistoryPath, getenv("USERPROFILE"));
 	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//�������� ����������
 
 	CreateDirectoryA(HistoryPath, NULL);
