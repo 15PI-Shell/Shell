@@ -32,6 +32,7 @@ void BPC_Init()
 	RegisterProgram("cat", cat, BPC_ReturnsNothing);
 	RegisterProgram("diff", diff, BPC_ReturnsNothing);
 	RegisterProgram("ls", ls, BPC_ReturnsNothing);
+	RegisterProgram("lsR", ls_R, BPC_ReturnsNothing);
 }
 
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)

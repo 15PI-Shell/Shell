@@ -7,6 +7,8 @@ char* diff(char* args)
 	cnt_args = ParsOfArgs(args, &ListOfArgs);
 	if (cnt_args != 2)
 	{
+		while (ListOfArgs)
+			SingleLinklistRemoveDownmost(&ListOfArgs);
 		printf("List of arguments is wrong\n");
 		return -1;
 	}
@@ -15,8 +17,9 @@ char* diff(char* args)
 	char *f2 = (char*)malloc(260);
 	strcpy(f2, ListOfArgs->value);
 	fp2 = fopen(f2, "r");
-	ListOfArgs = ListOfArgs->up;
+	SingleLinklistRemoveDownmost(&ListOfArgs);
 	strcpy(f1, ListOfArgs->value);
+	SingleLinklistRemoveDownmost(&ListOfArgs);
 	fp1 = fopen(f1, "r");
 	if ((fp1) && (fp2))
 	{

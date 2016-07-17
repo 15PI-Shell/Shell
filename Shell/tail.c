@@ -13,6 +13,8 @@ char* TailOfFile(char *args)
 	if (n_args != 2)
 	{
 		printf("list of arguments is wrong\n");
+		while(ArgumentsList)
+			SingleLinklistRemoveDownmost(&ArgumentsList);
 		return -1;
 	}
 	sscanf((char*)ArgumentsList->value, "%d", &n);//определяем кол-во строк
@@ -21,8 +23,9 @@ char* TailOfFile(char *args)
 		printf("Incorrect argument\n");
 		return -1;
 	}
-	ArgumentsList = ArgumentsList->up;
+	SingleLinklistRemoveDownmost(&ArgumentsList);
 	strcpy(fileName, (char*)ArgumentsList->value);//читаем имя файла
+	SingleLinklistRemoveDownmost(&ArgumentsList);
 	fp = fopen(fileName, "r");
 	if (fp == 0) {
 		printf("File reading Error\n");//если не удлось открыть или файла просто нет
@@ -50,6 +53,7 @@ char* TailOfFile(char *args)
 			{
 				size++;
 				j = 0;
+				memset(mas[size%n], 0, pos);
 			}
 		} while (c!= EOF);
 		for (int i = 0; i < n; i++)
@@ -72,5 +76,4 @@ char* TailOfFile(char *args)
 		fclose(fp);
 		return 0;
 	}
-	
 }

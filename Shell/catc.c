@@ -13,6 +13,7 @@ char* cat(char* arg)
 	}
 	char *fileName = (char*)malloc(strlen(arg));
 	strcpy(fileName, ARList->value);
+	SingleLinklistRemoveDownmost(&ARList);
 	fp = fopen(fileName, "r");
 	if (fp == NULL)
 	{
