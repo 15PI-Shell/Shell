@@ -158,7 +158,6 @@ int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 		free(ret);
 		if (inter->scfailed)
 			return 0;
-		return 1;
 	}
 	else
 	{

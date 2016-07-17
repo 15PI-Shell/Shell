@@ -45,3 +45,4 @@ if (1 > 2 || 1 < 2 || 1 >= 2 || 1 <= 1 || 1 == 1 || 1 != 1 || str1 != str2)
 }
 if (1 != 7 && (1 == 5 || 6 <= 9)) {echo("Brackets support in the if!");}
 echo("outside");
+while (i >= 0) {echo("test"); i -= 1;}

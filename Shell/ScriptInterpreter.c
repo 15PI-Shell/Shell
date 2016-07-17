@@ -87,6 +87,7 @@ void Block(InterpData* inter, TrieNode* VM)
 
 	if (CheckNextSyms(inter, "while "))
 	{
+		int whilest = inter->scptr;
 		inter->scptr += 5;
 		SkipSpaces(inter);
 		if (inter->scr[inter->scptr] == '(')
@@ -97,6 +98,40 @@ void Block(InterpData* inter, TrieNode* VM)
 			return;
 		}
 		int result = ProcCondition(inter, VM);
+
+		SkipSpaces(inter);
+
+		if (!CheckNextSyms(inter, "{"))
+		{
+			inter->scfailed = 1;
+			return;
+		}
+
+		inter->scptr++;
+
+		if (result)
+		{
+			inter->insideLevel++;
+			inter->retBackTo[inter->insideLevel] = whilest;
+			return;
+		}
+
+		int delta = 1;
+		while (inter->scr[inter->scptr] && delta != 0)
+		{
+			if (inter->scr[inter->scptr] == '{')
+				delta++;
+			else if (inter->scr[inter->scptr] == '}')
+				delta--;
+			inter->scptr++;
+		}
+
+		if (!inter->scr[inter->scptr])
+		{
+			inter->scfailed = 1;
+			return;
+		}
+
 		return;
 	}
 	if (CheckNextSyms(inter, "for "))
