@@ -19,3 +19,5 @@ char* ParseBeforeSemi(InterpData* inter);
 char* ParseName(InterpData* inter);
 
 char* ParseInsideBrackets(InterpData* inter);
+
+char* ParseInsideQuotes(InterpData* inter);

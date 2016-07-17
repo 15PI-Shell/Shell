@@ -9,4 +9,5 @@ char* Echo(char* args)
 		args++;
 	}
 	printf("\n");
+	return 0;
 }

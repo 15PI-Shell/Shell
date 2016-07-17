@@ -1,10 +1,122 @@
 #include "ScriptProcessors.h"
 
+void SetVar(InterpData* inter, char* name, void* currentVal, void* result, BPC_Returns varType, BPC_Returns termType, int mode)
+{
+	if (varType == BPC_ReturnsString)
+	{
+		if (termType != BPC_ReturnsString)
+		{
+			inter->scfailed = 1;
+			return;
+		}
+		char *val = (char*)currentVal;
+
+		switch (mode)
+		{
+		case 0:
+			strcpy(val, (char*)result);
+			break;
+		case 1:
+			strcat(val, (char*)result);
+			break;
+		default:
+			inter->scfailed = 1;
+			return;
+		}
+		printf("Setting %s to \"%s\"\n", name, (char*)val);
+		//VM_SetVariable(name, val);//не нужно?
+	}
+	else
+	{
+		if (termType == BPC_ReturnsString)
+		{
+			inter->scfailed = 1;
+			return;
+		}
+
+		if (varType == BPC_ReturnsInt)
+		{
+			int toAssign = *((double*)result);
+			int *val = (int*)currentVal;
+
+			switch (mode)
+			{
+			case 0:
+				*val = toAssign;
+				break;
+			case 1:
+				*val += toAssign;
+				break;
+			case 2:
+				*val -= toAssign;
+				break;
+			case 3:
+				*val *= toAssign;
+				break;
+			case 4:
+				if (!toAssign)
+				{
+					inter->scfailed = 1;
+					return;
+				}
+				*val /= toAssign;
+				break;
+			}
+			printf("Setting %s to %d\n", name, *((int*)val));
+			//VM_SetVariable(name, val);//не нужно?
+		}
+		else if (varType == BPC_ReturnsDouble)
+		{
+			double toAssign = *((double*)result);
+			double *val = (double*)currentVal;
+
+			switch (mode)
+			{
+			case 0:
+				*val = toAssign;
+				break;
+			case 1:
+				*val += toAssign;
+				break;
+			case 2:
+				*val -= toAssign;
+				break;
+			case 3:
+				*val *= toAssign;
+				break;
+			case 4:
+				if (!toAssign)
+				{
+					inter->scfailed = 1;
+					return;
+				}
+				*val /= toAssign;
+				break;
+			}
+			printf("Setting %s to %lf\n", name, *((double*)val));
+			//VM_SetVariable(name, val);//не нужно?
+		}
+	}
+}
+
 void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type)
 {
 	while (!CheckNextSyms(inter, ";") && !inter->scfailed)
 	{
-		VM_DeclareVariable(VM, ParseName(inter), 0, type);
+		char* name = ParseName(inter);
+		VM_DeclareVariable(VM, name, 0, type);
+		if (inter->scr[inter->scptr] == '=')
+		{
+			inter->scptr++;
+			int constant;
+			BPC_Returns termType, varType;
+			void* result, *currentVal;
+			GetTerm(inter, VM, ParseBeforeComa(inter), &result, &termType);
+			currentVal = VM_GetVariable(VM, name, &constant, &varType);
+			if (inter->scfailed)
+				return;
+			SetVar(inter, name, currentVal, result, varType, termType, 0);
+		}
 		if (inter->scr[inter->scptr] != ',' && inter->scr[inter->scptr] != ';')
 			inter->scfailed = 1;
 		if (inter->scr[inter->scptr] == ',')
@@ -23,7 +135,7 @@ void GetTerm(InterpData* inter, TrieNode* VM, char* term, void** result, BPC_Ret
 	}
 	else
 	{
-		if (!StringTermProc(inter, VM, term, result))
+		if (!StringTermProc(inter, VM, result))
 		{
 			inter->scfailed = 1;
 			return;
@@ -33,32 +145,63 @@ void GetTerm(InterpData* inter, TrieNode* VM, char* term, void** result, BPC_Ret
 	//free(term) TODO: memleak
 }
 
-int StringTermProc(InterpData* inter, TrieNode* VM, char* term, void** result)
+int StringTermProc(InterpData* inter, TrieNode* VM, void** result)
 {
-	if (term[0] == '\"')
+	SkipSpaces(inter);
+	char* res = malloc(1000), *ret;
+	*res = 0;
+	if (inter->scr[inter->scptr] == '\"')
 	{
-		strtok(term, "\"");
-		inter->scptr += strlen(term + 1) + 2;//+"Э
-		*result = term + 1;
+		ret = ParseInsideQuotes(inter);
+		strcpy(res, ret);
+		inter->scptr += strlen(ret) + 1;
+		free(ret);
+		if (inter->scfailed)
+			return 0;
 	}
 	else
 	{
-		BPC_Returns ret;
+		BPC_Returns retType;
 		//функция?
 		char* funcname = ParseName(inter);
-		if (inter->scr[inter->scptr] != '(')//TODO: переменная ещё!
+		if (inter->scfailed)
+			return 0;
+		if (inter->scr[inter->scptr] != '(')
 		{
 			int constant;
-			*result = VM_GetVariable(VM, funcname, &constant, &ret);
+			ret = VM_GetVariable(VM, funcname, &constant, &retType);
+			if (ret == 0)
+			{
+				inter->scfailed = 1;
+				return 0;
+			}
+			strcpy(res, ret);
 			if (inter->scfailed)
 				return 0;
-			return 1;
 		}
 		else
 		{
-			*result = ProcFunction(inter, VM, funcname, &ret);
+			ret = ProcFunction(inter, VM, funcname, &ret);
+			if (ret)
+				strcpy(res, ret);
+			free(ret);
+			if (inter->scfailed)
+				return 0;
 		}
 	}
+
+	SkipSpaces(inter);
+	char* cnc = 0;
+	if (inter->scr[inter->scptr] == '+')
+	{
+		inter->scptr++;
+		StringTermProc(inter, VM, &cnc);
+	}
+	if (cnc)
+		strcat(res, cnc);
+	free(cnc);
+	*result = (void*)res;
+	SkipSpaces(inter);
 	return 1;
 }
 
@@ -204,96 +347,7 @@ void ProcAssignment(InterpData* inter, TrieNode* VM)
 	if (inter->scfailed)
 		return;
 
-	if (varType == BPC_ReturnsString)
-	{
-		char *val = (char*)currentVal;
-
-		switch (mode)
-		{
-		case 0:
-			strcpy(val, (char*)result);
-			break;
-		case 1:
-			strcat(val, (char*)result);
-			break;
-		default:
-			inter->scfailed = 1;
-			return;
-		}
-		printf("Setting %s to %s\n", name, (char*)val);
-		//VM_SetVariable(name, val);//не нужно?
-	}
-	else
-	{
-		if (termType == BPC_ReturnsString)
-		{
-			inter->scfailed = 1;
-			return;
-		}
-
-		if (varType == BPC_ReturnsInt)
-		{
-			int toAssign = *((double*)result);
-			int *val = (int*)currentVal;
-
-			switch (mode)
-			{
-			case 0:
-				*val = toAssign;
-				break;
-			case 1:
-				*val += toAssign;
-				break;
-			case 2:
-				*val -= toAssign;
-				break;
-			case 3:
-				*val *= toAssign;
-				break;
-			case 4:
-				if (!toAssign)
-				{
-					inter->scfailed = 1;
-					return;
-				}
-				*val /= toAssign;
-				break;
-			}
-			printf("Setting %s to %d\n", name, *((int*)val));
-			//VM_SetVariable(name, val);//не нужно?
-		}
-		else if (varType == BPC_ReturnsDouble)
-		{
-			double toAssign = *((double*)result);
-			double *val = (double*)currentVal;
-
-			switch (mode)
-			{
-			case 0:
-				*val = toAssign;
-				break;
-			case 1:
-				*val += toAssign;
-				break;
-			case 2:
-				*val -= toAssign;
-				break;
-			case 3:
-				*val *= toAssign;
-				break;
-			case 4:
-				if (!toAssign)
-				{
-					inter->scfailed = 1;
-					return;
-				}
-				*val /= toAssign;
-				break;
-			}
-			printf("Setting %s to %lf\n", name, *((double*)val));
-			//VM_SetVariable(name, val);//не нужно?
-		}
-	}
+	SetVar(inter, name, currentVal, result, varType, termType, mode);
 }
 
 char* ProcSingleCondition(InterpData* inter)

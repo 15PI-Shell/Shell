@@ -144,3 +144,28 @@ char* ParseInsideBrackets(InterpData* inter)
 
 	return data;
 }
+
+char* ParseInsideQuotes(InterpData* inter)
+{
+	inter->scptr++;//пропускаем (
+	int insidePtr = inter->scptr;
+	int start = insidePtr;
+	while (inter->scr[insidePtr])
+	{
+		if (inter->scr[insidePtr] == '"' && (!inter->scr[insidePtr - 1] || inter->scr[insidePtr - 1] != '\\'))
+			break;//todo fix \"
+		insidePtr++;
+	}
+
+	if (!inter->scr[insidePtr])
+	{
+		inter->scfailed = 1;
+		return 0;
+	}
+
+	char* data = (char*)malloc(insidePtr - start + 1);
+	strncpy(data, inter->scr + start, insidePtr - start);
+	data[insidePtr - start] = 0;
+
+	return data;
+}

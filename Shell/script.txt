@@ -1,7 +1,7 @@
 int i;
 double a, b;
 
-echo(binary("2"));
+echo("2 in binary = " + binary("2"));
 echo(5*5, "=", 25*1);
 b = (5/5)*5;
 i = 2 * 2;
@@ -23,8 +23,13 @@ str1 = binary(34);
 str1 += binary(10);
 str2 = "teststring?";
 echo(str2);
+str2 = str1 + str2;
 echo(binary(  binary(8)  ));
 //самая внутренняя binary даЄт 1000, внешняя уже 1111101000
+
+string s = "Init value! ", s2 = "Init value too!";
+s = "oO";
+s += s + s + s + s + " " + s2;
 
 if (5 == 4 || 5*0 == 4||/*не зависит от пробелов*/     4 == 4)
 //{
