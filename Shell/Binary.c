@@ -14,7 +14,6 @@ char* BinaryProc(char* arg)
 		i++;
 	}
 
-	free(arg);
 	arg = (char*)malloc(sizeof(char)*(i+1));
 
 	for (i; i > 0; i--)
