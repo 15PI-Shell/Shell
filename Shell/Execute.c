@@ -78,7 +78,7 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 
 ExecResult FileExecuteCreate(char* nameProc, char* parametrs)
 {
-	if (strlen(nameProc)+strlen(parametrs) > MAX_PATH)
+	if (strlen(nameProc) + strlen(parametrs) > MAX_PATH)
 		return ExecResult_UnknownError;
 	char ProcAndParam[MAX_PATH + 1] = "";
 	strcpy(ProcAndParam, nameProc);

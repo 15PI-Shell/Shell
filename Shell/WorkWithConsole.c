@@ -129,7 +129,11 @@ void ReadHistory()
 void WriteHistory()
 {
 	fpHistory = fopen(HistoryPath, "w");
-
+	if (fpHistory == NULL)
+	{
+		printf("Software failure Please restart the program\n");
+		exit(0);
+	}
 	while (CurrHist->up)
 	{
 		CurrHist = CurrHist->up;
@@ -261,7 +265,7 @@ void ConsoleEnter()
 		cnt++;
 		if (cnt>100)
 		{
-			DoubleLinklistRemoveUpmost(&CurrHist);
+			DoubleLinklistRemoveUpmost(&CurrHist->up);
 			cnt--;
 		}
 
@@ -332,7 +336,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				int eLen = strlen(entry);
 				for (int i = 0; i < eLen; i++)
 				{
-					if ((entry[i] == '*') || (entry[i] == '?'))
+					if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
 					{
 						return 0;
 					}
@@ -352,7 +356,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			int eLen = strlen(entry);
 			for (int i = 0; i < eLen; i++)
 			{
-				if ((entry[i] == '*') || (entry[i] == '?'))
+				if (((entry[i] == '*') || (entry[i] == '?') || (entry[i]=='\\')))
 				{
 					return 0;
 				}
@@ -367,7 +371,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 	*PosEntryStart = 0; 
 	for (int i = 0; i < eLen; i++)
 	{
-		if ((entry[i] == '*') || (entry[i] == '?'))
+		if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
 		{
 			return 0;
 		}

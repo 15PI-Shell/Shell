@@ -9,13 +9,16 @@ binary 0.5 - RESULT:0;
 Binary a - RESULT: 0;
 Binary 1 2 -RESULT 1;
 
-//при удаче никаких сообщений, просто смена директории
-//при ошибке выводит: Directory doesn't exist\n_Error_;
-cd C:\Windows - RESULT: Success; 
-cd C:\\Windows - RESULT: Success; //количество слешей неважно, работает всё хорошо
-Cd c:\WiNdOws - RESULT: Success; //регистр неважен, но скопируется именно в том регистре, в котором ввели
-cd .. - RESULT: Success; //поднимет на одну папку вверх
-сd C:\dhsjag - RESULT: ERROR //директории не существует
-cd C:\text.txt - RESULT: ERROR; // даже если существует такой файл, будет ошибка
-cd calc.exe - RESULT: ERROR
-cd 1 - RESULT: ERROR
+cd F:\ - RESULT: Directory doesn't exist;
+cd 1 - RESULT : Directory doesn't exist;
+cd Shell - RESULT: Directory doesn't exist;
+cd Debug - RESULT CurDir=debug>;
+cd D:\Shell - Result: CurDir=D:\Shell>;
+cd .. - RESULT: CurDir=D:\;
+cd . RESULT: CurDir=.>;
+cd 1:\23\4 RESULT: Directory doesn't exist;
+cd D\Shell- RESULT: Directory doesn't exist;
+cd D:\\Shell - RESULT: CurDir: D:\\Shel �� �����
+cd D:\Shell\\ - RESULT: CurDir: D:\Shell\\ �� �����
+cd ChangeDirectry.c - RESULT: Directory doesn't exist;
+cd C:\Users D:\Shell - RESULT: ��������� �� ���������
