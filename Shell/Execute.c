@@ -2,7 +2,6 @@
 
 ExecResult FileExecute(char* nameProc, char* parametrs)
 {
-	UINT result; //переменная для возвращения результата запуска файла
 	char check[] = ".exe";
 	int lenName = strlen(nameProc);
 	int i;
