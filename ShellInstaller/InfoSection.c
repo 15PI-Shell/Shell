@@ -7,7 +7,7 @@ char* InfSect(int* Size, InstallerConfig* struc)
 	FILE *fl;
 	short int NumFiles = struc->NumOfFiles;
 	int size = 0;
-
+	SingleListStringNode* ptr = struc->FilePath;
 	for (int i=0; i<NumFiles; i++)  //получаем размер каждого файла
 	{
 		char* FileName = struc->FilePath->value;
@@ -23,8 +23,10 @@ char* InfSect(int* Size, InstallerConfig* struc)
 		fseek(fl, 0, SEEK_END);		//размер файла
 		size += ftell(fl);
 		fseek(fl, 0, SEEK_SET);
+		fclose(fl);
+		struc->FilePath = struc->FilePath->up;
 	}
-	
+	struc->FilePath = ptr;
 	char sig[] = " HELL-INSTALLER-INFOSECTION";
 	sig[0] = 'S';
 	int lsig = strlen(sig);
