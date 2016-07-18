@@ -332,7 +332,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				int eLen = strlen(entry);
 				for (int i = 0; i < eLen; i++)
 				{
-					if ((entry[i] == '*') || (entry[i] == '?'))
+					if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
 					{
 						return 0;
 					}
@@ -352,7 +352,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			int eLen = strlen(entry);
 			for (int i = 0; i < eLen; i++)
 			{
-				if ((entry[i] == '*') || (entry[i] == '?'))
+				if (((entry[i] == '*') || (entry[i] == '?') || (entry[i]=='\\')))
 				{
 					return 0;
 				}
@@ -367,7 +367,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 	*PosEntryStart = 0; 
 	for (int i = 0; i < eLen; i++)
 	{
-		if ((entry[i] == '*') || (entry[i] == '?'))
+		if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
 		{
 			return 0;
 		}
