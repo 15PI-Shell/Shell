@@ -39,6 +39,8 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{
 		char CurDir[MAX_PATH] = "";
+		if (strlen(CurrentDirectory) + strlen(nameProc) >= MAX_PATH)
+			return ExecResult_UnknownError;
 		strcpy(CurDir, CurrentDirectory);
 		if ((CurDir[strlen(CurDir) - 1] != '\\') && (nameProc[0] != '\\')) //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
 			strcat(CurDir, "\\");
@@ -89,6 +91,8 @@ ExecResult FileExecuteCreate(char* nameProc, char* parametrs)
 		return AttemptCreation(nameProc);
 	else //если полный путь не указан (либо просто имя файла, либо относителный путь)
 	{
+		if (strlen(CurrentDirectory) + strlen(ProcAndParam) >= MAX_PATH)
+			return ExecResult_UnknownError;
 		char CurDir[MAX_PATH] = "";
 		strcpy(CurDir, CurrentDirectory);
 		if ((CurDir[strlen(CurDir) - 1] != '\\') && (nameProc[0] != '\\')) //если текущий путь не заканчивается слешом и введенный им не начинается, то его нужно добавить
@@ -141,7 +145,7 @@ int FileExistenceCheck(char *Path)
 {
 	int k = 1;
 	SingleLinklistNode* list = FindFilesAndDirsPrefix(Path);
-	char Name[100];
+	char Name[MAX_PATH];
 	int i = -1, j = -1;
 	while (Path[++i])
 	{
