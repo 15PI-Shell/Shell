@@ -1,31 +1,48 @@
-﻿#include "InfoSection.c.h"
+﻿#include "InfoSection.h"
 
 char* InfSect(int* Size, InstallerConfig* struc)
 {
-
-	char* mas;
-	char bytes[] = { 0x53, 0x48, 0x45, 0x4c, 0x4c, 0x2d, 0x49,
-		0x4e, 0x53, 0x54,0x41, 0x4c, 0x4c, 0x45,
-		0x52, 0x2d, 0x49, 0x4e, 0x46, 0x4f, 0x53,
-		0x45, 0x43, 0x54, 0x49, 0x4f, 0x4e };
-	mas = bytes; //запись сигнатуры 
-	char leftByte, rightByte;
-	leftByte = (struc->NumOfFiles) % 256;
-	rightByte = (struc->NumOfFiles) / 256;
-	int reserve = 40960;
-	int bNumFiles = 2;
-	int sbytes = sizeof(bytes);
-	int skp = sbytes + reserve + bNumFiles;
-	char *str = struc->msg;
-	int j = 0;
 	HANDLE hFile;
 	WIN32_FIND_DATA FindFileData;
 	FILE *fl;
-	int i = sbytes;
-	for (i; i < skp; i++, mas++)
+	short int NumFiles = struc->NumOfFiles;
+	int size = 0;
+
+	for (int i=0; i<NumFiles; i++)  //получаем размер каждого файла
+	{
+		char* FileName = struc->FilePath->value;
+		hFile = FindFirstFileA(FileName, &FindFileData);
+		if (hFile == INVALID_HANDLE_VALUE)
+		{
+			printf("Invalid File Handle \n");
+			return 0;
+		}
+		fl = fopen(FileName, "rb");
+		if (fl == NULL) printf("Could not open %s", FileName);
+		
+		fseek(fl, 0, SEEK_END);		//размер файла
+		size += ftell(fl);
+		fseek(fl, 0, SEEK_SET);
+	}
+	
+	mas = sig;
+
+	char leftByte, rightByte;
+	leftByte = (NumFiles) % 256;
+	rightByte = (NumFiles) / 256;
+	
+	int reserve = RESERVED_40_kb;
+	int bNumFiles = RESERVED_2_b;
+	int skp = lsign + reserve + bNumFiles;
+	char *str = struc->msg;
+	int j = 0;
+	int k = 0;
+	int i = lsign;
+	
+	for (i; i < Size; i++, mas++)
 	{
 
-		if (reserve > i >= (32768 + sbytes)) //приветственное сообщние
+		if ((RESERVED_32_kb + lsign) <= i < reserve) //приветственное сообщние
 		{
 			mas[i] = str[j];
 			j++;
@@ -37,27 +54,28 @@ char* InfSect(int* Size, InstallerConfig* struc)
 			i++, mas++;
 			*mas = rightByte;
 		}
-	}
-	for (int k = 0, i = skp; k < bNumFiles; i++, k++)
-	{
-		char* FileName = struc->FilePath->value;
-		mas[i] = (FileName)[k]; //путь файла
-		i += 512;
-		hFile = FindFirstFile(FileName, &FindFileData);
-		if (hFile == INVALID_HANDLE_VALUE)
+		if ((i >= skp) && (k<NumFiles))
 		{
-			printf("Invalid File Handle. GetLastError reports %d\n",
-				GetLastError());
-			return (0);
+			char* FileName = struc->FilePath->value;
+			int LenOfFile = strlen(FileName);				//длина пути файла
+			memcpy(mas + strlen(mas), FileName, LenOfFile);	//добавляем путь файла в массив
+			i += RESERVED_512_b - LenOfFile;
+
+			mas[i] = FindFileData.nFileSizeHigh % 256;		//размер файла
+			mas[i + 1] = FindFileData.nFileSizeHigh / 256;
+			mas[i + 2] = FindFileData.nFileSizeLow % 256;
+			mas[i + 3] = FindFileData.nFileSizeLow / 256;
+			i += RESERVED_4_b;
+
+			while (!feof(fl))
+			{
+				fread((mas + i), sizeof(char), 4096, fl);	//тело файла
+				i++;
+			}
+			k++;
 		}
-		mas[i] = FindFileData.nFileSizeHigh;  //размер файла
-		mas[i += 2] = FindFileData.nFileSizeLow;
-		fl = fopen(FileName,"rb");
-		if (f1 == NULL) printf("Could not open %s", FileName);
-		while(!feof(fl)) fread((mas+i),sizeof(char),4096,fl); //тело файла
 	}
-
-
-	Size = (int*)sizeof(mas);
+	
 	return mas;
 }
+
