@@ -9,6 +9,6 @@
 #include "FindFile.h"
 #include "SearchLogicalSymbol.h"
 
-void CmdInterpretator(char*);
+char* CmdInterpretator(char*);
 
 #endif

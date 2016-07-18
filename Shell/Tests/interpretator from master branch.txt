@@ -1,21 +1,24 @@
-1 2 - неизвестная команда;
-ls-R - неизвестная команда, возможно вы имели ввиду ls(команда с таким же префиксом)ж
-<space> - ничего, RESULT:;
+п»ї1 2 - РЅРµРёР·РІРµСЃС‚РЅР°СЏ РєРѕРјР°РЅРґР°;
+ls-R - РЅРµРёР·РІРµСЃС‚РЅР°СЏ РєРѕРјР°РЅРґР°, РІРѕР·РјРѕР¶РЅРѕ РІС‹ РёРјРµР»Рё РІРІРёРґСѓ ls(РєРѕРјР°РЅРґР° СЃ С‚Р°РєРёРј Р¶Рµ РїСЂРµС„РёРєСЃРѕРј)Р¶
+<space> - РЅРёС‡РµРіРѕ, RESULT:;
 
-Binary<space>-результат пустая строка;
+Binary<space>-СЂРµР·СѓР»СЊС‚Р°С‚ РїСѓСЃС‚Р°СЏ СЃС‚СЂРѕРєР°;
 Binary -125 - RESULT -1111101;
 Binary 30 - RESULT: 11110;
 binary 0.5 - RESULT:0;
 Binary a - RESULT: 0;
 Binary 1 2 -RESULT 1;
 
-SUM 2 1 - RESULT: 3;
-sum 1 2 - RESULT: 3;
-sUm 1 2 - RESULT: 3;
-sum <space> - Пока что ошибка
-SUM -1 2 - RESULT: 1;
-sum 0 0 - RESULT: 0;
-Sum 0.5 3 - ошибка;
-SUM a b - ошибка
-sum a 1 - ошибка
-sum 1 2 3 - RESULT 3;
+cd F:\ - RESULT: Directory doesn't exist;
+cd 1 - RESULT : Directory doesn't exist;
+cd Shell - RESULT: Directory doesn't exist;
+cd Debug - RESULT CurDir=debug>;
+cd D:\Shell - Result: CurDir=D:\Shell>;
+cd .. - RESULT: CurDir=D:\;
+cd . RESULT: CurDir=.>;
+cd 1:\23\4 RESULT: Directory doesn't exist;
+cd D\Shell- RESULT: Directory doesn't exist;
+cd D:\\Shell - RESULT: CurDir: D:\\Shel эт плохо
+cd D:\Shell\\ - RESULT: CurDir: D:\Shell\\ эт плохо
+cd ChangeDirectry.c - RESULT: Directory doesn't exist;
+cd C:\Users D:\Shell - RESULT: выводится по последняя
