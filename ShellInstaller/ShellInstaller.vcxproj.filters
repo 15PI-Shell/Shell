@@ -33,6 +33,9 @@
     <ClCompile Include="InfoSection.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Unpacking.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShellInstaller.h">
@@ -54,6 +57,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="InfoSection.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Unpacking.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

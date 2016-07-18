@@ -82,6 +82,7 @@
     <ClCompile Include="ModifyingRegistry.c" />
     <ClCompile Include="ShellInstaller.c" />
     <ClCompile Include="StringList.c" />
+    <ClCompile Include="Unpacking.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArchieveFile.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="ModifyingRegistry.h" />
     <ClInclude Include="ShellInstaller.h" />
     <ClInclude Include="StringList.h" />
+    <ClInclude Include="Unpacking.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

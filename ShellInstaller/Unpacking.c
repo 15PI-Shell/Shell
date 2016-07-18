@@ -1,10 +1,10 @@
-#include "Unpacking.h"
+﻿#include "Unpacking.h"
 
 int UnpackingFile(char* dir)
 {
 	HANDLE hFile, hUnInstFile;
-
-	hFile = CreateFileA("15PIShellInstaller.exe", GENERIC_READ,  //��������� ��� �����
+	DWORD ptr1;
+	hFile = CreateFileA("15PIShellInstaller.exe", GENERIC_READ,  //открываем наш архив
 		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
@@ -12,7 +12,13 @@ int UnpackingFile(char* dir)
 		return 0;
 	}
 
-	hUnInstFile = CreateFileA("uninstall.exe", GENERIC_WRITE,   //������� ����
+	int lDir = strlen(dir);
+	char* UnInstFile = (char*)malloc(MAX_PATH);
+	memcpy(UnInstFile,dir,lDir);				//копируем нашу директорию в переменную
+	char* FileName = "\uninstall.exe";
+	memcpy(UnInstFile + lDir, FileName,strlen(FileName));
+
+	hUnInstFile = CreateFileA( UnInstFile, GENERIC_WRITE,   //создаем файл в указанной директории
 		0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hUnInstFile == INVALID_HANDLE_VALUE)
@@ -20,17 +26,95 @@ int UnpackingFile(char* dir)
 		printf("Could not open uninstall.exe");
 		return 0;
 	}
+	char* sign = "SHELL-INSTALLER-INFOSECTION";
+	int lSign = strlen(sign);
+
 	DWORD  dwBytesRead, dwBytesWritten, dwPos;
 	char   buff[4096];
-
+	int BuffSize = strlen(buff);
+	int skp = KB_TO_SKIP + lSign;
 	do
 	{
 		if (ReadFile(hFile, buff, sizeof(buff), &dwBytesRead, NULL))
 		{
-			WriteFile(hUnInstFile, buff, dwBytesRead, &dwBytesWritten, NULL);
+			char* ptr;							
+			ptr = strstr(buff, strstr);			//содержит ли наш буффер сигнатуру
+			if (ptr != NULL)
+			{
+				ptr1 = SetFilePointer(hFile, 0, NULL, FILE_CURRENT);
+				break;							//да - выходим
+			}
+			else
+			{
+				WriteFile(hUnInstFile, buff, dwBytesRead, &dwBytesWritten, NULL);	//нет - записываем в файл
+			}
 		}
-	} while (dwBytesRead == sizeof(buff));
+	} while (1);
+	
+	//начиная с ptr пропускаем сигнатуру и 40 кб считываем два байта
+	SetFilePointer( hFile, skp, NULL, FILE_CURRENT);
+	int SkpTwoBytes = 2;
+	int SkpFiveHBytes = 2;
+	char buff1[2];
+	char buff2[516];
+	int NumOfFiles;
+	if (ReadFile(hFile, buff1, sizeof(buff1), &dwBytesRead, NULL))
+	{
+		WriteFile(hUnInstFile, buff1, dwBytesRead, &dwBytesWritten, NULL);	
+		SetFilePointer(hFile, SkpTwoBytes, NULL, FILE_CURRENT);
+	}
+	NumOfFiles = buff1[1]*256 + buff1[0];
+	//считываем размер каждого файла и его путь
+	int i = 0;
+	SingleListStringNode * ListOfPaths;
+	SingleListStringNode * ListOfSize;
+	while (i<NumOfFiles)
+	{
+		if (ReadFile(hFile, buff2, sizeof(buff2), &dwBytesRead, NULL))
+		{
+			char* PathFile;
+			for (int k = 0, j = 0; buff2[j] != "\0"; k++, j++)
+			{
+				PathFile[k] = buff2[j];
+			}
+			SingleStrlistAddDownmost(ListOfPaths, PathFile);		//добавляем пути к файлам в список
+			int Size;
+			Size = buff2[512] + (buff2[513]<<8) + (buff2[514]<<16) + (buff2[515]<<24);
+			char* s;
+			itoa(Size, s, 10);
+			SingleStrlistAddDownmost(ListOfSize, s);				//добавляем размер файлов в список
+			WriteFile(hUnInstFile, buff2, dwBytesRead, &dwBytesWritten, NULL);
+			SetFilePointer(hFile, SkpFiveHBytes, NULL, FILE_CURRENT);
+			i++;
+		}
+	}
+	CloseHandle(hUnInstFile);
+	//распаковываем файлы
+	while (ListOfPaths)
+	{
+		char * GetName;
+		GetName = ListOfPaths->value;
+		char* PathFileDir = (char*)malloc(MAX_PATH);
+		memcpy(PathFileDir, dir, lDir);				//копируем нашу директорию в переменную
+		memcpy(PathFileDir + lDir, GetName, strlen(GetName));
 
-
+		HANDLE Paths;
+		Paths = CreateFile(GetName, GENERIC_WRITE, FILE_SHARE_READ,
+			NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		int ByteToSkip = atoi(ListOfSize->value);
+		char* buff3=(char*)malloc(ByteToSkip);
+		if (ReadFile(hFile, buff3, sizeof(buff3), &dwBytesRead, NULL))
+		{
+			WriteFile(Paths, buff3, dwBytesRead, &dwBytesWritten, NULL);
+			SetFilePointer(hFile, ByteToSkip, NULL, FILE_CURRENT);
+		}
+		CloseHandle(Paths);
+		free(buff3);
+		ListOfPaths = ListOfPaths->up;
+		ListOfSize = ListOfSize->up;
+	}
+	
 	return 1;
 }
+
+
