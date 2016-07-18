@@ -31,5 +31,5 @@ cd 1:\23\4 RESULT: Directory doesn't exist;
 cd D\Shell- RESULT: Directory doesn't exist;
 cd D:\\Shell - RESULT: CurDir: D:\\Shel эт плохо
 cd D:\Shell\\ - RESULT: CurDir: D:\Shell\\ эт плохо
-cd ChangeDirectry.c - RESULT: ошибка 132 стр.
-cd C:\Users D:\Shell - RESULT: 
+cd ChangeDirectry.c - RESULT: Directory doesn't exist;
+cd C:\Users D:\Shell - RESULT: выводитс€ по последн€€
