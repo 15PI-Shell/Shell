@@ -261,7 +261,7 @@ void ConsoleEnter()
 		cnt++;
 		if (cnt>100)
 		{
-			DoubleLinklistRemoveUpmost(&CurrHist);
+			DoubleLinklistRemoveUpmost(&CurrHist->up);
 			cnt--;
 		}
 
