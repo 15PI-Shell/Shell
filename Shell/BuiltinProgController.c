@@ -27,6 +27,7 @@ void BPC_Init()
 	RegisterProgram("Binary", BinaryProc, BPC_ReturnsString);
 	RegisterProgram("cd", ChangeDirectory, BPC_ReturnsNothing);
 
+	RegisterProgram("calc", calc, BPC_ReturnsDouble);
 	RegisterProgram("sin", MathFun_sin, BPC_ReturnsDouble);
 	RegisterProgram("cos", MathFun_cos, BPC_ReturnsDouble);
 	RegisterProgram("tan", MathFun_tan, BPC_ReturnsDouble);

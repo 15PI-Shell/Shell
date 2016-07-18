@@ -385,8 +385,23 @@ void ProcAssignment(InterpData* inter, TrieNode* VM)
 char* ProcSingleCondition(InterpData* inter)
 {
 	int start = inter->scptr;
-	while (!CheckNextSyms(inter, "&&") && !CheckNextSyms(inter, "||") && !CheckNextSyms(inter, ")"))
+	int delta = 1;
+	while (inter->scr[inter->scptr] && !CheckNextSyms(inter, "&&") && !CheckNextSyms(inter, "||"))
+	{
+		if (CheckNextSyms(inter, ")"))
+			delta--;
+		else if (CheckNextSyms(inter, "("))
+			delta++;
+		if (delta == 0)
+			break;
 		inter->scptr++;
+	}
+
+	if (delta != 0)
+	{
+		inter->scfailed = 1;
+		return 0;
+	}
 
 	char* data = (char*)malloc(inter->scptr - start + 1);
 	strncpy(data, inter->scr + start, inter->scptr - start);

@@ -1,10 +1,28 @@
-string c;
+//запуск скрипта scexec testsc.txt
+int passed = 0;
 
-while (c != "exit")
+if (tryCmd("binary 123") == "1111011")
 {
-	c = readline();
-	echo(toDouble(c)*2);
+	echo(">>>>>>>>passed");
+	passed += 1;
 }
-//newline в конце
-//строки не длиннее 1000
+
+if (tryCmd("sdfgsdfgsdfg") == "not found")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+//calc ... - математика. 
+//trycmd - возвращает строку-ответ интерпретатор
+echo(tryCmd("calc sin(PI/2)*cos(9)"));
+echo(calc("2 + 2 * 2"));
+echo("calc 2 + 2 * 2 in cmd is: " + tryCmd("calc 2 + 2 * 2"));
+//экранирование кавычек
+echo(toStr(passed) + "/2 tests was passed");
+
+//ограничения пока такие:
+//newline(пустая строка) в конце файла
+//"" строки не длиннее 1000
 //пробелы после if while
+//нет кавычек внутри кавычек
+//нет else :C

@@ -18,6 +18,7 @@
 #include "toStr.h"
 #include "toDouble.h"
 #include "ReadLine.h"
+#include "calc.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

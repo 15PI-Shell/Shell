@@ -161,8 +161,8 @@ char* ParseInsideQuotes(InterpData* inter)
 	int start = insidePtr;
 	while (inter->scr[insidePtr])
 	{
-		if (inter->scr[insidePtr] == '"' && (!inter->scr[insidePtr - 1] || inter->scr[insidePtr - 1] != '\\'))
-			break;//todo fix \"
+		if (inter->scr[insidePtr] == '"')
+				break;
 		insidePtr++;
 	}
 

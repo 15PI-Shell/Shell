@@ -20,7 +20,7 @@ char* GetRightExpression(char* expression); //им всем не нужна ви
 
 void Pass(Mathi* mi)
 {
-	while (mi->str[mi->ptr] == ' ')
+	while (mi->str[mi->ptr] == ' ' || mi->str[mi->ptr] == '\t' || mi->str[mi->ptr] == '\n' || mi->str[mi->ptr] == '\r')
 		mi->ptr++;
 }
 
@@ -121,7 +121,7 @@ double Term(Mathi* mi, TrieNode* VM)//Выражение = Слагаемое [+
 	case '\0':
 		break;
 	case ')':
-		if (--mi->bracets < 0)
+		if (--(mi->bracets) < 0)
 		{
 			failed = 1;
 			return 0;
@@ -233,7 +233,7 @@ double Function(Mathi* mi, TrieNode* VM, char* funct)
 	char args[1000] = "(";
 	int i = 1;
 	int bracets2 = 1;
-	while ((mi->str[++mi->ptr] != ')') || (bracets2 != 1))
+	while ((mi->str[++(mi->ptr)] != ')') || (bracets2 != 1))
 	{
 		switch (mi->str[mi->ptr])
 		{
@@ -344,7 +344,7 @@ double Const(Mathi* mi)
 int MathInterpreter(TrieNode* VM, char* expression, double** result)
 {
 	Mathi mi;
-	mi.ptr = failed = 0;
+	mi.ptr = failed = mi.bracets = 0;
 	mi.str = GetRightExpression(expression);
 	double* ans = (double*)malloc(sizeof(double));
 	*ans = Term(&mi, VM);
@@ -352,10 +352,8 @@ int MathInterpreter(TrieNode* VM, char* expression, double** result)
 	if (mi.str[mi.ptr] != 0)//остались ещё какие-то символы, например лишние закрывающие скобки
 		failed = 1;
 
-	*result = ans;
-
-	if (failed)
-		*result = mi.ptr;//сохраним где упали
+	if (!failed)
+		*result = ans;
 
 	return !failed;
 }
