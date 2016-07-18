@@ -53,7 +53,7 @@
     <ClInclude Include="INI.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="InfoSection.c.h">
+    <ClInclude Include="InfoSection.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

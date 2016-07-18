@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArchieveFile.h" />
-    <ClInclude Include="InfoSection.c.h" />
+    <ClInclude Include="InfoSection.h" />
     <ClInclude Include="InstallerConfig.h" />
     <ClInclude Include="INI.h" />
     <ClInclude Include="ModifyingRegistry.h" />

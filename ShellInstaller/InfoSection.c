@@ -9,8 +9,8 @@ char* InfSect(int* Size, InstallerConfig* struc)
 	char sig[] = " HELL-INSTALLER-INFOSECTION";
 	sig[0] = 'S';
 	int lsig = strlen(sig);
-
 	int s = lsig + RESERVED_40_kb + RESERVED_2_b + NumFiles*(RESERVED_512_b + RESERVED_4_b);
+
 	*Size = s;
 	char* mas = (char*)malloc(*Size);
 	memcpy(mas, sig, lsig);
@@ -43,7 +43,6 @@ char* InfSect(int* Size, InstallerConfig* struc)
 			printf("File doesn't exist\n");
 			return 0;
 		}
-
 		mas[i] = FindFileData.nFileSizeHigh % 256;		//размер файла
 		mas[i + 1] = FindFileData.nFileSizeHigh / 256;
 		mas[i + 2] = FindFileData.nFileSizeLow % 256;
