@@ -1,9 +1,20 @@
-﻿;в директории проекта
-B + Tab - ничего 
-B + 2 Tab  - Binary.c
-			 Binary.h
-			 BuiltinProgController.c
-			 BuiltinProgController.h
-			 BuiltinProgInterpretator.c
-			 BuiltinProgInterpretator.h
+﻿;в директории проекта (вводится только префикс без пути)
+B + Tab - ничего + Tab  - Минимум:
+								 Binary.c
+								 Binary.h
+								 BuiltinProgController.c
+								 BuiltinProgController.h
+								 BuiltinProgInterpretator.c
+								 BuiltinProgInterpretator.h
 B + 3 Tab - ничего (список найденных файлов стерся)
+Documenta + Tab - дополнение до Documentation + Tab - остаётся то же самое
+xhsk + Tab (2 Tab и более) - ничего ;любой несуществующий префикс
+cd Documenta + Tab - дополнение до cd Documentation
+cd B + Tab - ничего + Tab - вывод списка файлов так же как и выше + Tab - список файлов стерся
+Дополняется после любого количества пробелов (в начале строки или после команды)
+Binary ||(&&)(>) Documenta + Tab - дополнение до Binary ||(&&)(>) Documentation + Tab - остаётся то же самое
+Binary ||(&&)(>) B + Tab - ничего + Tab - вывод списка файлов + Tab - стирание списка
+Binary ||(&&)(>) xhsk + Tab (2 и более) - ничего 
+пробелы до, после ||,&&,> - значения не имеют
+Список автодополнений стирается только при нажатии Tab, вертикальных стрелок и Enter
+Если в командной строке не хватает места для автодополнения и если найденный файл только один, то автодополнения не происходит

@@ -24,7 +24,7 @@ void BPC_Init()
 	trieRoot = Trie_Create();
 	//здесь будет список всех реализованных встроенных программ
 	RegisterProgram("HelloWorld", HelloWorldProc, BPC_ReturnsNothing);
-	RegisterProgram("Sum", sumProc, BPC_ReturnsInt);
+	//RegisterProgram("Sum", sumProc, BPC_ReturnsInt);
 	RegisterProgram("Binary", BinaryProc, BPC_ReturnsString);
 	RegisterProgram("cd", ChangeDirectory, BPC_ReturnsNothing);
 }
