@@ -1,22 +1,27 @@
 #include "MathInterpreter.h"
 #include "BuiltinProgController.h"
 
-int ptr = -1, failed = 0, bracets = 0;
-char* str;
+int failed;
 
-double Term(TrieNode* VM);
-double Summand(TrieNode* VM);
-double Multipler(TrieNode* VM);
-double Const();
-double Function(TrieNode* VM, char* funct);
-double Variable(TrieNode* VM, char* Var);
+typedef struct
+{
+	int ptr, bracets;
+	char* str;
+} Mathi;
+
+double Term(Mathi* mi, TrieNode* VM);
+double Summand(Mathi* mi, TrieNode* VM);
+double Multipler(Mathi* mi, TrieNode* VM);
+double Const(Mathi* mi);
+double Function(Mathi* mi, TrieNode* VM, char* funct);
+double Variable(Mathi* mi, TrieNode* VM, char* Var);
 void shift(char* out, int key);
 char* GetRightExpression(char* expression); //им всем не нужна видимость извне, поэтому тут
 
-void Pass()
+void Pass(Mathi* mi)
 {
-	while (str[ptr] == ' ')
-		ptr++;
+	while (mi->str[mi->ptr] == ' ')
+		mi->ptr++;
 }
 
 void shift(char* out, int key)
@@ -95,33 +100,33 @@ char* GetRightExpression(char* expression)
 	return out;
 }
 
-double Term(TrieNode* VM)//Выражение = Слагаемое [+/- Выражение]
+double Term(Mathi* mi, TrieNode* VM)//Выражение = Слагаемое [+/- Выражение]
 {
 
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
-	Pass();
+	Pass(mi);
 
 	double ans;
-	ans = Summand(VM);
+	ans = Summand(mi, VM);
 
-	Pass();
+	Pass(mi);
 
-	switch (str[ptr])
+	switch (mi->str[mi->ptr])
 	{
 	case '-'://два case указывающих на одно место, хорошая штука
 	case '+':
-		ans += Term(VM);
+		ans += Term(mi, VM);
 		break;
 	case '\0':
 		break;
 	case ')':
-		if (--bracets < 0)
+		if (--mi->bracets < 0)
 		{
 			failed = 1;
 			return 0;
 		}
-		ptr++;//пропускаем )
+		mi->ptr++;//пропускаем )
 			  //выражение закончилось
 		break;
 	default:
@@ -131,39 +136,39 @@ double Term(TrieNode* VM)//Выражение = Слагаемое [+/- Выра
 	return ans;
 }
 
-double Summand(TrieNode* VM)//Слагаемое = Множитель [* Множитель]
+double Summand(Mathi* mi, TrieNode* VM)//Слагаемое = Множитель [* Множитель]
 {
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	Pass();
+	Pass(mi);
 
 	int modify = 1;
-	switch (str[ptr])
+	switch (mi->str[mi->ptr])
 	{
 	case '+':
-		ptr++;
+		mi->ptr++;
 		break;
 	case '-':
 		modify = -1;
-		ptr++;
+		mi->ptr++;
 		break;
 	}//иначе это константа без знака
 
 	double ans;
-	ans = Multipler(VM);
+	ans = Multipler(mi, VM);
 
-	Pass();
+	Pass(mi);
 
-	switch (str[ptr])
+	switch (mi->str[mi->ptr])
 	{
 	case '*':
-		ptr++;//пропускаем *
-		ans *= Summand(VM);
+		mi->ptr++;//пропускаем *
+		ans *= Summand(mi, VM);
 		break;
 	case '/':
-		ptr++;
-		double checkAns = Summand(VM);
+		mi->ptr++;
+		double checkAns = Summand(mi, VM);
 		if (checkAns)
 			ans /= checkAns;
 		else
@@ -175,49 +180,49 @@ double Summand(TrieNode* VM)//Слагаемое = Множитель [* Мно�
 	return ans * modify;
 }
 
-double Multipler(TrieNode* VM)//Множитель = Константа | Выражение
+double Multipler(Mathi* mi, TrieNode* VM)//Множитель = Константа | Выражение
 {
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
-	Pass();
+	Pass(mi);
 
 	double ans;
-	if (str[ptr] == '(')//выражение в скобках
+	if (mi->str[mi->ptr] == '(')//выражение в скобках
 	{
-		bracets++;
-		ptr++;//пропускаем (
-		ans = Term(VM);
+		mi->bracets++;
+		mi->ptr++;//пропускаем (
+		ans = Term(mi, VM);
 	}
-	else if (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
+	else if (tolower(mi->str[mi->ptr]) >= 'a' && tolower(mi->str[mi->ptr] <= 'z'))
 	{
 		char str2[20];
 		int i = 0;
-		while (tolower(str[ptr]) >= 'a' && tolower(str[ptr] <= 'z'))
+		while (tolower(mi->str[mi->ptr]) >= 'a' && tolower(mi->str[mi->ptr] <= 'z'))
 		{
-			str2[i] = str[ptr];
-			ptr++;
+			str2[i] = mi->str[mi->ptr];
+			mi->ptr++;
 			i++;
 		}
 		str2[i] = 0;
-		if (str[ptr] >= '0'&&str[ptr] <= '9')
+		if (mi->str[mi->ptr] >= '0'&&mi->str[mi->ptr] <= '9')
 		{
 			failed = 1;
 			return 0;
 		}
-		Pass();
-		if (str[ptr] == '(')
+		Pass(mi);
+		if (mi->str[mi->ptr] == '(')
 		{
-			ans = Function(VM, str2);
+			ans = Function(mi, VM, str2);
 		}
 		else
-			ans = Variable(VM, str2);
+			ans = Variable(mi, VM, str2);
 	}
 	else
-		ans = Const();
+		ans = Const(mi);
 	return ans;
 }
 
-double Function(TrieNode* VM, char* funct)
+double Function(Mathi* mi, TrieNode* VM, char* funct)
 {
 	BPC_Returns ret = BPC_WhatRets(funct);
 	if (ret == BPC_ReturnsNothing || ret == BPC_ReturnsString)
@@ -228,9 +233,9 @@ double Function(TrieNode* VM, char* funct)
 	char args[1000] = "(";
 	int i = 1;
 	int bracets2 = 1;
-	while ((str[++ptr] != ')') || (bracets2 != 1))
+	while ((mi->str[++mi->ptr] != ')') || (bracets2 != 1))
 	{
-		switch (str[ptr])
+		switch (mi->str[mi->ptr])
 		{
 		case '(':
 			bracets2++;
@@ -242,16 +247,16 @@ double Function(TrieNode* VM, char* funct)
 			failed = 1;
 			return 0;
 		}
-		args[i++] = str[ptr];
+		args[i++] = mi->str[mi->ptr];
 	}
 	args[i] = ')';
 	args[i + 1] = 0;
-	ptr++;
+	mi->ptr++;
 	strcpy(args, RetRightArg(VM, args, &failed));
 	BPC_Returns returns;
-	int copy_ptr = ptr;
-	char* str2 = (char*)malloc(strlen(str) + 1);
-	strcpy(str2, str);
+	int copy_ptr = mi->ptr;
+	char* str2 = (char*)malloc(strlen(mi->str) + 1);
+	strcpy(str2, mi->str);
 	char* ReturnPtr;
 	ReturnPtr = BPC_Execute(funct, args, &returns);
 	if (ReturnPtr == -1)
@@ -264,13 +269,13 @@ double Function(TrieNode* VM, char* funct)
 	MathInterpreter(VM, ReturnPtr, &ans);
 	if (failed)
 		return 0;
-	ptr = copy_ptr;
-	strcpy(str, str2);
+	mi->ptr = copy_ptr;
+	strcpy(mi->str, str2);
 	free(str2);
 	return *ans;
 }
 
-double Variable(TrieNode* VM, char* Var)
+double Variable(Mathi* mi, TrieNode* VM, char* Var)
 {
 	if (!strcmp(Var, "inf"))
 	{
@@ -280,6 +285,11 @@ double Variable(TrieNode* VM, char* Var)
 	int constant;
 	BPC_Returns type;
 	void* result = VM_GetVariable(VM, Var, &constant, &type);
+	if (!result)
+	{
+		failed = 1;
+		return 0;
+	}
 	double toRet;
 	if (type == BPC_ReturnsString)
 	{
@@ -293,35 +303,35 @@ double Variable(TrieNode* VM, char* Var)
 	return toRet;
 }
 
-double Const()
+double Const(Mathi* mi)
 {
 	if (failed)
 		return 0;//если где-то ошибка, то завершаем рекурсию
 
-	Pass();
+	Pass(mi);
 
-	if (str[ptr] < '0' || str[ptr] > '9')
+	if (mi->str[mi->ptr] < '0' || mi->str[mi->ptr] > '9')
 	{
 		failed = 1;
 		return 0;
 	}
 	double ans = 0;
-	while (str[ptr] >= '0' && str[ptr] <= '9')
+	while (mi->str[mi->ptr] >= '0' && mi->str[mi->ptr] <= '9')
 	{
 		ans *= 10;
-		ans += str[ptr] - '0';
-		ptr++;
+		ans += mi->str[mi->ptr] - '0';
+		mi->ptr++;
 	}
-	if (str[ptr] == '.')
+	if (mi->str[mi->ptr] == '.')
 	{
 		double fract = 0;
 		int k = 0;
-		ptr++;
-		while (str[ptr] >= '0' && str[ptr] <= '9')
+		mi->ptr++;
+		while (mi->str[mi->ptr] >= '0' && mi->str[mi->ptr] <= '9')
 		{
 			fract *= 10;
-			fract += str[ptr] - '0';
-			ptr++;
+			fract += mi->str[mi->ptr] - '0';
+			mi->ptr++;
 			k++;
 		}
 		while (k--)
@@ -333,18 +343,19 @@ double Const()
 
 int MathInterpreter(TrieNode* VM, char* expression, double** result)
 {
-	ptr = failed = 0;
-	str = GetRightExpression(expression);
+	Mathi mi;
+	mi.ptr = failed = 0;
+	mi.str = GetRightExpression(expression);
 	double* ans = (double*)malloc(sizeof(double));
-	*ans = Term(VM);
+	*ans = Term(&mi, VM);
 
-	if (str[ptr] != 0)//остались ещё какие-то символы, например лишние закрывающие скобки
+	if (mi.str[mi.ptr] != 0)//остались ещё какие-то символы, например лишние закрывающие скобки
 		failed = 1;
 
 	*result = ans;
 
 	if (failed)
-		*result = ptr;//сохраним где упали
+		*result = mi.ptr;//сохраним где упали
 
 	return !failed;
 }

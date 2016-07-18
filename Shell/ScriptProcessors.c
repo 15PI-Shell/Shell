@@ -132,6 +132,12 @@ void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type)
 void GetTerm(InterpData* inter, TrieNode* VM, char* term, void** result, BPC_Returns *type)
 {
 	SkipSpaces(inter);
+	if (!strcmp(term, ""))
+	{
+		*result = "";
+		*type = BPC_ReturnsString;
+		return;
+	}
 	term = MkMemCopy(term, strlen(term));
 	TrieNode* bk = Basic_VM;
 	Basic_VM = VM;

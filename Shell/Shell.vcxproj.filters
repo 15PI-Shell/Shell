@@ -51,9 +51,6 @@
     <ClCompile Include="HelloWorld.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="sum.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
     <ClCompile Include="Binary.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
@@ -129,6 +126,15 @@
     <ClCompile Include="TryCmd.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="ReadLine.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="toDouble.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="toStr.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -136,9 +142,6 @@
     </ClInclude>
     <ClInclude Include="Shell.h">
       <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="sum.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
     <ClInclude Include="Binary.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
@@ -210,6 +213,15 @@
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
     <ClInclude Include="TryCmd.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadLine.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="toStr.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="toDouble.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,10 @@
+string c;
+
+while (c != "exit")
+{
+	c = readline();
+	echo(toDouble(c)*2);
+}
+//newline в конце
+//строки не длиннее 1000
+//пробелы после if while

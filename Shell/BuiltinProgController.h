@@ -8,7 +8,6 @@
 
 //встроенные программы:
 #include "HelloWorld.h"
-#include "sum.h"
 #include "Binary.h"
 #include "ChangeDirectory.h"
 #include "MathFunction.h"
@@ -16,6 +15,9 @@
 #include "echo.h"
 #include "ScriptExec.h"
 #include "TryCmd.h"
+#include "toStr.h"
+#include "toDouble.h"
+#include "ReadLine.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

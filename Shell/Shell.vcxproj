@@ -83,6 +83,7 @@
     <ClCompile Include="MathFunction.c" />
     <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="ReadLine.c" />
     <ClCompile Include="ScriptExec.c" />
     <ClCompile Include="StringFunction.c" />
     <ClCompile Include="Echo.c" />
@@ -90,7 +91,6 @@
     <ClCompile Include="ScriptParsers.c" />
     <ClCompile Include="ScriptProcessors.c" />
     <ClCompile Include="SearchLogicalSymbol.c" />
-    <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
     <ClCompile Include="Execute.c" />
@@ -99,6 +99,8 @@
     <ClCompile Include="Shell.c" />
     <ClCompile Include="LinkedList.c" />
     <ClCompile Include="GetClipboardContent.c" />
+    <ClCompile Include="toDouble.c" />
+    <ClCompile Include="toStr.c" />
     <ClCompile Include="Trie.c" />
     <ClCompile Include="TryCmd.c" />
     <ClCompile Include="VarManager.c" />
@@ -118,6 +120,7 @@
     <ClInclude Include="MathFunction.h" />
     <ClInclude Include="MathInterpreter.h" />
     <ClInclude Include="ParserOfArguments.h" />
+    <ClInclude Include="ReadLine.h" />
     <ClInclude Include="ScriptInterpreter.h" />
     <ClInclude Include="ScriptParsers.h" />
     <ClInclude Include="ScriptProcessors.h" />
@@ -126,8 +129,9 @@
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="ScriptExec.h" />
     <ClInclude Include="StringFunction.h" />
-    <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />
+    <ClInclude Include="toDouble.h" />
+    <ClInclude Include="toStr.h" />
     <ClInclude Include="Trie.h" />
     <ClInclude Include="TryCmd.h" />
     <ClInclude Include="VarManager.h" />
