@@ -7,7 +7,7 @@ void CmdInterpretator(char* mas)
 	BPC_Returns TypeOfResult;
 	char strresult[100] = "\0";
 	char* result = NULL;
-	const char* del = ">\0";
+	const char* del = ">";
 	char* cmd;
 
 	if ((strchr(mas, '|')) && (strchr(mas, '&')))
@@ -107,7 +107,7 @@ void CmdInterpretator(char* mas)
 	//---------------------------------------------------------------------
 	if (flag == 2)	cmd = strtok(mas, del); // выделение одной команды из строки аргументов
 
-	while (cmd != 0)
+	while (cmd != 0) 
 	{
 		p = 0;
 		while (cmd[p] == ' ')
@@ -212,6 +212,7 @@ void CmdInterpretator(char* mas)
 		free(ptrname);
 		//printf("%s",ptrarg);
 		free(ptrarg);
+		if (strlen(cmd) == strlen(mas)) break;
 		cmd = strtok('\0', del); // search the following comand 
 	}
 
