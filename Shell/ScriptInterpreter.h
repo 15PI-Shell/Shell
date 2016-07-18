@@ -7,4 +7,4 @@
 #include "ScriptProcessors.h"
 #include <stdio.h>
 
-int EvalScript(char* script);
+int EvalScript(char* script, int v);

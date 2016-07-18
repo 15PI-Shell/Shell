@@ -83,6 +83,7 @@
     <ClCompile Include="MathFunction.c" />
     <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="ScriptExec.c" />
     <ClCompile Include="StringFunction.c" />
     <ClCompile Include="Echo.c" />
     <ClCompile Include="ScriptInterpreter.c" />
@@ -122,6 +123,7 @@
     <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="ScriptExec.h" />
     <ClInclude Include="StringFunction.h" />
     <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />

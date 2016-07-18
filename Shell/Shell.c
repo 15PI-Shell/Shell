@@ -3,27 +3,10 @@
 
 int main()
 {
-	Basic_VM = VM_Create();//вынести?
-
-	FILE *f = fopen("script.txt", "rb");
-	fseek(f, 0, SEEK_END);
-	long fsize = ftell(f);
-	fseek(f, 0, SEEK_SET);
-
-	char *string = malloc(fsize + 1);
-	fread(string, fsize, 1, f);
-	fclose(f);
-
-	string[fsize] = 0;
-
+	Basic_VM = VM_Create();
 	BPC_Init();
-
-	EvalScript(string);
-	return 0;
-
-
-
 	ConsoleInitialisation();
+	
 	int key;
 	while (1)
 	{

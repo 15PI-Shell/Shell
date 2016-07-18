@@ -40,6 +40,8 @@ void BPC_Init()
 	RegisterProgram("min", MathFun_min, BPC_ReturnsDouble);
 	RegisterProgram("strlen", StringFun_strlen, BPC_ReturnsInt);
 	RegisterProgram("echo", Echo, BPC_ReturnsNothing);
+
+	RegisterProgram("scexec", ScriptExec, BPC_ReturnsNothing);
 }
 
 BPC_Returns BPC_WhatRets(char* name)

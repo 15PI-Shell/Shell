@@ -8,6 +8,7 @@ typedef struct
 	int scptr, scfailed, row;
 	int insideLevel;
 	int retBackTo[100];
+	int verbose;
 } InterpData;
 
 int CheckNextSymsFree(int ptr, char* where, char* syms);

@@ -157,11 +157,12 @@ void Block(InterpData* inter, TrieNode* VM)
 	ProcAssignment(inter, VM);
 }
 
-int EvalScript(char* script)
+int EvalScript(char* script, int v)
 {
 	TrieNode* VM = VM_Create();//TODO: memleak
 	InterpData data;
 
+	data.verbose = v;
 	data.row = data.scfailed = data.scptr = data.insideLevel = 0;
 	data.scr = script;
 
@@ -176,8 +177,6 @@ int EvalScript(char* script)
 
 	if (data.scfailed)
 		printf("Failed on %d line, near '%c'\n\n", data.row + 1, data.scr[data.scptr]);
-
-	getch();
 
 	return !data.scfailed;
 }

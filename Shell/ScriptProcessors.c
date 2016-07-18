@@ -23,7 +23,8 @@ void SetVar(InterpData* inter, char* name, void* currentVal, void* result, BPC_R
 			inter->scfailed = 1;
 			return;
 		}
-		printf("Setting %s to \"%s\"\n", name, (char*)val);
+		if (inter->verbose)
+			printf("Setting %s to \"%s\"\n", name, (char*)val);
 		//VM_SetVariable(name, val);//не нужно?
 	}
 	else
@@ -62,7 +63,8 @@ void SetVar(InterpData* inter, char* name, void* currentVal, void* result, BPC_R
 				*val /= toAssign;
 				break;
 			}
-			printf("Setting %s to %d\n", name, *((int*)val));
+			if (inter->verbose)
+				printf("Setting %s to %d\n", name, *((int*)val));
 			//VM_SetVariable(name, val);//не нужно?
 		}
 		else if (varType == BPC_ReturnsDouble)
@@ -93,7 +95,8 @@ void SetVar(InterpData* inter, char* name, void* currentVal, void* result, BPC_R
 				*val /= toAssign;
 				break;
 			}
-			printf("Setting %s to %lf\n", name, *((double*)val));
+			if (inter->verbose)
+				printf("Setting %s to %lf\n", name, *((double*)val));
 			//VM_SetVariable(name, val);//не нужно?
 		}
 	}
@@ -104,7 +107,7 @@ void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type)
 	while (!CheckNextSyms(inter, ";") && !inter->scfailed)
 	{
 		char* name = ParseName(inter);
-		VM_DeclareVariable(VM, name, 0, type);
+		VM_DeclareVariable(VM, name, 0, inter->verbose, type);
 		if (inter->scr[inter->scptr] == '=')
 		{
 			inter->scptr++;
@@ -598,8 +601,8 @@ int ProcCondition(InterpData* inter, TrieNode* VM)
 			break;
 		}
 	}
-
-	printf("Parsed condition element: %s (%s)\n", parsed, result ? "TRUE" : "FALSE");
+	if (inter->verbose)
+		printf("Parsed condition element: %s (%s)\n", parsed, result ? "TRUE" : "FALSE");
 
 	if (CheckNextSyms(inter, "&&"))
 	{
