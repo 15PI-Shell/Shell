@@ -235,9 +235,10 @@ char* CmdInterpretator(char* mas)
 
 		free(ptrname);
 		free(ptrarg);
-			if (strlen(mas) == strlen(cmd)) break;
-		
-			cmd = strtok('\0', del); // search the following comand 
+
+		if (strlen(mas) == strlen(cmd)) break;
+		cmd = strtok('\0', del); // search the following comand 
+
 	}
 
 	if (strlen(strresult) != 0)
