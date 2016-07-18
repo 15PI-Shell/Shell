@@ -25,6 +25,12 @@ char* InfSect(int* Size, InstallerConfig* struc)
 		fseek(fl, 0, SEEK_SET);
 	}
 	
+	char* sig = " HELL-INSTALLER-INFOSECTION";
+	sig[0] = 'S';
+	int lsig = strlen(sig);
+	
+	Size = lsig + RESERVED_40_kb + RESERVED_2_b + NumFiles*(RESERVED_512_b + RESERVED_4_b + size);
+	char* mas = (char*)malloc(Size);
 	mas = sig;
 
 	char leftByte, rightByte;
@@ -33,16 +39,16 @@ char* InfSect(int* Size, InstallerConfig* struc)
 	
 	int reserve = RESERVED_40_kb;
 	int bNumFiles = RESERVED_2_b;
-	int skp = lsign + reserve + bNumFiles;
+	int skp = lsig + reserve + bNumFiles;
 	char *str = struc->msg;
 	int j = 0;
 	int k = 0;
-	int i = lsign;
+	int i = lsig;
 	
 	for (i; i < Size; i++, mas++)
 	{
 
-		if ((RESERVED_32_kb + lsign) <= i < reserve) //приветственное сообщние
+		if ((RESERVED_32_kb + lsig) <= i < reserve) //приветственное сообщние
 		{
 			mas[i] = str[j];
 			j++;
