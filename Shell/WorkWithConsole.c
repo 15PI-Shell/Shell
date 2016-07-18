@@ -332,7 +332,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				{
 
 					entry[k] = Buff[j]; k++;
-				} 
+				}
 				int eLen = strlen(entry);
 				for (int i = 0; i < eLen; i++)
 				{
@@ -356,7 +356,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			int eLen = strlen(entry);
 			for (int i = 0; i < eLen; i++)
 			{
-				if (((entry[i] == '*') || (entry[i] == '?') || (entry[i]=='\\')))
+				if (((entry[i] == '*') || (entry[i] == '?') || (entry[i] == '\\')))
 				{
 					return 0;
 				}
@@ -368,7 +368,7 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 	}
 	strcpy(entry, Buff);
 	int eLen = strlen(entry);
-	*PosEntryStart = 0; 
+	*PosEntryStart = 0;
 	for (int i = 0; i < eLen; i++)
 	{
 		if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
@@ -486,5 +486,6 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
+
 
 
