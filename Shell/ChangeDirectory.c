@@ -7,7 +7,10 @@ char* ChangeDirectory(char* str)
 		return -1;
 	if (0 == dir)
 		return -1;
-	str = dir->value;
+	if (dir->up = NULL)
+		str = dir->value;
+	else
+		return -1;
 	if (!strcmp(str, ".."))
 	{
 		int iter = 0, slc = 0, lsl = 0;
