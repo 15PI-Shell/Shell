@@ -1,0 +1,17 @@
+1 2 - неизвестная команда;
+ls-R - неизвестная команда, возможно вы имели ввиду ls(команда с таким же префиксом)ж
+<space> - ничего, RESULT:;
+
+Binary<space>-результат пустая строка;
+Binary -125 - RESULT -1111101;
+Binary 30 - RESULT: 11110;
+binary 0.5 - RESULT:0;
+
+SUM 2 1 - RESULT: 3;
+sum 1 2 - RESULT: 3;
+sUm 1 2 - RESULT: 3;
+sum <space> - Пока что ошибка
+SUM -1 2 - RESULT: 1;
+sum 0 0 - RESULT: 0;
+Sum 0.5 3 - ошибка;
+
