@@ -35,7 +35,7 @@ char* ChangeDirectory(char* str)
 			break;
 		}
 	}
-	if (DirectoryExists(str) && i == -1)
+	if (DirectoryExists(str) && i == -1 && str[0] != '\\')
 	{
 		strcpy(CurrentDirectory, str);
 		return 0;
