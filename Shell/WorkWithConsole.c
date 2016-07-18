@@ -19,12 +19,19 @@ void ClearComline()
 {
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
 	for (int i = 0; i < MAX_CONSOLE_INPUT; ++i)
+	{
 		printf(" ");
+		Buff[i] = '\0';
+	}
 }
 
 void ReprintConsoleBuffer()
 {
+	char *tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	strcpy(tmp, Buff);
 	ClearComline();
+	strcpy(Buff, tmp);
+	free(tmp);
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
 	printf("%s", Buff);
 	SetConsoleCursorPosition(hConsole, cor);
@@ -58,7 +65,7 @@ void DecCursor()
 }
 void ResetCursor()
 {
-	cor.X = startPrintPoint.X;
+	cor = startPrintPoint;
 	SetConsoleCursorPosition(hConsole, cor);
 }
 void CursorOnEndString()
@@ -188,11 +195,18 @@ void ConsoleGetNextHistory()
 	DeleteListOfAutocomletion();
 	if (CurrHist->down != NULL)
 	{
+		ClearComline();
 		CurrHist = CurrHist->down;
 		strcpy(Buff, CurrHist->value);
 		ResetCursor();
 		cur = 0;
 		ReprintConsoleBuffer();
+	}
+	if (CurrHist->down == NULL)
+	{
+		ClearComline();
+		ResetCursor();
+
 	}
 }
 
@@ -202,6 +216,7 @@ void ConsoleGetPrewHistory()
 	DeleteListOfAutocomletion();
 	if (CurrHist->up != NULL)
 	{
+		ClearComline();
 		CurrHist = CurrHist->up;
 		strcpy(Buff, CurrHist->value);
 		ResetCursor();
@@ -297,6 +312,7 @@ void PastInConsole()
 		free(str);
 	}
 	return;
+
 }
 /*-------------------------------------------Autocompletion-----------------------------------------------*/
 int DetermineEntry(char *entry, int *PosEntryStart) {
@@ -312,8 +328,16 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				{
 
 					entry[k] = Buff[j]; k++;
-				} printf("\n%s", entry); return 2;
-
+				} 
+				int eLen = strlen(entry);
+				for (int i = 0; i < eLen; i++)
+				{
+					if ((entry[i] == '*') || (entry[i] == '?'))
+					{
+						return 0;
+					}
+				}
+				return 2;
 			}
 			else return 0;
 		}
@@ -324,12 +348,31 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			{
 
 				entry[k] = Buff[j]; k++;
-			}  return 1;
+			}
+			int eLen = strlen(entry);
+			for (int i = 0; i < eLen; i++)
+			{
+				if ((entry[i] == '*') || (entry[i] == '?'))
+				{
+					return 0;
+				}
+			}
+			return 1;
 
 		}
 
 	}
-	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
+	strcpy(entry, Buff);
+	int eLen = strlen(entry);
+	*PosEntryStart = 0; 
+	for (int i = 0; i < eLen; i++)
+	{
+		if ((entry[i] == '*') || (entry[i] == '?'))
+		{
+			return 0;
+		}
+	}
+	return 1;
 }
 
 void ConsoleAutocompletion()
@@ -439,3 +482,5 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
+
+
