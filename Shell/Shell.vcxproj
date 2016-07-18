@@ -82,7 +82,6 @@
     <ClCompile Include="diff.c" />
     <ClCompile Include="DirectoryExists.c" />
     <ClCompile Include="History.c" />
-    <ClCompile Include="ls-R.c" />
     <ClCompile Include="ls.c" />
     <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="SearchLogicalSymbol.c" />
@@ -111,7 +110,6 @@
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="History.h" />
-    <ClInclude Include="ls-R.h" />
     <ClInclude Include="ls.h" />
     <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="SearchLogicalSymbol.h" />

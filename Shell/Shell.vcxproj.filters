@@ -1,161 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Файлы исходного кода">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Заголовочные файлы">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Заголовочные файлы\BuilinPrograms">
-      <UniqueIdentifier>{3cdf96e2-5516-41ac-91af-177bc8707d28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы исходного кода\BuiltinPrograms">
-      <UniqueIdentifier>{f1104af2-cc46-4c5a-b6a2-ea94bf022018}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Заголовочные файлы\Filesystem">
-      <UniqueIdentifier>{e86f3ca8-afd0-4077-847b-4436d9c42676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы исходного кода\Filesystem">
-      <UniqueIdentifier>{d1aa95fb-e3ae-4a3c-bf64-24ed28cff77e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Заголовочные файлы\Console">
-      <UniqueIdentifier>{2564723f-fed8-4938-af6b-cfd4aec9091a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы исходного кода\Console">
-      <UniqueIdentifier>{4b1e0720-9d06-4942-adbf-ab6459f0e2ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Заголовочные файлы\DataStructures">
-      <UniqueIdentifier>{eefb1dfc-7f39-4f3a-a1e5-6aa299dab482}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы исходного кода\DataStructures">
-      <UniqueIdentifier>{6127402d-8b5e-47b0-954a-18fd0653728b}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Binary.c" />
+    <ClCompile Include="catc.c" />
+    <ClCompile Include="ChangeDirectory.c" />
+    <ClCompile Include="diff.c" />
+    <ClCompile Include="DirectoryExists.c" />
+    <ClCompile Include="History.c" />
+    <ClCompile Include="ls.c" />
+    <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="SearchLogicalSymbol.c" />
+    <ClCompile Include="sum.c" />
+    <ClCompile Include="BuiltinProgController.c" />
+    <ClCompile Include="BuiltinProgInterpretator.c" />
+    <ClCompile Include="Execute.c" />
+    <ClCompile Include="FindFile.c" />
+    <ClCompile Include="HelloWorld.c" />
+    <ClCompile Include="Shell.c" />
+    <ClCompile Include="LinkedList.c" />
+    <ClCompile Include="GetClipboardContent.c" />
+    <ClCompile Include="tail.c" />
+    <ClCompile Include="Trie.c" />
+    <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Shell.c">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="HelloWorld.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="sum.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="Binary.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="ChangeDirectory.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="BuiltinProgController.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
-    <ClCompile Include="Execute.c">
-      <Filter>Файлы исходного кода\Filesystem</Filter>
-    </ClCompile>
-    <ClCompile Include="FindFile.c">
-      <Filter>Файлы исходного кода\Filesystem</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectoryExists.c">
-      <Filter>Файлы исходного кода\Filesystem</Filter>
-    </ClCompile>
-    <ClCompile Include="BuiltinProgInterpretator.c">
-      <Filter>Файлы исходного кода\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="GetClipboardContent.c">
-      <Filter>Файлы исходного кода\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserOfArguments.c">
-      <Filter>Файлы исходного кода\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkWithConsole.c">
-      <Filter>Файлы исходного кода\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="LinkedList.c">
-      <Filter>Файлы исходного кода\DataStructures</Filter>
-    </ClCompile>
-    <ClCompile Include="Trie.c">
-      <Filter>Файлы исходного кода\DataStructures</Filter>
-    </ClCompile>
-    <ClCompile Include="SearchLogicalSymbol.c">
-      <Filter>Файлы исходного кода\Console</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="HelloWorld.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="Shell.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="sum.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="Binary.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="ChangeDirectory.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="BuiltinProgController.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectoryExists.h">
-      <Filter>Заголовочные файлы\Filesystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FindFile.h">
-      <Filter>Заголовочные файлы\Filesystem</Filter>
-    </ClInclude>
-    <ClInclude Include="BuiltinProgInterpretator.h">
-      <Filter>Заголовочные файлы\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="GetClipboardContent.h">
-      <Filter>Заголовочные файлы\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyDefines.h">
-      <Filter>Заголовочные файлы\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="ParserOfArguments.h">
-      <Filter>Заголовочные файлы\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkWithConsole.h">
-      <Filter>Заголовочные файлы\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="Trie.h">
-      <Filter>Заголовочные файлы\DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedList.h">
-      <Filter>Заголовочные файлы\DataStructures</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="History.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="tail.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="cat.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="diff.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="ls.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
-    <ClInclude Include="ls-R.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-=======
-    <ClInclude Include="SearchLogicalSymbol.h">
-      <Filter>Заголовочные файлы\Console</Filter>
->>>>>>> refs/remotes/origin/master
-    </ClInclude>
+    <ClInclude Include="Binary.h" />
+    <ClInclude Include="BuiltinProgController.h" />
+    <ClInclude Include="BuiltinProgInterpretator.h" />
+    <ClInclude Include="cat.h" />
+    <ClInclude Include="ChangeDirectory.h" />
+    <ClInclude Include="diff.h" />
+    <ClInclude Include="DirectoryExists.h" />
+    <ClInclude Include="FindFile.h" />
+    <ClInclude Include="GetClipboardContent.h" />
+    <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="History.h" />
+    <ClInclude Include="ls.h" />
+    <ClInclude Include="ParserOfArguments.h" />
+    <ClInclude Include="SearchLogicalSymbol.h" />
+    <ClInclude Include="Shell.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="sum.h" />
+    <ClInclude Include="KeyDefines.h" />
+    <ClInclude Include="tail.h" />
+    <ClInclude Include="Trie.h" />
+    <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>
 </Project>

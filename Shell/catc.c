@@ -11,6 +11,12 @@ char* cat(char* arg)
 		printf("The number of arguments is not enough\n");
 		return -1;
 	}
+	if (strlen(ARList->value) > MAX_PATH)
+	{
+		printf("list of arguments is wrong\n");
+		SingleLinklistRemoveDownmost(&ARList);
+		return -1;
+	}
 	char *fileName = (char*)malloc(strlen(arg));
 	strcpy(fileName, ARList->value);
 	SingleLinklistRemoveDownmost(&ARList);

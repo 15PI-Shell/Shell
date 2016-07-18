@@ -7,7 +7,6 @@ char* TailOfFile(char *args)
 	strcpy(fileName, "");
 	int n = 0;// счетчик считываемых строк
 	int n_args;
-	int spaces;
 	FILE *fp = NULL;
 	n_args = ParsOfArgs(args, &ArgumentsList);
 	if (n_args != 2)
@@ -24,6 +23,12 @@ char* TailOfFile(char *args)
 		return -1;
 	}
 	SingleLinklistRemoveDownmost(&ArgumentsList);
+	if (strlen(ArgumentsList->value)>=MAX_PATH)
+	{
+		printf("list of arguments is wrong\n");
+			SingleLinklistRemoveDownmost(&ArgumentsList);
+		return -1;
+	}
 	strcpy(fileName, (char*)ArgumentsList->value);//читаем имя файла
 	SingleLinklistRemoveDownmost(&ArgumentsList);
 	fp = fopen(fileName, "r");

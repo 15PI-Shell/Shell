@@ -13,11 +13,23 @@ char* diff(char* args)
 		return -1;
 	}
 	FILE *fp1 = NULL, *fp2 = NULL;
-	char *f1 = (char*)malloc(260);
+	if (strlen(ListOfArgs->value) > MAX_PATH)
+	{
+		printf("list of arguments is wrong\n");
+		SingleLinklistRemoveDownmost(&ListOfArgs);
+		return -1;
+	}
 	char *f2 = (char*)malloc(260);
 	strcpy(f2, ListOfArgs->value);
 	fp2 = fopen(f2, "r");
 	SingleLinklistRemoveDownmost(&ListOfArgs);
+	if (strlen(ListOfArgs->value) >= MAX_PATH)
+	{
+		printf("list of arguments is wrong\n");
+		SingleLinklistRemoveDownmost(&ListOfArgs);
+		return -1;
+	}
+	char *f1 = (char*)malloc(260);
 	strcpy(f1, ListOfArgs->value);
 	SingleLinklistRemoveDownmost(&ListOfArgs);
 	fp1 = fopen(f1, "r");
