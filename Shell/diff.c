@@ -29,8 +29,15 @@ char* diff(char* args)
 		SingleLinklistRemoveDownmost(&ListOfArgs);
 		return -1;
 	}
+
 	char *f1 = (char*)malloc(260);
 	strcpy(f1, ListOfArgs->value);
+	if (!strcmp(f1, f2))
+	{
+		printf("Arguments are wrong\n");
+		free(f2), free(f1);
+		close(fp2);
+	}
 	SingleLinklistRemoveDownmost(&ListOfArgs);
 	fp1 = fopen(f1, "r");
 	if ((fp1) && (fp2))
