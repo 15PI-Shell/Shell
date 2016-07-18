@@ -33,7 +33,7 @@ char* ChangeDirectory(char* str)
 	}
 	else
 	{
-		printf("Directory doen't exist\n");
+		printf("Directory doesn't exist\n");
 		return -1;
 	}
 
