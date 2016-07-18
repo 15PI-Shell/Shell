@@ -26,10 +26,19 @@ char* ChangeDirectory(char* str)
 			CurrentDirectory[lsl + 1] = 0;
 		return 0;
 	}
-	if (DirectoryExists(str))
-	{	
+	int i = -1;
+	while (str[++i])
+	{
+		if (str[i] != '.')
+		{
+			i = -1;
+			break;
+		}
+	}
+	if (DirectoryExists(str) && i == -1)
+	{
 		strcpy(CurrentDirectory, str);
-		return 0;		
+		return 0;
 	}
 	else
 	{
