@@ -56,5 +56,10 @@ void VM_DeclareVariable(TrieNode* trieRoot, char* name, int constant, BPC_Return
 TrieNode* VM_Create()
 {
 	TrieNode* root = Trie_Create();
+	int constant;
+	BPC_Returns type;
+	VM_DeclareVariable(root, "PI", 1, BPC_ReturnsDouble);
+	double* d = VM_GetVariable(root, "PI", &constant, &type);
+	*d = 3.141592;
 	return root;
 }

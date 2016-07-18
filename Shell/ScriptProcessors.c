@@ -130,13 +130,17 @@ void GetTerm(InterpData* inter, TrieNode* VM, char* term, void** result, BPC_Ret
 {
 	SkipSpaces(inter);
 	term = MkMemCopy(term, strlen(term));
+	TrieNode* bk = Basic_VM;
+	Basic_VM = VM;
 	if (MathInterpreter(VM, term, result))
 	{
+		Basic_VM = bk;
 		*type = BPC_ReturnsDouble;
 		inter->scptr += strlen(term);
 	}
 	else
 	{
+		Basic_VM = bk;
 		if (!StringTermProc(inter, VM, result))
 		{
 			inter->scfailed = 1;

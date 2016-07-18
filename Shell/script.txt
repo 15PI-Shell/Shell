@@ -14,7 +14,9 @@ i -= 2;
 i *= 70; i /= 35;
 //todo ввод, вложение, cmd
 echo("hello!");
-echo(pow(2, i));
+double m = 0.5;
+echo(pow(pow(m,m), m));
+echo(cos(PI));
 
 string str1, /*кстати это тоже уже работает*/ str2;
 

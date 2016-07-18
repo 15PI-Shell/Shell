@@ -262,6 +262,8 @@ double Function(TrieNode* VM, char* funct)
 
 	double *ans = 0;
 	MathInterpreter(VM, ReturnPtr, &ans);
+	if (failed)
+		return 0;
 	ptr = copy_ptr;
 	strcpy(str, str2);
 	free(str2);
@@ -270,6 +272,11 @@ double Function(TrieNode* VM, char* funct)
 
 double Variable(TrieNode* VM, char* Var)
 {
+	if (!strcmp(Var, "inf"))
+	{
+		failed = 1;
+		return 1;
+	}
 	int constant;
 	BPC_Returns type;
 	void* result = VM_GetVariable(VM, Var, &constant, &type);
