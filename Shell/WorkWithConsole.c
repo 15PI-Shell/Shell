@@ -270,27 +270,33 @@ void PastInConsole()
 		if ((cur == lenB - 1) || (lenB == 0)) strcat(Buff, str);
 		else
 		{
-			char *EndBuff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-			int i = 0;  int j = 0;
-			for (i = 0; i <= lenB - cur; i++)
+			if (cur == 0)
 			{
-				EndBuff[i] = Buff[i + cur];
+				strcat(str, Buff);
+				strcpy(Buff, str);
 			}
-			for (i = lenB; i > cur; i--)
+			else
 			{
-				Buff[i] = '\0';
+				char *EndBuff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+				int i = 0;  int j = 0;
+				for (i = 0; i <= lenB - cur; i++)
+				{
+					EndBuff[i] = Buff[i + cur + 1];
+				}
+				for (i = lenB; i > cur; i--)
+				{
+					Buff[i] = '\0';
+				}
+				strcat(Buff, str);
+				strcat(Buff, EndBuff);
+				GetClipboardContent(str);
+				free(EndBuff);
 			}
-			strcat(Buff, str);
-			strcat(Buff, EndBuff);
-			GetClipboardContent(str);
-			free(EndBuff);
 		}
-
 		ReprintConsoleBuffer();
 		free(str);
 	}
 	return;
-
 }
 /*-------------------------------------------Autocompletion-----------------------------------------------*/
 int DetermineEntry(char *entry, int *PosEntryStart) {
