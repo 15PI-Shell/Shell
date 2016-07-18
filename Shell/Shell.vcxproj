@@ -100,6 +100,7 @@
     <ClCompile Include="LinkedList.c" />
     <ClCompile Include="GetClipboardContent.c" />
     <ClCompile Include="Trie.c" />
+    <ClCompile Include="TryCmd.c" />
     <ClCompile Include="VarManager.c" />
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
@@ -128,6 +129,7 @@
     <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />
     <ClInclude Include="Trie.h" />
+    <ClInclude Include="TryCmd.h" />
     <ClInclude Include="VarManager.h" />
     <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>

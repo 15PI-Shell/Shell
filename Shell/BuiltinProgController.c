@@ -42,6 +42,7 @@ void BPC_Init()
 	RegisterProgram("echo", Echo, BPC_ReturnsNothing);
 
 	RegisterProgram("scexec", ScriptExec, BPC_ReturnsNothing);
+	RegisterProgram("trycmd", TryCmd, BPC_ReturnsNothing);
 }
 
 BPC_Returns BPC_WhatRets(char* name)

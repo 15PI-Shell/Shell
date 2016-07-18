@@ -126,6 +126,9 @@
     <ClCompile Include="ScriptExec.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="TryCmd.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloWorld.h">
@@ -204,6 +207,9 @@
       <Filter>Заголовочные файлы\Script</Filter>
     </ClInclude>
     <ClInclude Include="ScriptExec.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="TryCmd.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>

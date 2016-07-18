@@ -15,6 +15,7 @@
 #include "StringFunction.h"
 #include "echo.h"
 #include "ScriptExec.h"
+#include "TryCmd.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum
