@@ -64,8 +64,15 @@ int main(int argc, char* argv[])
 	SingleStrlistAddDownmost(&listOfFiles, "StringList.h");
 	SingleStrlistAddDownmost(&listOfFiles, "ShellInstaller.c");
 	SingleStrlistAddDownmost(&listOfFiles, "ShellInstaller.h");
-	char infoPart[] = {1,2,3,4,5,6,7,8,9,10};
-	CreateFileArch(listOfFiles, infoPart, 10);
+	//char infoPart[] = {1,2,3,4,5,6,7,8,9,10};
+	//CreateFileArch(listOfFiles, infoPart, 10);
+	InstallerConfig* Conf = (InstallerConfig*)malloc(sizeof(InstallerConfig));
+	Conf->FilePath = listOfFiles;
+	Conf->msg = "Hello";
+	Conf->NumOfFiles = 4;
+	Conf->PathToIcon = "fdfdf.c";
+	int s;
+	InfSect(&s,Conf);
 	return 0;
 
 	if (1 == argc)

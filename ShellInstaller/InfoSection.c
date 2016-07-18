@@ -25,13 +25,14 @@ char* InfSect(int* Size, InstallerConfig* struc)
 		fseek(fl, 0, SEEK_SET);
 	}
 	
-	char* sig = " HELL-INSTALLER-INFOSECTION";
+	char sig[] = " HELL-INSTALLER-INFOSECTION";
 	sig[0] = 'S';
 	int lsig = strlen(sig);
 	
-	Size = lsig + RESERVED_40_kb + RESERVED_2_b + NumFiles*(RESERVED_512_b + RESERVED_4_b + size);
-	char* mas = (char*)malloc(Size);
-	mas = sig;
+	int s= lsig + RESERVED_40_kb + RESERVED_2_b + NumFiles*(RESERVED_512_b + RESERVED_4_b + size);
+	*Size = s;
+	char* mas = (char*)malloc(*Size+1);
+	memcpy(mas,sig,lsig);
 
 	char leftByte, rightByte;
 	leftByte = (NumFiles) % 256;
@@ -41,14 +42,16 @@ char* InfSect(int* Size, InstallerConfig* struc)
 	int bNumFiles = RESERVED_2_b;
 	int skp = lsig + reserve + bNumFiles;
 	char *str = struc->msg;
+	int lmsg = strlen(str);
 	int j = 0;
 	int k = 0;
 	int i = lsig;
-	
-	for (i; i < Size; i++, mas++)
+	int of = lsig + lmsg; //длина сигнатуры и привественного сообщения
+	int on = RESERVED_32_kb + lsig; 
+	for (i; i < *Size; i++)
 	{
 
-		if ((RESERVED_32_kb + lsig) <= i < reserve) //приветственное сообщние
+		if ((i>on)&&(j<lmsg)) //приветственное сообщние
 		{
 			mas[i] = str[j];
 			j++;
@@ -56,9 +59,9 @@ char* InfSect(int* Size, InstallerConfig* struc)
 		}
 		if (i == (skp - bNumFiles))  //количество файлов
 		{
-			*mas = leftByte;
-			i++, mas++;
-			*mas = rightByte;
+			mas[i] = leftByte;
+			i++;
+			mas[i] = rightByte;
 		}
 		if ((i >= skp) && (k<NumFiles))
 		{
