@@ -1,0 +1,9 @@
+﻿;в директории проекта
+B + Tab - ничего 
+B + 2 Tab  - Binary.c
+			 Binary.h
+			 BuiltinProgController.c
+			 BuiltinProgController.h
+			 BuiltinProgInterpretator.c
+			 BuiltinProgInterpretator.h
+B + 3 Tab - ничего (список найденных файлов стерся)
