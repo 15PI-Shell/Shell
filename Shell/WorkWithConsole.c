@@ -129,7 +129,11 @@ void ReadHistory()
 void WriteHistory()
 {
 	fpHistory = fopen(HistoryPath, "w");
-
+	if (fpHistory == NULL)
+	{
+		printf("Software failure Please restart the program\n");
+		exit(0);
+	}
 	while (CurrHist->up)
 	{
 		CurrHist = CurrHist->up;
