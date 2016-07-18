@@ -1,3 +1,6 @@
+
+
+
 #include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
@@ -433,3 +436,4 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
+>>>>>>> refs/remotes/origin/master

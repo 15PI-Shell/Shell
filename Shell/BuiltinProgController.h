@@ -11,6 +11,12 @@
 #include "sum.h"
 #include "Binary.h"
 #include "ChangeDirectory.h"
+#include "History.h"
+#include "tail.h"
+#include "cat.h"
+#include "diff.h"
+#include "ls.h"
+#include "ls-R.h"
 
 //enum, описывающий какое значение возвращает встроенная программа
 typedef enum

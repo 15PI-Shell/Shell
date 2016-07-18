@@ -134,8 +134,28 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Заголовочные файлы\DataStructures</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="History.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="tail.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="cat.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="diff.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="ls.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="ls-R.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+=======
     <ClInclude Include="SearchLogicalSymbol.h">
       <Filter>Заголовочные файлы\Console</Filter>
+>>>>>>> refs/remotes/origin/master
     </ClInclude>
   </ItemGroup>
 </Project>

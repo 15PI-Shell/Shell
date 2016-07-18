@@ -77,8 +77,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Binary.c" />
+    <ClCompile Include="catc.c" />
     <ClCompile Include="ChangeDirectory.c" />
+    <ClCompile Include="diff.c" />
     <ClCompile Include="DirectoryExists.c" />
+    <ClCompile Include="History.c" />
+    <ClCompile Include="ls-R.c" />
+    <ClCompile Include="ls.c" />
     <ClCompile Include="ParserOfArguments.c" />
     <ClCompile Include="SearchLogicalSymbol.c" />
     <ClCompile Include="sum.c" />
@@ -90,6 +95,7 @@
     <ClCompile Include="Shell.c" />
     <ClCompile Include="LinkedList.c" />
     <ClCompile Include="GetClipboardContent.c" />
+    <ClCompile Include="tail.c" />
     <ClCompile Include="Trie.c" />
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
@@ -97,17 +103,23 @@
     <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
+    <ClInclude Include="cat.h" />
     <ClInclude Include="ChangeDirectory.h" />
+    <ClInclude Include="diff.h" />
     <ClInclude Include="DirectoryExists.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
+    <ClInclude Include="History.h" />
+    <ClInclude Include="ls-R.h" />
+    <ClInclude Include="ls.h" />
     <ClInclude Include="ParserOfArguments.h" />
     <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="sum.h" />
     <ClInclude Include="KeyDefines.h" />
+    <ClInclude Include="tail.h" />
     <ClInclude Include="Trie.h" />
     <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>

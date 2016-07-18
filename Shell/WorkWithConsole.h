@@ -10,6 +10,9 @@
 #include <string.h>
 
 #define MAX_CONSOLE_INPUT 300
+
+DoubleLinklistNode *CurrHist;
+
 void ConsoleInitialisation();
 
 void ConsoleCursorMoveLeft();//обработка клавиши <-, стрелка в лево
