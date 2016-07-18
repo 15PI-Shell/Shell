@@ -4,6 +4,8 @@ ExecResult FileExecute(char* nameProc, char* parametrs)
 {
 	char check[] = ".exe";
 	int lenName = strlen(nameProc);
+	if (lenName > MAX_PATH)
+		return ExecResult_UnknownError;
 	int i;
 	for (i = 0; i < 4; i++)
 	{
@@ -25,6 +27,8 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 	UINT result;
 	SingleLinklistNode* list = NULL;
 	int Find = 0;
+	if (strlen(nameProc) > MAX_PATH)
+		return ExecResult_UnknownError;
 	if ((tolower(nameProc[0]) >= 'a') && (tolower(nameProc[0]) <= 'z') && (nameProc[1] == ':')) //если указан путь C:\...
 	{
 		Find = FileExistenceCheck(nameProc);
@@ -72,6 +76,8 @@ ExecResult FileExecuteShell(char* nameProc, char* parametrs)
 
 ExecResult FileExecuteCreate(char* nameProc, char* parametrs)
 {
+	if (strlen(nameProc)+strlen(parametrs) > MAX_PATH)
+		return ExecResult_UnknownError;
 	char ProcAndParam[MAX_PATH + 1] = "";
 	strcpy(ProcAndParam, nameProc);
 	if (parametrs)
