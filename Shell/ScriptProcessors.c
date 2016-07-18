@@ -111,7 +111,9 @@ void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type)
 			int constant;
 			BPC_Returns termType, varType;
 			void* result, *currentVal;
-			GetTerm(inter, VM, ParseBeforeComa(inter), &result, &termType);
+			char* send1 = ParseBeforeComa(inter);
+			char* send2 = ParseBeforeSemi(inter);
+			GetTerm(inter, VM, strlen(send1) < strlen(send2) ? send1 : send2, &result, &termType);
 			currentVal = VM_GetVariable(VM, name, &constant, &varType);
 			if (inter->scfailed)
 				return;
@@ -408,7 +410,7 @@ int ProcCondition(InterpData* inter, TrieNode* VM)
 	int innerPtr = 0;
 	int startLeft = 0, startRight;
 
-	while (!CheckNextSymsFree(innerPtr, parsed, "<") && !CheckNextSymsFree(innerPtr, parsed, "!") && !CheckNextSymsFree(innerPtr, parsed, "=") && !CheckNextSymsFree(innerPtr, parsed, ">"))
+	while (parsed[innerPtr] && !CheckNextSymsFree(innerPtr, parsed, "<") && !CheckNextSymsFree(innerPtr, parsed, "!") && !CheckNextSymsFree(innerPtr, parsed, "=") && !CheckNextSymsFree(innerPtr, parsed, ">"))
 		innerPtr++;
 
 	char* left = (char*)malloc(innerPtr - startLeft + 1);
@@ -451,9 +453,9 @@ int ProcCondition(InterpData* inter, TrieNode* VM)
 				delta++;
 			else if (parsed[innerPtr] == ')')
 				delta--;
+			innerPtr++;
 			if (delta < 0)
 				break;
-			innerPtr++;
 		}
 
 		char* right = (char*)malloc(innerPtr - startRight + 1);

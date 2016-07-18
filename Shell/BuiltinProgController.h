@@ -34,3 +34,5 @@ char* BPC_Execute(char* program, char* args, BPC_Returns* returns);
 //функция, возвращающая список всех встроенных программ, начинающихся с заданного префикса
 //при префиксе равном имени программы функция не вернёт её саму, тк дополнять больше нечего
 SingleLinklistNode* BPC_GetHints(char* prefix);
+
+BPC_Returns BPC_WhatRets(char* name);

@@ -42,6 +42,14 @@ void BPC_Init()
 	RegisterProgram("echo", Echo, BPC_ReturnsNothing);
 }
 
+BPC_Returns BPC_WhatRets(char* name)
+{
+	TrieNode* t = Trie_Find(trieRoot, name);
+	if (!t)
+		return BPC_ReturnsNothing;
+	return ((BPC_Program*)t->data)->returns;
+}
+
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)
 {
 	TrieNode* tn = Trie_Find(trieRoot, program);//ищем строку-название в дереве

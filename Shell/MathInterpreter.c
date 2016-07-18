@@ -219,8 +219,14 @@ double Multipler(TrieNode* VM)//Множитель = Константа | Выр
 
 double Function(TrieNode* VM, char* funct)
 {
-	char args[1000] = "";
-	int i = 0;
+	BPC_Returns ret = BPC_WhatRets(funct);
+	if (ret == BPC_ReturnsNothing || ret == BPC_ReturnsString)
+	{
+		failed = 1;
+		return 0;
+	}
+	char args[1000] = "(";
+	int i = 1;
 	int bracets2 = 1;
 	while ((str[++ptr] != ')') || (bracets2 != 1))
 	{
@@ -238,12 +244,13 @@ double Function(TrieNode* VM, char* funct)
 		}
 		args[i++] = str[ptr];
 	}
-	args[i] = 0;
+	args[i] = ')';
+	args[i + 1] = 0;
 	ptr++;
-	strcpy(args, RetRightArg(args));
+	strcpy(args, RetRightArg(VM, args, &failed));
 	BPC_Returns returns;
 	int copy_ptr = ptr;
-	char* str2 = (char*)malloc(strlen(str));
+	char* str2 = (char*)malloc(strlen(str) + 1);
 	strcpy(str2, str);
 	char* ReturnPtr;
 	ReturnPtr = BPC_Execute(funct, args, &returns);
@@ -252,22 +259,13 @@ double Function(TrieNode* VM, char* funct)
 		failed = 1;
 		return 0;
 	}
-	if (returns == BPC_ReturnsDouble)
-	{
-		double ans = 0;
-		MathInterpreter(VM, ReturnPtr, &ans);
-		ptr = copy_ptr;
-		strcpy(str, str2);
-		return ans;
-		free(str2);
-	}
 
-	else
-	{
-
-		failed = 1;
-		return 0;
-	}
+	double *ans = 0;
+	MathInterpreter(VM, ReturnPtr, &ans);
+	ptr = copy_ptr;
+	strcpy(str, str2);
+	free(str2);
+	return *ans;
 }
 
 double Variable(TrieNode* VM, char* Var)
