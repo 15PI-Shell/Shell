@@ -76,16 +76,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arguments.c" />
     <ClCompile Include="Binary.c" />
     <ClCompile Include="catc.c" />
+    <ClCompile Include="calc.c" />
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="diff.c" />
     <ClCompile Include="DirectoryExists.c" />
     <ClCompile Include="History.c" />
     <ClCompile Include="ls.c" />
+    <ClCompile Include="MathFunction.c" />
+    <ClCompile Include="MathInterpreter.c" />
     <ClCompile Include="ParserOfArguments.c" />
+    <ClCompile Include="ReadLine.c" />
+    <ClCompile Include="ScriptExec.c" />
+    <ClCompile Include="StringFunction.c" />
+    <ClCompile Include="Echo.c" />
+    <ClCompile Include="ScriptInterpreter.c" />
+    <ClCompile Include="ScriptParsers.c" />
+    <ClCompile Include="ScriptProcessors.c" />
     <ClCompile Include="SearchLogicalSymbol.c" />
-    <ClCompile Include="sum.c" />
     <ClCompile Include="BuiltinProgController.c" />
     <ClCompile Include="BuiltinProgInterpretator.c" />
     <ClCompile Include="Execute.c" />
@@ -95,30 +105,48 @@
     <ClCompile Include="LinkedList.c" />
     <ClCompile Include="GetClipboardContent.c" />
     <ClCompile Include="tail.c" />
+    <ClCompile Include="toDouble.c" />
+    <ClCompile Include="toStr.c" />
     <ClCompile Include="Trie.c" />
+    <ClCompile Include="TryCmd.c" />
+    <ClCompile Include="VarManager.c" />
     <ClCompile Include="WorkWithConsole.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arguments.h" />
     <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
     <ClInclude Include="cat.h" />
+    <ClInclude Include="calc.h" />
     <ClInclude Include="ChangeDirectory.h" />
     <ClInclude Include="diff.h" />
     <ClInclude Include="DirectoryExists.h" />
+    <ClInclude Include="echo.h" />
     <ClInclude Include="FindFile.h" />
     <ClInclude Include="GetClipboardContent.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="ls.h" />
+    <ClInclude Include="MathFunction.h" />
+    <ClInclude Include="MathInterpreter.h" />
     <ClInclude Include="ParserOfArguments.h" />
+    <ClInclude Include="ReadLine.h" />
+    <ClInclude Include="ScriptInterpreter.h" />
+    <ClInclude Include="ScriptParsers.h" />
+    <ClInclude Include="ScriptProcessors.h" />
     <ClInclude Include="SearchLogicalSymbol.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="LinkedList.h" />
-    <ClInclude Include="sum.h" />
+    <ClInclude Include="ScriptExec.h" />
+    <ClInclude Include="StringFunction.h" />
     <ClInclude Include="KeyDefines.h" />
     <ClInclude Include="tail.h" />
+    <ClInclude Include="toDouble.h" />
+    <ClInclude Include="toStr.h" />
     <ClInclude Include="Trie.h" />
+    <ClInclude Include="TryCmd.h" />
+    <ClInclude Include="VarManager.h" />
     <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>
   <ItemGroup>
