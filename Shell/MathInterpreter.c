@@ -32,6 +32,25 @@ void shift(char* out, int key)
 	}
 }
 
+void GoToNxtBracket(char* exp, int* i)
+{
+	int delta = 0;
+	while (exp[*i])
+	{
+		if (exp[*i] == '(')
+			delta++;
+		else if (exp[*i] == ')')
+		{
+			delta--;
+			if (delta < 0)
+				failed = 1;
+			if (delta <= 0)
+				break;
+		}
+		(*i)++;
+	}
+}
+
 char* GetRightExpression(char* expression)
 {
 	int brac = 0;
@@ -78,6 +97,11 @@ char* GetRightExpression(char* expression)
 				open = i + 1;
 			break;
 		case '(':
+			if (i > 0 && (tolower(out[i - 1]) >= 'a' && tolower(out[i - 1]) <= 'z'))
+			{
+				GoToNxtBracket(out, &i);
+				continue;
+			}
 			if (close == -1)
 				close = -2;
 			else
