@@ -1,0 +1,89 @@
+string currTest;
+int testsPassed = 0, tests = 0;
+
+//внешнее(если -2):
+//ошибка не unknown - not found
+//unknown - extern file error
+//ок - no ret value
+
+//внутренние
+//-1 - excec error
+//0 - no ret value
+//результат - результат
+
+//при && || результаты объдин€ютс€ через пробел, провер€йте вывод эхом
+
+currTest = "not found";//как-нибудь переимновать бы птм
+tests += 1;//++ нет, дэ
+if (tryCmd("ghbdtn 12 1.txt") == "not found")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+currTest = "0 ret val";
+tests += 1;
+if (tryCmd("prfile binary.c") == "no ret value")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+currTest = "no args";
+tests += 1;
+if (tryCmd("diff") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+currTest = "wrong args";
+tests += 1;
+if (tryCmd("cd 1:\234\5.6") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+currTest = "binary";
+tests += 1;
+//echo("'"+tryCmd("binary 3")+"'"); //- узнать что выдаст
+if (tryCmd("binary 3") == "11")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+currTest = "calc test";
+tests += 1;
+if (tryCmd("calc 2 + 2 * 2") == "6.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+echo(toStr(testsPassed) + "/" + toStr(tests) + " passed");
