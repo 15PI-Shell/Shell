@@ -31,6 +31,29 @@ char* TailOfFile(char *args)
 	}
 	strcpy(fileName, (char*)ArgumentsList->value);//читаем имя файла
 	SingleLinklistRemoveDownmost(&ArgumentsList);
+	char *slesh = NULL;
+	slesh = strstr(fileName, "\\");
+	if (slesh == NULL)
+	{
+		int len = strlen(fileName);
+		int lenP = strlen(CurrentDirectory);
+		if (lenP + len < MAX_PATH + 1)
+		{
+			char *tmp = (char*)malloc(MAX_PATH + 1);
+			strcpy(tmp, CurrentDirectory);
+			strcat(tmp, "\\");
+			strcat(tmp, fileName);
+			strcpy(fileName, tmp);
+			free(tmp);
+		}
+		else
+		{
+			printf("File's name is wrong\n");
+			free(fileName);
+			return -1;
+
+		}
+	}
 	fp = fopen(fileName, "r");
 	if (fp == 0) {
 		printf("File reading Error\n");//если не удлось открыть или файла просто нет
