@@ -6,16 +6,24 @@ void Pack(char* dir)
 	ReadInstConfig(dir, Config); 
 	int size;
 	char* mas;
-	mas = InfSect(&size, Config);
-	SingleListStringNode* FilesPaths;
-	SingleListStringNode* ptr = FilesPaths;
+	SingleListStringNode* ptr = FileToPaths;
+	SingleListStringNode* ptr1 = Config->FilePath;
+	char* dir1 = dir;
+	char* val = (char*)malloc(MAX_PATH);
 	for (int i = 0; i < Config->NumOfFiles; i++)
 	{
-		strcpy(FilesPaths->value, dir);
-		strcat(FilesPaths->value, Config->FilePath->value);
+		strcpy(val, Config->FilePath->value);
+		strcpy(Config->FilePath->value, dir);
+		strcat(Config->FilePath->value, val);
+		dir = dir1;
+		SingleStrlistAddDownmost(FileToPaths, Config->FilePath->value);
+		Config->FilePath = Config->FilePath->up;
+		FileToPaths = FileToPaths->up;
 	}
-	FilesPaths = ptr;
-	CreateFileArch(FilesPaths, mas, size);
+	FileToPaths = ptr;
+	Config->FilePath = ptr1;
+	mas = InfSect(&size, Config);
+	CreateFileArch(FileToPaths, mas, size);
 
 }
 

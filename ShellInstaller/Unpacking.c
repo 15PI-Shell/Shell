@@ -1,5 +1,22 @@
 ﻿#include "Unpacking.h"
 
+char* DirExist(char* path)
+{
+	char* folder;
+	int i = 0;
+	int len = 0;
+	while (path)
+	{ 
+		len++;
+		if (path[i] == "\\")
+		{
+			strncpy(folder,path,len);
+			return folder;
+		}
+	}
+	return 0;
+}
+
 int UnpackingFile(char* dir)
 {
 	HANDLE hFile, hUnInstFile;
@@ -81,7 +98,11 @@ int UnpackingFile(char* dir)
 				PathFile[k] = buff2[j];
 			}
 			PathFile[k] = "\0";
-			SingleStrlistAddUpmost(ListOfPaths, PathFile);		//добавляем пути к файлам в список
+			SingleStrlistAddUpmost(ListOfPaths, PathFile);	//добавляем пути к файлам в список
+			
+		//	char* folder;
+		//	DirExist(ListOfPaths->value);
+			
 			int Size;
 			Size = buff2[515] + (buff2[514]<<8) + (buff2[513]<<16) + (buff2[512]<<24);
 			char* s;

@@ -21,7 +21,6 @@ int CreateFileArch(SingleListStringNode* FilesPaths, char * mas, int Size)
 {
 	DWORD NumOfBytes, dwBytesRead;
 	HANDLE File, Paths, ShellFile;
-
 	File = CreateFileA("15PIShellInstaller.exe", GENERIC_READ | GENERIC_WRITE,
 		0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	ShellFile = CreateFileA("ShellInstaller.exe", GENERIC_READ,
@@ -29,7 +28,7 @@ int CreateFileArch(SingleListStringNode* FilesPaths, char * mas, int Size)
 
 	if ((File == INVALID_HANDLE_VALUE) || (ShellFile == INVALID_HANDLE_VALUE))
 	{
-		printf("Could not open 15PIShellInstaller.exe or ShellInstaller.exe");  // обработка ошибки 
+		printf("Could not open 15PIShellInstaller.exe or ShellInstaller.exe\n");  // обработка ошибки 
 		return 0;
 	}
 	
