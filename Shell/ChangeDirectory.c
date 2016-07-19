@@ -2,12 +2,12 @@
 
 char* ChangeDirectory(char* str)
 {
-	SingleLinklistNode* dir;
+	SingleLinklistNode* dir=NULL;
 	if (!ParsOfArgs(str, &dir))
 		return -1;
 	if (0 == dir)
 		return -1;
-	if (dir->up = NULL)
+	if (dir->up == NULL)
 		str = dir->value;
 	else
 		return -1;

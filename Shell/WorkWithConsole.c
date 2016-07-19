@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 #include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();

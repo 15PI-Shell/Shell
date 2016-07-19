@@ -25,3 +25,78 @@ cd ChangeDirectry.c - RESULT: Directory doesn't exist;
 cd C:\Users D:\Shell - RESULT:
 cd \Windows - RESULT: _Error_
 cd - RESULT: _Error_
+
+//в папке проекта
+cat Binary.c - RESULT: print
+cat text.txt - RESULT: print //существует
+cat ddd - RESULT: FILe Openning Error //не существует
+//печатает файлы любого расширения
+cat text.exe - RESULT: print //Всё тот же файл text.txt
+cat text.ini - RESULT: print
+cat text.docx - RESULT: print
+cat 1 - RESULT: FILe Openning Error
+cat C:\ - RESULT: FILe Openning Error
+cat Binary.c Binary.h - RESULT: FILe Openning Error !!!
+cat 1 Binary.h - RESULT: FILe Openning Error !!!
+cat - RESULT: The number of arguments is not enough
+cat "Binary.h Binary.c"
+cat a.txt - RESULT: ничего ??? вроде должно быть сообщение о том, что файл пустой
+cat C:\ASM\fin.txt - RESULT: hdg ugd... (print)
+
+binary - RESULT: "0"
+binary 2 - RESULT: "10"
+binary 0 - RESULT: "0"
+binary 2 3 - RESULT: "10" !!! 
+binary aaa - RESULT: "0" !!!
+binary -2 - RESULT: "-10" ???
+
+diff Binary.c Binary.h - RESULT: Binary.c < Binary.h
+								 Binary.c < Binary.h
+								 Binary.c > Binary.h ... //всё норм
+diff Binary.h Binary.h - RESULT: Arguments are wrong !!!
+diff 1 2 - RESULT: files opening error
+diff 1 Binary.h - RESULT: files opening error //наоборот тоже работает
+diff a.txt Binary.h - RESULT: files opening error
+diff a a - RESULT ???
+diff a.txt b.txt - RESULT: file a.txt is empty //оба файла пустые
+						   file b.txt is empty
+diff a.txt b.txt - RESULT: file a.txt is empty //a.txt пустой, так же наоборот
+diff a.exe b.exe - RESULT: files opening error
+diff C:\ASM\fin.txt C:\ASM\fout.txt - RESULT: C:\ASM\fin.txt > C:\ASM\fout.txt
+											  C:\ASM\fin.txt < C:\ASM\fout.txt
+
+history - RESULT: Argument is wrong
+history 2 - RESULT: history
+					history 2
+history a - RESULT: Argument is wrong
+history "1" - RESULT: Argument is wrong
+history 1.8 - RESULT: history 1.8 //смешно однако
+history 20 - RESULT: history
+					 history 2
+					 history a
+					 history "1"
+					 history 1.8
+					 history 10
+					 history 20 //если число больше чем записей в истории, то выводит всё, с 1000 тоже работает
+history 0 - RESULT: Argument is wrong 
+history -1 - RESULT: Argument is wrong
+history 1 2 - RESULT: history 1 2 !!!
+
+ls C:\ASM\ - RESULT: WSG.COM
+					 TLINK.EXE ... //все файлы директории
+ls a.txt - RESULT: Ничего ???
+ls F:\ - RESULT: Ничего
+ls - RESULT: List of arguments is wrong
+ls -r - RESULT: list of arguments is wrong
+ls C:\ASM\ -r(-R) - RESULT: все папки и файлы выводит рекурсивно (заходя в каждую найденную папку)
+ls C:\ASM\ - RESULT: выводит все файлы и папки во введенной директории
+ls C:\ASM *.com - RESULT: выводит все файлы с расширением .com
+ls C:\ASM *.com
+
+tail binary.h 5 - RESULT: print //мало строк, печатает все
+tail - RESULT: list of arguments is wrong
+tail 5 - RESULT: list of arguments is wrong
+tail 5 Binary.h - RESULT: Incorrect argument
+tail 5 5 - RESULT: File reading Error
+tail Binary.c 5 - RESULT: print (5 строк)
+tail C:\ASM 5 5 - RESULT: list of arguments is wrong
