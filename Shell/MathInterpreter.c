@@ -230,9 +230,9 @@ double Function(Mathi* mi, TrieNode* VM, char* funct)
 		failed = 1;
 		return 0;
 	}
-	//todo: скобкокостыль
-	char args[1000] = "(";
-	int i = 1;
+
+	char args[1000] = "";
+	int i = 0;
 	int bracets2 = 1;
 	while ((mi->str[++(mi->ptr)] != ')') || (bracets2 != 1))
 	{
@@ -250,8 +250,7 @@ double Function(Mathi* mi, TrieNode* VM, char* funct)
 		}
 		args[i++] = mi->str[mi->ptr];
 	}
-	args[i] = ')';
-	args[i + 1] = 0;
+	args[i] = 0;
 	mi->ptr++;
 	strcpy(args, RetRightArg(VM, args, &failed));
 	BPC_Returns returns;

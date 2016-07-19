@@ -237,7 +237,6 @@ char* ProcArgumets(InterpData* inter, TrieNode* VM)
 	char* args = (char*)malloc(1000);
 	char* tmp = (char*)malloc(1000);
 	*args = 0;
-	inter->scptr++;
 
 	char* part = ParseBeforeComa(inter, 0);
 	int first = 1;
@@ -276,6 +275,7 @@ char* ProcArgumets(InterpData* inter, TrieNode* VM)
 
 char* ProcFunction(InterpData* inter, TrieNode* VM, char* name, BPC_Returns* type)
 {
+	inter->scptr++;
 	char* args = ProcArgumets(inter, VM);
 	char* res = BPC_Execute(name, args, type);
 	//TODO: mem leak args
@@ -386,19 +386,21 @@ void ProcAssignment(InterpData* inter, TrieNode* VM)
 char* ProcSingleCondition(InterpData* inter)
 {
 	int start = inter->scptr;
-	int delta = 1;
+	int delta = 0;
 	while (inter->scr[inter->scptr] && !CheckNextSyms(inter, "&&") && !CheckNextSyms(inter, "||"))
 	{
 		if (CheckNextSyms(inter, ")"))
+		{
 			delta--;
+			if (delta < 0)
+				break;
+		}
 		else if (CheckNextSyms(inter, "("))
 			delta++;
-		if (delta == 0)
-			break;
 		inter->scptr++;
 	}
 
-	if (delta != 0)
+	if (delta != 0 && (CheckNextSyms(inter, "&&") || CheckNextSyms(inter, "||")))
 	{
 		inter->scfailed = 1;
 		return 0;
