@@ -3,7 +3,7 @@
 char* ScriptExec(char* path)
 {
 	SingleLinklistNode* l = 0;
-	if (1 != ParsOfArgs(path, &l))
+	if (!ParsOfArgs(path, &l))
 		return -1;
 
 	int v = 0;
