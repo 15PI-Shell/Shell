@@ -97,7 +97,7 @@ char* ls(char* args)
 			printf("File Not Found\n");
 			free(mask); free(Dir);
 			return -1;
-			
+
 		}
 		break;
 	case 3:if (strlen(ArgList->value) > MAX_PATH)

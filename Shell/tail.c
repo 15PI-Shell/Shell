@@ -1,35 +1,35 @@
-#include "tail.h"
+п»ї#include "tail.h"
 
 char* TailOfFile(char *args)
 {
-	SingleLinklistNode *ArgumentsList = NULL; // создаем список для парсинга аргументов
-	char *fileName = (char*)malloc(MAX_PATH + 1);// строка под имя файла
+	SingleLinklistNode *ArgumentsList = NULL; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	char *fileName = (char*)malloc(MAX_PATH + 1);// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	strcpy(fileName, "");
-	int n = 0;// счетчик считываемых строк
+	int n = 0;// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	int n_args;
 	FILE *fp = NULL;
 	n_args = ParsOfArgs(args, &ArgumentsList);
 	if (n_args != 2)
 	{
 		printf("list of arguments is wrong\n");
-		while(ArgumentsList)
+		while (ArgumentsList)
 			SingleLinklistRemoveDownmost(&ArgumentsList);
 		return -1;
 	}
-	sscanf((char*)ArgumentsList->value, "%d", &n);//определяем кол-во строк
-	if (n <= 0)// что-то не так с аргументом
+	sscanf((char*)ArgumentsList->value, "%d", &n);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	if (n <= 0)// пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		printf("Incorrect argument\n");
 		return -1;
 	}
 	SingleLinklistRemoveDownmost(&ArgumentsList);
-	if (strlen(ArgumentsList->value)>=MAX_PATH)
+	if (strlen(ArgumentsList->value) >= MAX_PATH)
 	{
 		printf("list of arguments is wrong\n");
-			SingleLinklistRemoveDownmost(&ArgumentsList);
+		SingleLinklistRemoveDownmost(&ArgumentsList);
 		return -1;
 	}
-	strcpy(fileName, (char*)ArgumentsList->value);//читаем имя файла
+	strcpy(fileName, (char*)ArgumentsList->value);//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	SingleLinklistRemoveDownmost(&ArgumentsList);
 	char *slesh = NULL;
 	slesh = strstr(fileName, "\\");
@@ -56,18 +56,18 @@ char* TailOfFile(char *args)
 	}
 	fp = fopen(fileName, "r");
 	if (fp == 0) {
-		printf("File reading Error\n");//если не удлось открыть или файла просто нет
+		printf("File reading Error\n");//пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 		return -1;
 	}
 	fseek(fp, 0, SEEK_END);
-	long pos = ftell(fp);// ищем конец файла
-	if (pos > 0)// проверяем на пустоту
+	long pos = ftell(fp);// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	if (pos > 0)// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		rewind(fp);
-		char **mas = (char **)malloc(n*sizeof(char *));//выделяем память под массив
+		char **mas = (char **)malloc(n * sizeof(char *));//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		for (int i = 0; i < n; i++)
 		{
-			mas[i]=(char*)malloc(pos);//выделяем память под строки и инициализируем их
+			mas[i] = (char*)malloc(pos);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
 			memset(mas[i], 0, pos);
 		}
 		int size = 0;
@@ -75,20 +75,20 @@ char* TailOfFile(char *args)
 		char c;
 		do {
 			c = fgetc(fp);//read 
-			mas[size%n][j]=c;//заполняем строку в закольцованном массиве, пока \n
+			mas[size%n][j] = c;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ \n
 			j++;
-			if (c=='\n')
+			if (c == '\n')
 			{
 				size++;
 				j = 0;
 				memset(mas[size%n], 0, pos);
 			}
-		} while (c!= EOF);
+		} while (c != EOF);
 		for (int i = 0; i < n; i++)
 		{
-			printf("%s", mas[i]);//печатаем строки
+			printf("%s", mas[i]);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		}
-		for (int i = 0; i < n; i++)// освобождаем память
+		for (int i = 0; i < n; i++)// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		{
 			free(mas[i]);
 		}
