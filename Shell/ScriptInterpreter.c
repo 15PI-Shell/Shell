@@ -36,15 +36,17 @@ void Block(InterpData* inter, TrieNode* VM)
 		return;
 	}
 
-	if (CheckNextSyms(inter, "if "))
+	if (CheckNextSyms(inter, "if"))
 	{
+		int bkp = inter->scptr;
 		inter->scptr += 2;
 		SkipSpaces(inter);
 		if (inter->scr[inter->scptr] == '(')
 			inter->scptr++;
 		else
 		{
-			inter->scfailed = 1;
+			inter->scptr = bkp;
+			ProcAssignment(inter, VM);
 			return;
 		}
 		int result = ProcCondition(inter, VM);
@@ -76,16 +78,60 @@ void Block(InterpData* inter, TrieNode* VM)
 			inter->scptr++;
 		}
 
-		if (!inter->scr[inter->scptr])
+		if (!inter->scr[inter->scptr] && inter->scr[inter->scptr - 1] != '}')
 		{
 			inter->scfailed = 1;
 			return;
 		}
 
+		SkipSpaces(inter);
+
+		if (CheckNextSyms(inter, "else"))
+		{
+			inter->scptr+=4;
+			SkipSpaces(inter);
+			if (!CheckNextSyms(inter, "{"))
+			{
+				inter->scfailed = 1;
+				return;
+			}
+
+			inter->scptr++;
+			inter->insideLevel++;
+			inter->retBackTo[inter->insideLevel] = -1;//никуда не надо возвращаться
+		}
+
 		return;
 	}
 
-	if (CheckNextSyms(inter, "while "))
+	if (CheckNextSyms(inter, "else"))
+	{
+		int bkp = inter->scptr;
+		inter->scptr += 4;
+		SkipSpaces(inter);
+		if (!CheckNextSyms(inter, "{"))
+		{
+			inter->scptr = bkp;
+			ProcAssignment(inter, VM);
+			return;
+		}
+
+		inter->scptr++;
+
+		int delta = 1;
+		while (inter->scr[inter->scptr] && delta != 0)
+		{
+			if (inter->scr[inter->scptr] == '{')
+				delta++;
+			else if (inter->scr[inter->scptr] == '}')
+				delta--;
+			inter->scptr++;
+		}
+
+		return;
+	}
+
+	if (CheckNextSyms(inter, "while"))
 	{
 		int whilest = inter->scptr;
 		inter->scptr += 5;
@@ -94,7 +140,8 @@ void Block(InterpData* inter, TrieNode* VM)
 			inter->scptr++;
 		else
 		{
-			inter->scfailed = 1;
+			inter->scptr = whilest;
+			ProcAssignment(inter, VM);
 			return;
 		}
 		int result = ProcCondition(inter, VM);
@@ -126,18 +173,11 @@ void Block(InterpData* inter, TrieNode* VM)
 			inter->scptr++;
 		}
 
-		if (!inter->scr[inter->scptr])
+		if (!inter->scr[inter->scptr] && inter->scr[inter->scptr - 1] != '}')
 		{
 			inter->scfailed = 1;
 			return;
 		}
-
-		return;
-	}
-	if (CheckNextSyms(inter, "for "))
-	{
-		inter->scptr += 3;
-		SkipSpaces(inter);
 
 		return;
 	}

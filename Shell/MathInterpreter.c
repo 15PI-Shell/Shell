@@ -370,7 +370,6 @@ int MathInterpreter(TrieNode* VM, char* expression, double** result)
 	Mathi mi;
 	mi.ptr = failed = mi.bracets = 0;
 	mi.str = GetRightExpression(expression);
-	printf("%s\n", mi.str);
 	double* ans = (double*)malloc(sizeof(double));
 	*ans = Term(&mi, VM);
 
