@@ -449,8 +449,20 @@ int ProcCondition(InterpData* inter, TrieNode* VM)
 	int innerPtr = 0;
 	int startLeft = 0, startRight;
 
-	while (parsed[innerPtr] && !CheckNextSymsFree(innerPtr, parsed, "<") && !CheckNextSymsFree(innerPtr, parsed, "!") && !CheckNextSymsFree(innerPtr, parsed, "=") && !CheckNextSymsFree(innerPtr, parsed, ">"))
+	int inQ = 0;
+
+	while (parsed[innerPtr])
+	{
+		if (parsed[innerPtr] == '"')
+			inQ = !inQ;
+		if (!inQ && !(!CheckNextSymsFree(innerPtr, parsed, "<") && !CheckNextSymsFree(innerPtr, parsed, "!") && !CheckNextSymsFree(innerPtr, parsed, "=") && !CheckNextSymsFree(innerPtr, parsed, ">")))
+			break;
+
 		innerPtr++;
+	}
+
+	if (inQ)
+		inter->scfailed = 1;
 
 	char* left = (char*)malloc(innerPtr - startLeft + 1);
 	strncpy(left, parsed + startLeft, innerPtr - startLeft);

@@ -2,6 +2,8 @@
 
 int ParsOfArgs(char* str, SingleLinklistNode** args)
 {
+	if (0 == str)
+		return 0;
 	char* sp;
 	int len = strlen(str);
 	char*str1;
