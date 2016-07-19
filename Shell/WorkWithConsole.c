@@ -126,20 +126,13 @@ void ReadHistory()
 		}
 		fclose(fpHistory);
 	}
-	else
-	{
-		printf("Sorry. Something went wrong. Please restart the program.\n");
-		system("pause");
-		exit(1);
-	}
-
 }
 void WriteHistory()
 {
 	fpHistory = fopen(HistoryPath, "w");
 	if (fpHistory == NULL)
 	{
-		printf("Software failure Please restart the program\n");
+		printf("\nSoftware failure Please restart the program\n");
 		exit(0);
 	}
 	while (CurrHist->up)
