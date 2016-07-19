@@ -60,22 +60,24 @@ void SkipSpaces(InterpData* inter)
 		SkipSpaces(inter);
 }
 
-char* ParseBeforeComa(InterpData* inter)
+char* ParseBeforeComa(InterpData* inter, int delta)
 {
 	SkipSpaces(inter);
 
 	int start = inter->scptr;
 	int insidePtr = inter->scptr;
 
-	int delta = 0;
-
 	while (inter->scr[insidePtr])
 	{
 		if (inter->scr[insidePtr] == '(')
 			delta++;
 		else if (inter->scr[insidePtr] == ')')
+		{
 			delta--;
-		if ((inter->scr[insidePtr] == ',' && delta == 0) || delta < 0)
+			if (delta < 0)
+				break;
+		}
+		if (inter->scr[insidePtr] == ',' && delta == 0)
 			break;
 		insidePtr++;
 	}

@@ -114,7 +114,7 @@ void ProcDeclaresAs(InterpData* inter, TrieNode* VM, BPC_Returns type)
 			int constant;
 			BPC_Returns termType, varType;
 			void* result, *currentVal;
-			char* send1 = ParseBeforeComa(inter);
+			char* send1 = ParseBeforeComa(inter, 0);
 			char* send2 = ParseBeforeSemi(inter);
 			GetTerm(inter, VM, strlen(send1) < strlen(send2) ? send1 : send2, &result, &termType);
 			currentVal = VM_GetVariable(VM, name, &constant, &varType);
@@ -238,7 +238,7 @@ char* ProcArgumets(InterpData* inter, TrieNode* VM)
 	char* tmp = (char*)malloc(1000);
 	*args = 0;
 	inter->scptr++;
-	char* part = ParseBeforeComa(inter);
+	char* part = ParseBeforeComa(inter, -1);
 	int first = 1;
 	do
 	{
@@ -267,7 +267,7 @@ char* ProcArgumets(InterpData* inter, TrieNode* VM)
 
 		if (inter->scr[inter->scptr] == ',')
 			inter->scptr++;
-		part = ParseBeforeComa(inter);
+		part = ParseBeforeComa(inter, 0);
 	} while (*part);
 	free(tmp);
 	return args;

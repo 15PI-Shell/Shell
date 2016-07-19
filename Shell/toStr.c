@@ -2,5 +2,6 @@
 
 char* toStr(char* arg)
 {
+
 	return arg;
 }

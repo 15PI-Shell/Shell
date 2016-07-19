@@ -8,6 +8,7 @@ char* MathFun_sin(char* arg)
 	if (ParsOfArgs(arg, &ArgList) && ArgList->up==NULL)
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &ans))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", sin(*ans));
 			return arg;
 		}
@@ -26,6 +27,7 @@ char* MathFun_cos(char* arg)
 	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &ans))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", cos(*ans));
 			return arg;
 		}
@@ -44,6 +46,7 @@ char* MathFun_tan(char* arg)
 	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &ans))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", tan(*ans));
 			return arg;
 		}
@@ -65,6 +68,7 @@ char* MathFun_cot(char* arg)
 			*ans = tan(*ans);
 			if (*ans)
 			{
+				arg = malloc(1000);
 				sprintf(arg, "%lf", 1 / tan(*ans));
 				return arg;
 			}
@@ -86,6 +90,7 @@ char* MathFun_log(char* arg)
 	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &ans))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", log(*ans));
 			return arg;
 		}
@@ -104,6 +109,7 @@ char* MathFun_exp(char* arg)
 	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &ans))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", exp(*ans));
 			return arg;
 		}
@@ -122,6 +128,7 @@ char* MathFun_sqrt(char* arg)
 	if (ParsOfArgs(arg, &ArgList) && ArgList->up == NULL)
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &ans))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", sqrt(*ans));
 			return arg;
 		}
@@ -142,6 +149,7 @@ char* MathFun_pow(char* arg)
 	{
 		if (MathInterpreter(Basic_VM, (char*)ArgList->up->value, &arg1) && MathInterpreter(Basic_VM, (char*)ArgList->value, &arg2))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", pow(*arg1, *arg2));
 			return arg;
 		}
@@ -160,6 +168,7 @@ char* MathFun_max(char* arg)
 	{
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &arg1) && MathInterpreter(Basic_VM, (char*)ArgList->up->value, &arg2))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", max(*arg1, *arg2));
 			return arg;
 		}
@@ -178,6 +187,7 @@ char* MathFun_min(char* arg)
 	{
 		if (MathInterpreter(Basic_VM, (char*)ArgList->value, &arg1) && MathInterpreter(Basic_VM, (char*)ArgList->up->value, &arg2))
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%lf", min(*arg1, *arg2));
 			return arg;
 		}

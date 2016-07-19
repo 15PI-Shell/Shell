@@ -17,7 +17,7 @@ int CheckNextSyms(InterpData* inter, char* syms);
 
 void SkipSpaces(InterpData* inter);
 
-char* ParseBeforeComa(InterpData* inter);
+char* ParseBeforeComa(InterpData* inter, int delta);
 
 char* ParseBeforeSemi(InterpData* inter);
 

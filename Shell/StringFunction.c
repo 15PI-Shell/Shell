@@ -7,6 +7,7 @@ char* StringFun_strlen(char* arg)
 	{
 		if (ArgList->up == NULL)
 		{
+			arg = malloc(1000);
 			sprintf(arg, "%d", strlen((char*)ArgList->value));
 			return arg;
 		}
