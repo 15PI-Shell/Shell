@@ -56,7 +56,7 @@ char* ls(char* args)
 			free(mask); free(Dir);
 			return -1;
 		}
-		strcpy(Dir, ArgList->value);
+		strcpy(mask, ArgList->value);
 		SingleLinklistRemoveDownmost(&ArgList);
 		if (strlen(ArgList->value) > MAX_PATH)
 		{
@@ -67,12 +67,13 @@ char* ls(char* args)
 
 		if (strcmp(ArgList->value, "-R") != 0 && (strcmp(ArgList->value, "-r") != 0))
 		{
-			strcpy(mask, ArgList->value);
+			strcpy(Dir, ArgList->value);
 			SingleLinklistRemoveDownmost(&ArgList);
 			FindFilesAndDirsMask(mask, Dir, 3, &last);
 		}
 		else
 		{
+			strcpy(Dir, mask);
 			SingleLinklistRemoveDownmost(&ArgList);
 			FindFilesRecursive(Dir, "*", &last);
 		}

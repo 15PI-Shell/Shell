@@ -32,7 +32,7 @@ char* ChangeDirectory(char* str)
 	int i = -1;
 	while (str[++i])
 	{
-		if (str[i] != '.')
+		if (str[i] != '.' && str[i]!='\\' && str[i] != '/')
 		{
 			i = -1;
 			break;

@@ -70,9 +70,11 @@ void ResetCursor()
 }
 void CursorOnEndString()
 {
-	int dx = strlen(Buff) - cur;
-	cor.X += dx;
+	CONSOLE_SCREEN_BUFFER_INFO inf;
+	GetConsoleScreenBufferInfo(hConsole, &inf);
 	cur = strlen(Buff);
+	cor.Y = (cur + startPrintPoint.Y * inf.dwSize.X + startPrintPoint.X) / inf.dwSize.X;
+	cor.X = (cur + startPrintPoint.Y * inf.dwSize.X + startPrintPoint.X) % inf.dwSize.X;
 	SetConsoleCursorPosition(hConsole, cor);
 }
 void OnNextLine()
