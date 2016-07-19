@@ -81,8 +81,7 @@ char* ls(char* args)
 				SingleLinklistRemoveDownmost(&last);
 			}
 			break;
-	case 3:
-		if (strlen(ArgList->value) > MAX_PATH)
+	case 3:if (strlen(ArgList->value)>MAX_PATH)
 	{
 		printf("list of arguments is wrong)\n");
 		free(mask); free(Dir);
@@ -90,15 +89,7 @@ char* ls(char* args)
 	}
 		   strcpy(mask, ArgList->value);
 		   SingleLinklistRemoveDownmost(&ArgList);
-		   if (strlen(ArgList->value) > MAX_PATH)
-		   {
-			   printf("list of arguments is wrong)\n");
-			   free(mask); free(Dir);
-			   return -1;
-		   }
-		   strcpy(mask, ArgList->value);
-		   SingleLinklistRemoveDownmost(&ArgList);
-		   if (strlen(ArgList->value) > MAX_PATH)
+		   if (strlen(ArgList->value)>MAX_PATH)
 		   {
 			   printf("list of arguments is wrong)\n");
 			   free(mask); free(Dir);
@@ -106,7 +97,7 @@ char* ls(char* args)
 		   }
 		   strcpy(Dir, ArgList->value);
 		   SingleLinklistRemoveDownmost(&ArgList);
-		   if (!strcmp(ArgList->value, "-R") || (!strcmp(ArgList->value, "-r")))
+		   if (strcmp(ArgList->value, "-R") && (strcmp(ArgList->value, "-r")))
 		   {
 			   SingleLinklistRemoveDownmost(&ArgList);
 			   printf("List of arguments is wrong\n");
@@ -115,8 +106,16 @@ char* ls(char* args)
 		   }
 		   else
 		   {
+			   SingleLinklistRemoveDownmost(&ArgList);
 			   FindFilesRecursive(Dir, mask, &last);
+			   while (last)
+			   {
+				   printf("%s\n", last->value);
+				   SingleLinklistRemoveDownmost(&last);
+			   }
 		   }
+		   break;
+
 
 	default:printf("List of arguments is wrong\n");
 		free(mask); free(Dir);
