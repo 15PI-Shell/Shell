@@ -280,7 +280,7 @@ void ConsoleEnter()
 	}
 	CursorOnEndString();
 	printf("\n");
-	CmdInterpretator(Buff);
+	free(CmdInterpretator(Buff));
 	OnNextLine();
 	memset(Buff, 0, MAX_CONSOLE_INPUT);
 }

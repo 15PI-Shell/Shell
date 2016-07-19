@@ -8,5 +8,5 @@
 #include "WorkWithConsole.h"
 #include <Windows.h>
 #include <stdio.h>
-#include <locale.h>
 #include <conio.h>
+#include <locale.h>
