@@ -2,7 +2,7 @@
 
 char* ChangeDirectory(char* str)
 {
-	SingleLinklistNode* dir=NULL;
+	SingleLinklistNode* dir = NULL;
 	if (!ParsOfArgs(str, &dir))
 		return -1;
 	if (0 == dir)
@@ -29,24 +29,44 @@ char* ChangeDirectory(char* str)
 			CurrentDirectory[lsl + 1] = 0;
 		return 0;
 	}
-	int i = -1;
-	while (str[++i])
-	{
-		if (str[i] != '.' && str[i]!='\\' && str[i] != '/')
+	if ((tolower(str[0]) >= 'a') && (tolower(str[0]) <= 'z') && (str[1] == ':'))
+		if (DirectoryExists(str))
+			strcpy(CurrentDirectory, str);
+		else
 		{
-			i = -1;
-			break;
+			printf("Directory doesn't exist\n");
+			return -1;
 		}
-	}
-	if (DirectoryExists(str) && i == -1 && str[0] != '\\')
-	{
-		strcpy(CurrentDirectory, str);
-		return 0;
-	}
 	else
 	{
-		printf("Directory doesn't exist\n");
-		return -1;
+		int i = -1;
+		while (str[++i])
+		{
+			if (str[i] != '.' && str[i] != '\\' && str[i] != '/')
+			{
+				i = -1;
+				break;
+			}
+		}
+		if (str[0] != '\\' && str[0] != '/' && i == -1)
+		{
+			char CurDir[MAX_PATH + 1];
+			strcpy(CurDir, CurrentDirectory);
+			if (CurDir[strlen(CurDir) - 1] != '\\' || CurDir[strlen(CurDir) - 1] != '/')
+				strcat(CurDir, "\\");
+			strcat(CurDir, str);
+			if (DirectoryExists(CurDir))
+				strcpy(CurrentDirectory, CurDir);
+			else
+			{
+				printf("Directory doesn't exist\n");
+				return -1;
+			}
+		}
+		else
+		{
+			printf("Directory doesn't exist\n");
+			return -1;
+		}
 	}
-
 }
