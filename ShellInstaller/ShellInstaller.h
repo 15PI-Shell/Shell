@@ -7,6 +7,8 @@
 #include "ModifyingRegistry.h"
 #include "ArchieveFile.h"
 #include "INI.h"
+#include "DeleteFiles.h"
+#include "Unpacking.h"
 
 int InstallResult;
 

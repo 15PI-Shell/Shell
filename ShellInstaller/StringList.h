@@ -5,6 +5,7 @@
 #include <string.h>
 #include <assert.h>
 
+char* CurrentFile;
 //делает копию строки
 char* MkStrCopy(char* str);
 

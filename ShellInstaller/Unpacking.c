@@ -1,27 +1,11 @@
 ﻿#include "Unpacking.h"
 
-char* DirExist(char* path)
-{
-	char* folder;
-	int i = 0;
-	int len = 0;
-	while (path)
-	{ 
-		len++;
-		if (path[i] == "\\")
-		{
-			strncpy(folder,path,len);
-			return folder;
-		}
-	}
-	return 0;
-}
 
 int UnpackingFile(char* dir)
 {
 	HANDLE hFile, hUnInstFile;
 	DWORD ptr1;
-	hFile = CreateFileA("15PIShellInstaller.exe", GENERIC_READ,  //открываем наш архив
+	hFile = CreateFileA(CurrentFile, GENERIC_READ,  //открываем наш архив
 		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
