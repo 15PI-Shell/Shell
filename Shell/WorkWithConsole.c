@@ -1,6 +1,3 @@
-
-
-
 #include "WorkWithConsole.h"
 
 void DeleteListOfAutocomletion();
@@ -17,28 +14,35 @@ FILE *fpHistory = NULL;
 char *HistoryPath;
 COORD XYlist;
 LPCWSTR History;
-/*-----------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½---------------------------------------------------------------*/
+/*-----------------------------------------??????? ?????? ? ????????? ???????---------------------------------------------------------------*/
 void ClearComline()
 {
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
 	for (int i = 0; i < MAX_CONSOLE_INPUT; ++i)
+	{
 		printf(" ");
+		Buff[i] = '\0';
+	}
 }
 
 void ReprintConsoleBuffer()
 {
+	char *tmp = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+	strcpy(tmp, Buff);
 	ClearComline();
+	strcpy(Buff, tmp);
+	free(tmp);
 	SetConsoleCursorPosition(hConsole, startPrintPoint);
 	printf("%s", Buff);
 	SetConsoleCursorPosition(hConsole, cor);
 }
-/*----------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½------------------------------------*/
+/*----------------------------------------??????? ?????? ? ????????------------------------------------*/
 void GetConsoleCursorPosition()
 {
 	CONSOLE_SCREEN_BUFFER_INFO inf;
 	GetConsoleScreenBufferInfo(hConsole, &inf);
 	cor = inf.dwCursorPosition;
-}// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+}// ???? ??? ?? ?????, ??????????? ????? ?????????? ?????????????
 
 
 void IncCursor()
@@ -61,14 +65,16 @@ void DecCursor()
 }
 void ResetCursor()
 {
-	cor.X = startPrintPoint.X;
+	cor = startPrintPoint;
 	SetConsoleCursorPosition(hConsole, cor);
 }
 void CursorOnEndString()
 {
-	int dx = strlen(Buff) - cur;
-	cor.X += dx;
+	CONSOLE_SCREEN_BUFFER_INFO inf;
+	GetConsoleScreenBufferInfo(hConsole, &inf);
 	cur = strlen(Buff);
+	cor.Y = (cur + startPrintPoint.Y * inf.dwSize.X + startPrintPoint.X) / inf.dwSize.X;
+	cor.X = (cur + startPrintPoint.Y * inf.dwSize.X + startPrintPoint.X) % inf.dwSize.X;
 	SetConsoleCursorPosition(hConsole, cor);
 }
 void OnNextLine()
@@ -87,9 +93,9 @@ void ConsolePrintChar(int key)
 {
 	DoubleTabFlag = 0;
 	int buffLen = strlen(Buff);
-	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'ï¿½' && key <= 'ï¿½') && !(key >= 'ï¿½' && key <= 'ï¿½'))
+	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'à' && key <= 'ÿ') && !(key >= 'À' && key <= 'ß'))
 	{
-		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ ï¿½)
+		//???? ?????? ???????? ? ?? ????????? (?? ?)
 		for (int i = buffLen; i > cur; --i)
 			Buff[i] = Buff[i - 1];
 		Buff[cur] = (char)key;
@@ -97,7 +103,7 @@ void ConsolePrintChar(int key)
 		ReprintConsoleBuffer();
 	}
 }
-/*------------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-----------------------------------------*/
+/*------------------------------------------????????????? ???????-----------------------------------------*/
 void ReadHistory()
 {
 	fpHistory = fopen(HistoryPath, "r");
@@ -120,12 +126,22 @@ void ReadHistory()
 		}
 		fclose(fpHistory);
 	}
+	else
+	{
+		printf("Sorry. Something went wrong. Please restart the program.\n");
+		system("pause");
+		exit(1);
+	}
 
 }
 void WriteHistory()
 {
 	fpHistory = fopen(HistoryPath, "w");
-
+	if (fpHistory == NULL)
+	{
+		printf("Software failure Please restart the program\n");
+		exit(0);
+	}
 	while (CurrHist->up)
 	{
 		CurrHist = CurrHist->up;
@@ -151,19 +167,19 @@ void ConsoleInitialisation()
 	startPrintPoint = cor;
 	HistoryPath = malloc(MAX_PATH);
 	strcpy(HistoryPath, getenv("USERPROFILE"));
-	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	strcat(HistoryPath, "\\Documents\\15PI - SHELL");//???????? ??????????
 
 	CreateDirectoryA(HistoryPath, NULL);
 	SetFileAttributesA(HistoryPath, FILE_ATTRIBUTE_HIDDEN);
-	strcat(HistoryPath, "\\history.txt");//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½
-	DoubleLinklistAddUpmost(&CurrHist, "", 1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ï¿½ï¿½ï¿½" ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	strcat(HistoryPath, "\\history.txt");//????????? ??? ????? ????? ????????? ???? ? ????
+	DoubleLinklistAddUpmost(&CurrHist, "", 1);//????????? "?????" ? ???????
 	ReadHistory();
 	Buff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ backspace'ï¿½ï¿½
+	memset(Buff, 0, MAX_CONSOLE_INPUT + 2);//???????? ?? ?????????????? ???????? backspace'??
 	ReprintConsoleBuffer();
 }
 
-/*---------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½------------------------------------*/
+/*---------------------------------------????????? ??????????? ??????------------------------------------*/
 
 void ConsoleCursorMoveLeft()
 {
@@ -191,11 +207,18 @@ void ConsoleGetNextHistory()
 	DeleteListOfAutocomletion();
 	if (CurrHist->down != NULL)
 	{
+		ClearComline();
 		CurrHist = CurrHist->down;
 		strcpy(Buff, CurrHist->value);
 		ResetCursor();
 		cur = 0;
 		ReprintConsoleBuffer();
+	}
+	if (CurrHist->down == NULL)
+	{
+		ClearComline();
+		ResetCursor();
+
 	}
 }
 
@@ -205,6 +228,7 @@ void ConsoleGetPrewHistory()
 	DeleteListOfAutocomletion();
 	if (CurrHist->up != NULL)
 	{
+		ClearComline();
 		CurrHist = CurrHist->up;
 		strcpy(Buff, CurrHist->value);
 		ResetCursor();
@@ -242,15 +266,18 @@ void ConsoleEnter()
 {
 	DoubleTabFlag = 0;
 	DeleteListOfAutocomletion();
-	while (CurrHist->down)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	while (CurrHist->down)//?????????? ????????? ???????, ?????? ????? ? ????? ????
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
+		DoubleLinklistRemoveUpmost(&CurrHist->up);
 		cnt++;
 		if (cnt>100)
 		{
-			DoubleLinklistRemoveUpmost(&CurrHist);
+			DoubleLinklistRemoveUpmost(&CurrHist->up);
 			cnt--;
+			while (CurrHist->down)//?????????? ????????? ???????, ?????? ????? ? ????? ????
+				CurrHist = CurrHist->down;
 		}
 
 		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
@@ -258,7 +285,7 @@ void ConsoleEnter()
 	}
 	CursorOnEndString();
 	printf("\n");
-	CmdInterpretator(Buff);
+	free(CmdInterpretator(Buff));
 	OnNextLine();
 	memset(Buff, 0, MAX_CONSOLE_INPUT);
 }
@@ -273,22 +300,29 @@ void PastInConsole()
 		if ((cur == lenB - 1) || (lenB == 0)) strcat(Buff, str);
 		else
 		{
-			char *EndBuff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
-			int i = 0;  int j = 0;
-			for (i = 0; i <= lenB - cur; i++)
+			if (cur == 0)
 			{
-				EndBuff[i] = Buff[i + cur];
+				strcat(str, Buff);
+				strcpy(Buff, str);
 			}
-			for (i = lenB; i > cur; i--)
+			else
 			{
-				Buff[i] = '\0';
+				char *EndBuff = (char*)malloc(MAX_CONSOLE_INPUT + 2);
+				int i = 0;  int j = 0;
+				for (i = 0; i <= lenB - cur; i++)
+				{
+					EndBuff[i] = Buff[i + cur + 1];
+				}
+				for (i = lenB; i > cur; i--)
+				{
+					Buff[i] = '\0';
+				}
+				strcat(Buff, str);
+				strcat(Buff, EndBuff);
+				GetClipboardContent(str);
+				free(EndBuff);
 			}
-			strcat(Buff, str);
-			strcat(Buff, EndBuff);
-			GetClipboardContent(str);
-			free(EndBuff);
 		}
-
 		ReprintConsoleBuffer();
 		free(str);
 	}
@@ -309,8 +343,16 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 				{
 
 					entry[k] = Buff[j]; k++;
-				} printf("\n%s", entry); return 2;
-
+				}
+				int eLen = strlen(entry);
+				for (int i = 0; i < eLen; i++)
+				{
+					if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
+					{
+						return 0;
+					}
+				}
+				return 2;
 			}
 			else return 0;
 		}
@@ -321,12 +363,31 @@ int DetermineEntry(char *entry, int *PosEntryStart) {
 			{
 
 				entry[k] = Buff[j]; k++;
-			}  return 1;
+			}
+			int eLen = strlen(entry);
+			for (int i = 0; i < eLen; i++)
+			{
+				if (((entry[i] == '*') || (entry[i] == '?') || (entry[i] == '\\')))
+				{
+					return 0;
+				}
+			}
+			return 1;
 
 		}
 
 	}
-	strcpy(entry, Buff); *PosEntryStart = 0; return 1;
+	strcpy(entry, Buff);
+	int eLen = strlen(entry);
+	*PosEntryStart = 0;
+	for (int i = 0; i < eLen; i++)
+	{
+		if (((entry[i] == '*') || (entry[i] == '?')) || (entry[i] == '\\'))
+		{
+			return 0;
+		}
+	}
+	return 1;
 }
 
 void ConsoleAutocompletion()
@@ -368,7 +429,7 @@ void ConsoleAutocompletion()
 		cur = crn; cor = pos;
 		SetConsoleCursorPosition(hConsole, pos);
 		return;
-	} // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	} // ?????????? ?? ???????
 	if (LastFoundList->up == 0) {
 		int len = strlen(LastFoundList->value);
 		if (len > MAX_CONSOLE_INPUT - posEntry) {
@@ -385,7 +446,7 @@ void ConsoleAutocompletion()
 
 		CursorOnEndString();
 		ConsolePrintChar(' ');
-	} //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	} //?????????? ????????????, ????????
 	else {
 		FlagAutocompletions = 1;
 		cur = crn; cor = pos;
@@ -436,4 +497,5 @@ void DeleteListOfAutocomletion()
 	}
 	return;
 }
->>>>>>> refs/remotes/origin/master
+
+

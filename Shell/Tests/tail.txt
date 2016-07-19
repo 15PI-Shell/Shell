@@ -1,0 +1,75 @@
+int passed =0;
+if(tryCmd("tail") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail  10") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail ls.txt 3") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail 5") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail ls.txt 0") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail nadl.txt 10") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail C:\\ 10") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("tail ls.txt 10 10") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+echo(toStr(passed) + "/8 tests was passed");

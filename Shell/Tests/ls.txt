@@ -1,0 +1,112 @@
+int passed =0;
+
+if(tryCmd("ls") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls C:\\") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls -r") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls *.exe") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls C:\\ *.exe") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls -r C:\\ASM") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls -r *.exe") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls C:\\asf") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls C:\\ *.asdf") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls -r C:\\ASM *.com") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls da C:\\ *.exe") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("ls -r C:\\ *.exe aaa") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+echo(toStr(passed) + "/12 tests of ls was passed");

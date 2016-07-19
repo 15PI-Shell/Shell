@@ -1,0 +1,41 @@
+//запуск скрипта scexec testsc.txt
+int passed = 0;
+
+if(tryCmd("binary 123") == "1111011")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+if(tryCmd("sdfgsdfgsdfg") == "not found")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+if(tryCmd("sdfgsdfgsdfg") == "qwerty")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else{echo(">>>>>>>>not passed");}
+//calc ... - математика. 
+//trycmd - возвращает строку-ответ интерпретатор
+echo(tryCmd("calc sin(PI/2)*cos(9)"));
+echo(calc("2 + 2 * 2"));
+echo("calc 2 + 2 * 2 in cmd is: " + tryCmd("calc 2 + 2 * 2"));
+echo(sin(0.6));
+//экранирование кавычек
+echo(toStr(passed) + "/3 tests was passed");
+
+//ограничения пока такие:
+//"" строки не длиннее 1000
+//нет кавычек внутри кавычек

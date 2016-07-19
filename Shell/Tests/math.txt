@@ -1,0 +1,214 @@
+string currTest;
+int testsPassed = 0, tests = 0;
+
+currTest =" brecets Right";
+tests += 1;
+if (tryCmd("calc (121+43)*7-3)") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" args without brecets";
+tests += 1;
+if (tryCmd("calc 12+7*42-sin45") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" brecets Left";
+tests += 1;
+if (tryCmd("calc (99\9+34-log(2)") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" Constant Pi";
+tests += 1;
+if (tryCmd("calc cos(pi)") == "-1.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" Correct brecets";
+tests += 1;
+if (tryCmd("calc (71-13+3*4)-(7*21*tan(pi))") == "70.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" log(0)";
+tests += 1;
+if (tryCmd("calc log(0) ") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" log(1)";
+tests += 1;
+if (tryCmd("calc log(1) ") == "0.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" log(-10)";
+tests += 1;
+if (tryCmd("calc log(-10) ") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" cot(0)";
+tests += 1;
+if (tryCmd("calc cot(0)") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" tan(0)";
+tests += 1;
+if (tryCmd("calc tan (0)") == "0.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" sqrt(0)";
+tests += 1;
+if (tryCmd("calc sqrt (0)") == "0.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" sqrt(-1)";
+tests += 1;
+if (tryCmd("calc sqrt (-1) ") == "exec error")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" min";
+tests += 1;
+if (tryCmd( "calc min(17, 16.99999)") == "16.999990")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" max";
+tests += 1;
+if (tryCmd( "calc max(17, 16.99999)") == "17.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" max\";
+tests += 1;
+if (tryCmd( "calc max(17, 34/2)") == "17.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" 0.5^(-10)";
+tests += 1;
+if (tryCmd("calc pow(0.5, -10)") == "1024.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" 8^(1/3)";
+tests += 1;
+if (tryCmd("calc pow(8, 1/3)") == "1.999999")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" strlen Binary";
+tests += 1;
+if (tryCmd( "calc strlen(binary(5))+1") == "4.000000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+currTest =" div";
+tests += 1;
+if (tryCmd("calc 15/5*3/10*2") == "1.800000")
+{
+	echo("###############" + currTest + " test passed");
+	testsPassed += 1;
+}
+else
+{
+	echo("###############" + currTest + " test failed");
+}
+
+echo(toStr(testsPassed) + "/" + toStr(tests) + " passed");

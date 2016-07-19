@@ -24,15 +24,41 @@ void BPC_Init()
 	trieRoot = Trie_Create();
 	//здесь будет список всех реализованных встроенных программ
 	RegisterProgram("HelloWorld", HelloWorldProc, BPC_ReturnsNothing);
-	RegisterProgram("Sum", sumProc, BPC_ReturnsInt);
 	RegisterProgram("Binary", BinaryProc, BPC_ReturnsString);
 	RegisterProgram("cd", ChangeDirectory, BPC_ReturnsNothing);
 	RegisterProgram("History", PrintHistory, BPC_ReturnsString);
 	RegisterProgram("tail", TailOfFile, BPC_ReturnsString);
-	RegisterProgram("cat", cat, BPC_ReturnsNothing);
+	RegisterProgram("prFile", printFile, BPC_ReturnsNothing);
 	RegisterProgram("diff", diff, BPC_ReturnsNothing);
 	RegisterProgram("ls", ls, BPC_ReturnsNothing);
-	RegisterProgram("lsR", ls_R, BPC_ReturnsNothing);
+
+	RegisterProgram("calc", calc, BPC_ReturnsDouble);
+	RegisterProgram("sin", MathFun_sin, BPC_ReturnsDouble);
+	RegisterProgram("cos", MathFun_cos, BPC_ReturnsDouble);
+	RegisterProgram("tan", MathFun_tan, BPC_ReturnsDouble);
+	RegisterProgram("cot", MathFun_cot, BPC_ReturnsDouble);
+	RegisterProgram("log", MathFun_log, BPC_ReturnsDouble);
+	RegisterProgram("exp", MathFun_exp, BPC_ReturnsDouble);
+	RegisterProgram("sqrt", MathFun_sqrt, BPC_ReturnsDouble);
+	RegisterProgram("pow", MathFun_pow, BPC_ReturnsDouble);
+	RegisterProgram("max", MathFun_max, BPC_ReturnsDouble);
+	RegisterProgram("min", MathFun_min, BPC_ReturnsDouble);
+	RegisterProgram("strlen", StringFun_strlen, BPC_ReturnsInt);
+	RegisterProgram("echo", Echo, BPC_ReturnsNothing);
+
+	RegisterProgram("scexec", ScriptExec, BPC_ReturnsNothing);
+	RegisterProgram("trycmd", TryCmd, BPC_ReturnsNothing);
+	RegisterProgram("toStr", toStr, BPC_ReturnsString);
+	RegisterProgram("toDouble", toDouble, BPC_ReturnsDouble);
+	RegisterProgram("ReadLine", ReadLine, BPC_ReturnsString);
+}
+
+BPC_Returns BPC_WhatRets(char* name)
+{
+	TrieNode* t = Trie_Find(trieRoot, name);
+	if (!t)
+		return BPC_ReturnsNothing;
+	return ((BPC_Program*)t->data)->returns;
 }
 
 char* BPC_Execute(char* program, char* args, BPC_Returns* returns)

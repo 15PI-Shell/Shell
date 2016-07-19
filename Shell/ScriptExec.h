@@ -1,5 +1,6 @@
 #pragma once
 #include <stdio.h>
+#include "FindFile.h"
 #include "ParserOfArguments.h"
-#include "LinkedList.h"
-char*cat(char*);
+
+char* ScriptExec(char* path);

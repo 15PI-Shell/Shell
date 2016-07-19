@@ -1,25 +1,29 @@
 ﻿#include "BuiltinProgInterpretator.h"
 
-void CmdInterpretator(char* mas)
+char* CmdInterpretator(char* mas)
 {
 	mas = MkMemCopy(mas, strlen(mas));
-	int p = 0, lenname = 0, lenarg = 0, s = 0, flag = 2, FlagOfResult; // flag for SLSProc; 2 - strt value; 0 - &&; 1 - ||
+	int p = 0, lenname = 0, lenarg = 0, s = 0, flag = 2, FlagOfResult, lenmas = strlen(mas); // flag for SLSProc; 2 - strt value; 0 - &&; 1 - ||
 	BPC_Returns TypeOfResult;
 	char strresult[100] = "\0";
 	char* result = NULL;
 	const char* del = ">\0";
 	char* cmd;
+	char* returnresult = (char*)malloc(1000 * sizeof(char));
+	*returnresult = '\0';
 
 	if ((strchr(mas, '|')) && (strchr(mas, '&')))
 	{
 		printf("_Invalid written data_");
-		return;
+		strcpy(returnresult, "invalid input");
+		return returnresult;
 	}
 
 	if ((strchr(mas, '>')) && ((strchr(mas, '|')) || (strchr(mas, '&'))))
 	{
 		printf("_Invalid written data_");
-		return;
+		strcpy(returnresult, "invalid input");
+		return returnresult;
 	}
 
 	cmd = SLSProc(mas, &s, &flag);
@@ -69,12 +73,18 @@ void CmdInterpretator(char* mas)
 			if (fileresult != ExecResult_Success)
 			{
 				FlagOfResult = 1;
-				printf("Extern program '%s' not successful\n", ptrname);
+				printf("The program '%s' not successful\n", ptrname);
+				if (fileresult == ExecResult_ExecuteFailed)
+					strcat(returnresult, " not found");//for tests
+				else
+					strcat(returnresult, " extern file error");//for tests
 			}
 			else
 			{
 				result = 0;
 				FlagOfResult = 0;
+				strcat(returnresult, " no ret value"); //for tests
+
 				printf("Extern program '%s' was completed successfully\n", ptrname);
 			}
 		}
@@ -83,24 +93,27 @@ void CmdInterpretator(char* mas)
 			{
 				FlagOfResult = 1;
 				printf("Builtin program '%s' not successful\n", ptrname);
+				strcat(returnresult, " exec error");//for tests
 			}
 			else
 				if (result == 0)
 				{
 					FlagOfResult = 0;
 					printf("Builtin program '%s' was completed successfully\n", ptrname);
+					strcat(returnresult, " no ret value"); //for tests
 				}
 		if ((result != 0) && (result != -1) && (result != -2))
 		{
 			printf("Builtin program '%s' was completed successfully\n", ptrname);
 			printf("RESULT: %s\n", result);
 			FlagOfResult = 0;
+			strcat(returnresult, " "); //for tests
+			strcat(returnresult, result); //for tests
 		}
 
-		free(ptrarg);
 		free(ptrname);
-		free(cmd);
-		if (FlagOfResult != flag) return;
+		free(ptrarg);
+		if (FlagOfResult != flag) return returnresult;
 		cmd = SLSProc(mas, &s, &flag); // search the following comand 
 
 	}
@@ -136,7 +149,8 @@ void CmdInterpretator(char* mas)
 		ptrname[lenname] = '\0';
 		p += lenname;
 		if (cmd[p] == '"') p++;
-
+		
+		
 		// search arguments
 		lenarg = strlen(cmd) - p;
 		char* ptrarg = (char*)malloc((lenarg + 2 + strlen(strresult)) * sizeof(char));// указатель на строку с аругментами
@@ -144,10 +158,12 @@ void CmdInterpretator(char* mas)
 		ptrarg[lenarg] = ' ';
 		ptrarg[lenarg + 1] = '\0';
 		strcat(ptrarg, strresult); // add result of program to argaments
-
+		ptrarg[lenarg + 2 + strlen(strresult)] = '\0';
+		
 		// search ptrname in builtinprogram and start this program
+		
 		result = BPC_Execute(ptrname, ptrarg, &TypeOfResult);
-
+		
 		// search ptrname in extern program and start this program
 		if (result == -2)
 		{
@@ -180,44 +196,62 @@ void CmdInterpretator(char* mas)
 					printf("Builtin programs with the same prefix don't exist\n");
 
 				// errors of extern files
+
 				switch (fileresult)
 				{
 				case ExecResult_BadReturnCode:
 					printf("_Extern file completion error_\n");
+					strcpy(returnresult, "extern file error\0"); // for tests
 					break;
 				case ExecResult_ExecuteFailed:
 					printf("_Extern file run error (Extern file not exist)_\n");
+					strcpy(returnresult, "not found\0"); // for tests
 					break;
 				case ExecResult_UnknownError:
 					printf("_Unknown Error to open external file_\n");
+					strcpy(returnresult, "extern file error\0"); // for tests
 					break;
 				}
-				return;
+				return returnresult;
 			}
 			result = 0;
 		}
-
+		
 		if (result == -1)
 		{
 			printf("_Error_\n");
-			return;
+			strcpy(returnresult, "exec error\0");// for tests
+			return returnresult;
 		}
 
 		if (result == 0)
+		{
 			strresult[0] = '\0';
+			strcpy(returnresult, "no ret value");// for tests
+		}
 
 		if ((result != 0) && (result != -1) && (result != -2))
+		{
 			strcpy(strresult, result);
+			strcpy(returnresult, result);// for tests
+		}
 
 		free(ptrname);
-		//printf("%s",ptrarg);
-		free(ptrarg);
-		cmd = strtok('\0', del); // search the following comand 
-	}
+		//free(ptrarg);
+
+		
+		s += strlen(cmd) + 1;
+		if (s >= lenmas) break;
+		mas += strlen(cmd) + 1;
+		cmd = strtok(mas, del); // search the following comand 
+ }
+
+		
 
 	if (strlen(strresult) != 0)
 	{
 		printf("RESULT: %s\n", strresult);
 	}
-	return;
+
+	return returnresult;
 }
