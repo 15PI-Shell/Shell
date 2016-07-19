@@ -80,6 +80,7 @@
     <ClCompile Include="InfoSection.c" />
     <ClCompile Include="INI.c" />
     <ClCompile Include="ModifyingRegistry.c" />
+    <ClCompile Include="Packing.c" />
     <ClCompile Include="ShellInstaller.c" />
     <ClCompile Include="StringList.c" />
     <ClCompile Include="Unpacking.c" />
@@ -90,6 +91,7 @@
     <ClInclude Include="InstallerConfig.h" />
     <ClInclude Include="INI.h" />
     <ClInclude Include="ModifyingRegistry.h" />
+    <ClInclude Include="Packing.h" />
     <ClInclude Include="ShellInstaller.h" />
     <ClInclude Include="StringList.h" />
     <ClInclude Include="Unpacking.h" />

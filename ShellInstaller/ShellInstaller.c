@@ -2,6 +2,7 @@
 
 void MakeInstaller(char* pathWithFiles)
 {
+	Pack(pathWithFiles);
 	printf("MakeInstaller logic: %s\n", pathWithFiles);
 }
 

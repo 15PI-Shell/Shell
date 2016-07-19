@@ -81,12 +81,12 @@ int UnpackingFile(char* dir)
 				PathFile[k] = buff2[j];
 			}
 			PathFile[k] = "\0";
-			SingleStrlistAddDownmost(ListOfPaths, PathFile);		//добавляем пути к файлам в список
+			SingleStrlistAddUpmost(ListOfPaths, PathFile);		//добавляем пути к файлам в список
 			int Size;
 			Size = buff2[515] + (buff2[514]<<8) + (buff2[513]<<16) + (buff2[512]<<24);
 			char* s;
 			itoa(Size, s, 10);
-			SingleStrlistAddDownmost(ListOfSize, s);				//добавляем размер файлов в список
+			SingleStrlistAddUpmost(ListOfSize, s);				//добавляем размер файлов в список
 			WriteFile(hUnInstFile, buff2, dwBytesRead, &dwBytesWritten, NULL);
 			SetFilePointer(hFile, SkpFiveHBytes, NULL, FILE_CURRENT);
 			i++;
@@ -117,7 +117,7 @@ int UnpackingFile(char* dir)
 		ListOfPaths = ListOfPaths->up;
 		ListOfSize = ListOfSize->up;
 	}
-	
+	CloseHandle(hFile);
 	return 1;
 }
 
