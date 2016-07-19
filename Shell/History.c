@@ -2,8 +2,16 @@
 char* PrintHistory(char *args)
 {
 	int i = 0, n = 0;
-	sscanf(args, "%d", &n);//сканируем аргумент
-	if (n <= 0) {
+	SingleLinklistNode *ARList = NULL;
+	int n_ar;
+	n_ar = ParsOfArgs(args, &ARList);
+	if (n_ar != 1)
+	{
+		printf("The number of arguments is wrong\n");
+		return -1;
+	}
+	sscanf(ARList->value, "%d", &n);//сканируем аргумент
+	if (n <=0) {
 		printf("Argument is wrong\n");
 		return -1;
 	}

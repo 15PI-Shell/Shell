@@ -2,14 +2,14 @@
 
 char* diff(char* args)
 {
-	SingleLinklistNode *ListOfArgs;
-	int cnt_args;
+	SingleLinklistNode *ListOfArgs=NULL;
+	int cnt_args=0;
 	cnt_args = ParsOfArgs(args, &ListOfArgs);
 	if (cnt_args != 2)
 	{
+		printf("list of arguments is wrong\n");
 		while (ListOfArgs)
 			SingleLinklistRemoveDownmost(&ListOfArgs);
-		printf("List of arguments is wrong\n");
 		return -1;
 	}
 	FILE *fp1 = NULL, *fp2 = NULL;
@@ -22,6 +22,13 @@ char* diff(char* args)
 	char *f2 = (char*)malloc(260);
 	strcpy(f2, ListOfArgs->value);
 	fp2 = fopen(f2, "r");
+	if (fp2 == NULL)
+	{
+		free(f2);
+		printf("files opening error\n");
+		return -1;
+	}
+
 	SingleLinklistRemoveDownmost(&ListOfArgs);
 	if (strlen(ListOfArgs->value) >= MAX_PATH)
 	{
@@ -32,16 +39,24 @@ char* diff(char* args)
 
 	char *f1 = (char*)malloc(260);
 	strcpy(f1, ListOfArgs->value);
-	if (!strcmp(f1, f2))
+	if (strcmp(f1, f2)==0)
 	{
 		printf("Arguments are wrong\n");
+		fclose(fp2);
 		free(f2), free(f1);
-		close(fp2);
+		
+		return -1;
 	}
 	SingleLinklistRemoveDownmost(&ListOfArgs);
 	fp1 = fopen(f1, "r");
-	if ((fp1) && (fp2))
+	if(fp1==NULL)
 	{
+		free(f2), free(f1);
+		close(fp2);
+		printf("files opening error\n");
+		return -1;
+	}
+	
 		fseek(fp1, 0, SEEK_END); fseek(fp2, 0, SEEK_END);
 		long pos1 = ftell(fp1);// ищем конец файла
 		long pos2 = ftell(fp2);// ищем конец файла
@@ -106,9 +121,4 @@ char* diff(char* args)
 		fclose(fp2);
 		return 0;
 	}
-	else
-	{
-		printf("files opening error\n");
-			return -1;
-	}
-}
+	

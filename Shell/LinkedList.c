@@ -173,15 +173,20 @@ void DoubleLinklistRemoveDownmost(DoubleLinklistNode** node)
 	if (0 == *node)
 		return;
 
-	DoubleLinklistNode** iter = node;
-	while ((*iter)->down)
-		(*iter) = (*iter)->down;
+	DoubleLinklistNode* iter = *node;
+	while (iter->down)
+		iter = iter->down;
 
-	if ((*iter)->up)
-		(*iter)->up->down = 0;
+	if (iter->up)
+		iter->up->down = 0;
 
-	free(*iter);
-	*iter = 0;
+	if (iter == *node)
+	{
+		free(*node);
+		*node = 0;
+	}
+	else
+		free(iter);
 }
 
 void DoubleLinklistRemoveUpmost(DoubleLinklistNode** node)
@@ -189,15 +194,20 @@ void DoubleLinklistRemoveUpmost(DoubleLinklistNode** node)
 	if (0 == *node)
 		return;
 
-	DoubleLinklistNode** iter = node;
-	while ((*iter)->up)
-		(*iter) = (*iter)->up;
+	DoubleLinklistNode* iter = *node;
+	while (iter->up)
+		iter = iter->up;
 
-	if ((*iter)->down)
-		(*iter)->down->up = 0;
+	if (iter->down)
+		iter->down->up = 0;
 
-	free(*iter);
-	*iter = 0;
+	if (iter == *node)
+	{
+		free(*node);
+		*node = 0;
+	}
+	else
+		free(iter);
 }
 
 void DoubleLinklistRemove(DoubleLinklistNode** node)

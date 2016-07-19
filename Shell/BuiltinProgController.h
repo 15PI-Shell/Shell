@@ -12,7 +12,7 @@
 #include "ChangeDirectory.h"
 #include "History.h"
 #include "tail.h"
-#include "cat.h"
+#include "prFile.h"
 #include "diff.h"
 #include "ls.h"
 #include "MathFunction.h"

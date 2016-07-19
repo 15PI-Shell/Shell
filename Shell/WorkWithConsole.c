@@ -268,11 +268,14 @@ void ConsoleEnter()
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
+		DoubleLinklistRemoveUpmost(&CurrHist->up);
 		cnt++;
 		if (cnt>100)
 		{
 			DoubleLinklistRemoveUpmost(&CurrHist->up);
 			cnt--;
+			while (CurrHist->down)//?????????? ????????? ???????, ?????? ????? ? ????? ????
+				CurrHist = CurrHist->down;
 		}
 
 		DoubleLinklistInsertAbove(CurrHist, Buff, strlen(Buff));
