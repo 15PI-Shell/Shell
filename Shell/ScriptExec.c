@@ -3,7 +3,7 @@
 char* ScriptExec(char* path)
 {
 	SingleLinklistNode* l = 0;
-	if (!ParsOfArgs(path, &l))
+	if (1 != ParsOfArgs(path, &l))
 		return -1;
 
 	int v = 0;
@@ -18,6 +18,10 @@ char* ScriptExec(char* path)
 	else
 		strcat(arg, l->value);
 	FILE *f = fopen(arg, "rb");
+
+	if (!f)
+		return -1;
+
 	fseek(f, 0, SEEK_END);
 	long fsize = ftell(f);
 	fseek(f, 0, SEEK_SET);
@@ -28,9 +32,12 @@ char* ScriptExec(char* path)
 	free(arg);
 	string[fsize] = 0;
 
-	if (EvalScript(string, v))
+	int ret = 0;
+
+	ret = EvalScript(string, v);
+	if (ret)
 		printf("Script finished\n");
 	free(string);
 
-	return 0;
+	return ret ? 0 : -1;
 }
