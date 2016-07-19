@@ -1,0 +1,83 @@
+int passed = 0;
+
+
+if(tryCmd("diff Binary.c Binary.h") == "Binary.c < Binary.h")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//--------------------------------------------------
+if(tryCmd("diff Binary.h Binary.h") == "Arguments are wrong !!!")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//------------------------------------------------------------
+if(tryCmd("diff 1 2") == "files opening error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//------------------------------------------------------------
+if(tryCmd("diff 1 Binary.h") == "files opening error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//------------------------------------------------------------
+if(tryCmd("diff a.txt Binary.h") == "files opening error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//------------------------------------------------------------
+if(tryCmd("diff a.txt b.txt") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//------------------------------------------------------------
+if(tryCmd("diff a.exe b.exe") == "files opening error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+//------------------------------------------------------------
+if(tryCmd("diff C:\ASM\fin.txt C:\ASM\fout.txt") == "C:\ASM\fin.txt > C:\ASM\fout.txt")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+echo(toStr(passed) + "/8 tests was passed");
