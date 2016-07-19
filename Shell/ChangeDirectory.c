@@ -7,7 +7,10 @@ char* ChangeDirectory(char* str)
 		return -1;
 	if (0 == dir)
 		return -1;
-	str = dir->value;
+	if (dir->up = NULL)
+		str = dir->value;
+	else
+		return -1;
 	if (!strcmp(str, ".."))
 	{
 		int iter = 0, slc = 0, lsl = 0;
@@ -26,10 +29,19 @@ char* ChangeDirectory(char* str)
 			CurrentDirectory[lsl + 1] = 0;
 		return 0;
 	}
-	if (DirectoryExists(str))
-	{	
+	int i = -1;
+	while (str[++i])
+	{
+		if (str[i] != '.')
+		{
+			i = -1;
+			break;
+		}
+	}
+	if (DirectoryExists(str) && i == -1 && str[0] != '\\')
+	{
 		strcpy(CurrentDirectory, str);
-		return 0;		
+		return 0;
 	}
 	else
 	{

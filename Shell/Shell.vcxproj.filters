@@ -46,4 +46,9 @@
     <ClInclude Include="Trie.h" />
     <ClInclude Include="WorkWithConsole.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
