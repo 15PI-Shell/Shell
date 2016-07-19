@@ -387,20 +387,28 @@ char* ProcSingleCondition(InterpData* inter)
 {
 	int start = inter->scptr;
 	int delta = 0;
+
+	int inQ = 0;
+
 	while (inter->scr[inter->scptr] && !CheckNextSyms(inter, "&&") && !CheckNextSyms(inter, "||"))
 	{
-		if (CheckNextSyms(inter, ")"))
+		if (inter->scr[inter->scptr] == '"')
+			inQ = !inQ;
+		if (!inQ)
 		{
-			delta--;
-			if (delta < 0)
-				break;
+			if (CheckNextSyms(inter, ")"))
+			{
+				delta--;
+				if (delta < 0)
+					break;
+			}
+			else if (CheckNextSyms(inter, "("))
+				delta++;
 		}
-		else if (CheckNextSyms(inter, "("))
-			delta++;
 		inter->scptr++;
 	}
 
-	if (delta != 0 && (CheckNextSyms(inter, "&&") || CheckNextSyms(inter, "||")))
+	if (inQ || delta != 0 && (CheckNextSyms(inter, "&&") || CheckNextSyms(inter, "||")))
 	{
 		inter->scfailed = 1;
 		return 0;

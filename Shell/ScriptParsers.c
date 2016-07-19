@@ -67,19 +67,32 @@ char* ParseBeforeComa(InterpData* inter, int delta)
 	int start = inter->scptr;
 	int insidePtr = inter->scptr;
 
+	int inQ = 0;
+
 	while (inter->scr[insidePtr])
 	{
-		if (inter->scr[insidePtr] == '(')
-			delta++;
-		else if (inter->scr[insidePtr] == ')')
+		if (inter->scr[insidePtr] == '"')
+			inQ = !inQ;
+		if (!inQ)
 		{
-			delta--;
-			if (delta < 0)
+			if (inter->scr[insidePtr] == '(')
+				delta++;
+			else if (inter->scr[insidePtr] == ')')
+			{
+				delta--;
+				if (delta < 0)
+					break;
+			}
+			if ((inter->scr[insidePtr] == ',' || inter->scr[insidePtr] == ';') && delta == 0)
 				break;
 		}
-		if (inter->scr[insidePtr] == ',' && delta == 0)
-			break;
 		insidePtr++;
+	}
+
+	if (inQ)
+	{
+		inter->scfailed = 1;
+		return "";
 	}
 
 	char* data = (char*)malloc(insidePtr - start + 1);
