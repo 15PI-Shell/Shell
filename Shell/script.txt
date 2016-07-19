@@ -1,0 +1,53 @@
+int i;
+double a, b;
+
+echo("2 in binary = " + binary("2"));//concat
+echo(5*5, "=", 25*1);
+b = (5/5)*5;
+i = 2 * 2;
+a = 0.5 * 50;
+i = 2 - 5/(2+2);//приведение к инту в итоге. 0.75 -> 0
+b = 0.1 * (256-60);
+i += 4;
+i -= 2;
+//несколько команд на строке - не проблема, были бы ;
+i *= 70; i /= 35;
+//todo ввод, вложение, cmd
+echo("hello!");
+echo(pow(2, 10));
+double m = 0.5;
+echo(pow(pow(m,m), m));
+echo(cos(PI));
+
+string str1, /*кстати это тоже уже работает*/ str2;
+
+str1 = binary(34);
+str1 += binary(10);
+str2 = "teststring?";
+echo(str2);
+str2 = str1 + str2;
+echo(binary(  binary(8)  ));
+//самая внутренняя binary даЄт 1000, внешняя уже 1111101000
+
+string s = "Init value! ", s2 = "Init value too!";
+//теперь объявления где угодно и можно сразу присвоить значение
+s = "oO";
+s += s + s + s + s + " " + s2;
+
+if (5 == 4 || 5*0 == 4||/*не зависит от пробелов*/     4 != 4)
+{
+	echo("In the if1!");
+}
+if (str1 != str2 && 2 == 2)
+{
+	echo("In the if2!");
+}
+if (1 > 2 || 1 < 2 || 1 >= 2 || 1 <= 1 || 1 == 1 || 1 != 1 || str1 != str2)
+{
+	echo("if 3!");
+}
+if (1 != 7 && (1 == 5 || 6 <= 9)) {echo("Brackets support in the if!");}
+echo("outside"); int z = 7, x = 0;
+while (i >= 0) {echo("test"); i -= 1;}
+while (z) {x = 0; while (x <= 7) {x += 1; echo(x);} z-=1; }
+//циклы! даже вложенные
