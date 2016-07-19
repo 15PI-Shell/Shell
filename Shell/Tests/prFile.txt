@@ -1,0 +1,76 @@
+int passed = 0;
+
+echo("Print File:");
+if(tryCmd("prFile") == "exec result")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile test.txt") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile ddd.txt") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile 1") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile Ñ:\\") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile C:\\test.exe") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile ddd.txt") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("prFile test.txt a.txt") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+echo(toStr(passed) + "/9 tests of Binary was passed");
