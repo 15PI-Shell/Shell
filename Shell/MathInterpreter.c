@@ -230,6 +230,7 @@ double Function(Mathi* mi, TrieNode* VM, char* funct)
 		failed = 1;
 		return 0;
 	}
+	//todo: скобкокостыль
 	char args[1000] = "(";
 	int i = 1;
 	int bracets2 = 1;

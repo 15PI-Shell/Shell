@@ -2,6 +2,8 @@
 
 char* Echo(char* args)
 {
+	if (args == 0)
+		return -1;
 	while (*args)
 	{
 		if (*args != '"')

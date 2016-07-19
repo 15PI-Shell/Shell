@@ -238,7 +238,8 @@ char* ProcArgumets(InterpData* inter, TrieNode* VM)
 	char* tmp = (char*)malloc(1000);
 	*args = 0;
 	inter->scptr++;
-	char* part = ParseBeforeComa(inter, -1);
+
+	char* part = ParseBeforeComa(inter, 0);
 	int first = 1;
 	do
 	{
