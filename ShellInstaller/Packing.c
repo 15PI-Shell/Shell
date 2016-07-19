@@ -11,19 +11,18 @@ void Pack(char* dir)
 	SingleListStringNode* ptr1 = Config->FilePath;
 	char* dir1 = dir;
 	char* val = (char*)malloc(MAX_PATH);
+	mas = InfSect(&size, Config,dir);
 	for (int i = 0; i < Config->NumOfFiles; i++)
 	{
-		strcpy(val, Config->FilePath->value);
-		strcpy(Config->FilePath->value, dir);
-		strcat(Config->FilePath->value, val);
-		dir = dir1;
+		//strcpy(val, Config->FilePath->value);
+		//strcpy(Config->FilePath->value, dir);
+		//strcat(Config->FilePath->value, val);
+		//dir = dir1;
 		SingleStrlistAddDownmost(&FileToPaths, Config->FilePath->value);
 		Config->FilePath = Config->FilePath->up;
-	//	FileToPaths = FileToPaths->up;
 	}
 	//FileToPaths = ptr;
 	Config->FilePath = ptr1;
-	mas = InfSect(&size, Config);
 	CreateFileArch(FileToPaths, mas, size);
 
 }

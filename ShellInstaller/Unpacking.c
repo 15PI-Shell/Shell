@@ -50,18 +50,18 @@ int UnpackingFile(char* dir)
 	DWORD  dwBytesRead, dwBytesWritten, dwPos;
 	char   buff[4096];
 	int BuffSize = strlen(buff);
-	int skp = KB_TO_SKIP + lSign;
+	int skp = KB_TO_SKIP + lSign + 1;
 	int j;
 	int i;
+	//читаем и записываем файл пока не встретим сигнатуру
 	do
 	{
 		if (ReadFile(hFile, buff, sizeof(buff), &dwBytesRead, NULL))
-		{
-			char* ptr;							
-			for ( i=0;i<dwBytesRead -lSign;i++)
+		{						
+			for ( i=0;i<dwBytesRead - lSign;i++)
 			{
 				 j = 0;
-				for (;j<lSign;j++)
+				for (; j<lSign;j++)
 				{
 					if (buff[i + j] != sign[j]) break;
 				}
@@ -69,7 +69,8 @@ int UnpackingFile(char* dir)
 			}
 			if (i != dwBytesRead - lSign)
 			{
-				SetFilePointer(hFile, i + lSign, NULL, FILE_CURRENT);
+				WriteFile(hUnInstFile, buff, i, &dwBytesWritten, NULL);
+				SetFilePointer(hFile, i - dwBytesRead, NULL, FILE_CURRENT);
 				break;
 			}
 			else
@@ -78,49 +79,53 @@ int UnpackingFile(char* dir)
 			}
 		}
 		else break;
-	} while (1);
-	
-	//начиная с ptr пропускаем сигнатуру и 40 кб считываем два байта
-	SetFilePointer( hFile, skp, NULL, FILE_CURRENT);
+	} while (dwBytesRead == sizeof(buff));
+		//сигнатура и 40 кб, считываем два байта
+	char* buff3=(char*)malloc(skp);
+	if (ReadFile(hFile, buff3, skp, &dwBytesRead, NULL))
+	{
+		WriteFile(hUnInstFile, buff3, dwBytesRead, &dwBytesWritten, NULL);
+	}
+
 	int SkpTwoBytes = 2;
 	int SkpFiveHBytes = 516;
 	char buff1[2];
-	char buff2[516];
+	unsigned char buff2[516];
 	int NumOfFiles;
 	if (ReadFile(hFile, buff1, sizeof(buff1), &dwBytesRead, NULL))
 	{
 		WriteFile(hUnInstFile, buff1, dwBytesRead, &dwBytesWritten, NULL);	
-		SetFilePointer(hFile, SkpTwoBytes, NULL, FILE_CURRENT);
 	}
-	NumOfFiles = buff1[1]*256 + buff1[0];
+	NumOfFiles = buff1[0]*256 + buff1[1];
 	//считываем размер каждого файла и его путь
-	int i = 0;
-	SingleListStringNode * ListOfPaths;
-	SingleListStringNode * ListOfSize;
-	int k = 0;
-	while (i<NumOfFiles)
+	int i1 = 0;
+	SingleListStringNode * ListOfPaths = NULL;
+	SingleListStringNode * ListOfSize = NULL;
+	int k;
+	while (i1<NumOfFiles)
 	{
+		k = 0;
 		if (ReadFile(hFile, buff2, sizeof(buff2), &dwBytesRead, NULL))
 		{
-			char* PathFile;
-			for (int j = 0; buff2[j] != "\0"; k++, j++)
+			char* PathFile=(char*)malloc(300);
+			for (int j1 = 0;; k++, j1++)
 			{
-				PathFile[k] = buff2[j];
+				PathFile[k] = buff2[j1];
+				if (buff2[j1] == '\0') break;
 			}
-			PathFile[k] = "\0";
-			SingleStrlistAddUpmost(ListOfPaths, PathFile);	//добавляем пути к файлам в список
+			
+			SingleStrlistAddUpmost(&ListOfPaths, PathFile);	//добавляем пути к файлам в список
 			
 		//	char* folder;
 		//	DirExist(ListOfPaths->value);
-			
-			int Size;
-			Size = buff2[515] + (buff2[514]<<8) + (buff2[513]<<16) + (buff2[512]<<24);
-			char* s;
+			unsigned int bmas[4] = {(int)buff2[512],(int)buff2[513],(int)buff2[514], (int)buff2[515] };
+			unsigned int Size;
+			Size = bmas[3] + (bmas[2]<<8) + (bmas[1]<<16) + (bmas[0]<<24);
+			char* s = (char*)malloc(10);
 			itoa(Size, s, 10);
-			SingleStrlistAddUpmost(ListOfSize, s);				//добавляем размер файлов в список
+			SingleStrlistAddUpmost(&ListOfSize, s);				//добавляем размер файлов в список
 			WriteFile(hUnInstFile, buff2, dwBytesRead, &dwBytesWritten, NULL);
-			SetFilePointer(hFile, SkpFiveHBytes, NULL, FILE_CURRENT);
-			i++;
+			i1++;
 		}
 	}
 	CloseHandle(hUnInstFile);
@@ -131,17 +136,17 @@ int UnpackingFile(char* dir)
 		GetName = ListOfPaths->value;
 		char* PathFileDir = (char*)malloc(MAX_PATH);
 		strcpy(PathFileDir, dir);				//копируем нашу директорию в переменную
+		strcat(PathFileDir, "\\");
 		strcat(PathFileDir, GetName);
 
 		HANDLE Paths;
-		Paths = CreateFile(GetName, GENERIC_WRITE, FILE_SHARE_READ,
+		Paths = CreateFileA(PathFileDir, GENERIC_WRITE, FILE_SHARE_READ,
 			NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		int ByteToSkip = atoi(ListOfSize->value);
 		char* buff3=(char*)malloc(ByteToSkip);
-		if (ReadFile(hFile, buff3, sizeof(buff3), &dwBytesRead, NULL))
+		if (ReadFile(hFile, buff3, ByteToSkip, &dwBytesRead, NULL))
 		{
 			WriteFile(Paths, buff3, dwBytesRead, &dwBytesWritten, NULL);
-			SetFilePointer(hFile, ByteToSkip, NULL, FILE_CURRENT);
 		}
 		CloseHandle(Paths);
 		free(buff3);

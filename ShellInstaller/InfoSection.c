@@ -1,6 +1,6 @@
 ﻿#include "InfoSection.h"
 
-char* InfSect(int* Size, InstallerConfig* struc)
+char* InfSect(int* Size, InstallerConfig* struc, char* dir)
 {
 	HANDLE hFile;
 	WIN32_FIND_DATA FindFileData;
@@ -16,8 +16,8 @@ char* InfSect(int* Size, InstallerConfig* struc)
 	memcpy(mas, sig, lsig);
 
 	char leftByte, rightByte;
-	leftByte = (NumFiles) % 256;
-	rightByte = (NumFiles) / 256;
+	leftByte = (NumFiles) / 256;
+	rightByte = (NumFiles) % 256;
 
 	int reserve = RESERVED_40_kb;
 	int bNumFiles = RESERVED_2_b;
@@ -29,28 +29,37 @@ char* InfSect(int* Size, InstallerConfig* struc)
 	mas[skp - bNumFiles] = leftByte;
 	mas[skp - bNumFiles + 1] = rightByte;
 
+	SingleListStringNode* ptr = struc->FilePath;
+
 	for (int i = skp; i < *Size;)
 	{
 		char* FileName = struc->FilePath->value;
 		int LenOfFile = strlen(FileName) + 1;				//длина пути файла
 
 		memcpy(mas + i, FileName, LenOfFile);	//добавляем путь файла в массив
+		mas[i + LenOfFile] = '\0';
 		i += RESERVED_512_b;
 
-		hFile = FindFirstFileA(FileName, &FindFileData);
+		char* val = (char*)malloc(MAX_PATH);
+		strcpy(val, struc->FilePath->value);
+		strcpy(struc->FilePath->value, dir);
+		strcat(struc->FilePath->value, val);
+		free(val);
+
+		hFile = FindFirstFileA(struc->FilePath->value, &FindFileData);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
 			printf("File doesn't exist\n");
 			return 0;
 		}
-		mas[i] = FindFileData.nFileSizeHigh % 256;		//размер файла
-		mas[i + 1] = FindFileData.nFileSizeHigh / 256;
-		mas[i + 2] = FindFileData.nFileSizeLow % 256;
-		mas[i + 3] = FindFileData.nFileSizeLow / 256;
+		mas[i] = FindFileData.nFileSizeHigh / 256;		//размер файла
+		mas[i + 1] = FindFileData.nFileSizeHigh % 256;
+		mas[i + 2] = FindFileData.nFileSizeLow / 256;
+		mas[i + 3] = FindFileData.nFileSizeLow % 256;
 		i += RESERVED_4_b;
 
 		struc->FilePath = struc->FilePath->up;
 	}
-
+	struc->FilePath = ptr;
 	return mas;
 }
