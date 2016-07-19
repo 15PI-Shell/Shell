@@ -19,8 +19,31 @@ char* diff(char* args)
 		SingleLinklistRemoveDownmost(&ListOfArgs);
 		return -1;
 	}
-	char *f2 = (char*)malloc(260);
+	char *f2 = (char*)malloc(MAX_PATH + 1);
 	strcpy(f2, ListOfArgs->value);
+	char *slesh = NULL;
+	slesh = strstr(f2, "\\");
+	if (slesh == NULL)
+	{
+		int len = strlen(f2);
+		int lenP = strlen(CurrentDirectory);
+		if (lenP + len < MAX_PATH + 1)
+		{
+			char *tmp = (char*)malloc(MAX_PATH + 1);
+			strcpy(tmp, CurrentDirectory);
+			strcat(tmp, "\\");
+			strcat(tmp, f2);
+			strcpy(f2, tmp);
+			free(tmp);
+		}
+		else
+		{
+			printf("File's name is wrong\n");
+			free(f2);
+			return -1;
+
+		}
+	}
 	fp2 = fopen(f2, "r");
 	if (fp2 == NULL)
 	{
@@ -37,8 +60,33 @@ char* diff(char* args)
 		return -1;
 	}
 
-	char *f1 = (char*)malloc(260);
+	char *f1 = (char*)malloc(MAX_PATH + 1);
 	strcpy(f1, ListOfArgs->value);
+	slesh = NULL;
+	slesh = strstr(f1, "\\");
+	if (slesh == NULL)
+	{
+		int len = strlen(f1);
+		int lenP = strlen(CurrentDirectory);
+		if (lenP + len < MAX_PATH + 1)
+		{
+			char *tmp = (char*)malloc(MAX_PATH + 1);
+			strcpy(tmp, CurrentDirectory);
+			strcat(tmp, "\\");
+			strcat(tmp, f1);
+			strcpy(f1, tmp);
+			free(tmp);
+		}
+		else
+		{
+			printf("File's name is wrong\n");
+			free(f1);
+			free(f2);
+			fclose(fp2);
+			return -1;
+
+		}
+	}
 	if (strcmp(f1, f2)==0)
 	{
 		printf("Arguments are wrong\n");

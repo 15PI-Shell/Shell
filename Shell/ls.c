@@ -43,10 +43,18 @@ char* ls(char* args)
 			}
 			strcpy(Dir, ArgList->value);
 			FindFilesAndDirsMask("*", Dir, 3, &last);
-			while (last)
+			if (last)
 			{
-				printf("%s\n", last->value);
-				SingleLinklistRemoveDownmost(&last);
+				while (last)
+				{
+					printf("%s\n", last->value);
+					SingleLinklistRemoveDownmost(&last);
+				}
+			}
+			else {
+				printf("File Not Found\n");
+				free(mask); free(Dir);
+				return -1;
 			}
 			break;
 	case 2:
@@ -77,10 +85,19 @@ char* ls(char* args)
 			SingleLinklistRemoveDownmost(&ArgList);
 			FindFilesRecursive(Dir, "*", &last);
 		}
-		while (last)
+		if (last)
 		{
-			printf("%s\n", last->value);
-			SingleLinklistRemoveDownmost(&last);
+			while (last)
+			{
+				printf("%s\n", last->value);
+				SingleLinklistRemoveDownmost(&last);
+			}
+		}
+		else {
+			printf("File Not Found\n");
+			free(mask); free(Dir);
+			return -1;
+			
 		}
 		break;
 	case 3:if (strlen(ArgList->value) > MAX_PATH)
@@ -110,10 +127,18 @@ char* ls(char* args)
 		   {
 			   SingleLinklistRemoveDownmost(&ArgList);
 			   FindFilesRecursive(Dir, mask, &last);
-			   while (last)
+			   if (last)
 			   {
-				   printf("%s\n", last->value);
-				   SingleLinklistRemoveDownmost(&last);
+				   while (last)
+				   {
+					   printf("%s\n", last->value);
+					   SingleLinklistRemoveDownmost(&last);
+				   }
+			   }
+			   else {
+				   printf("File Not Found\n");
+				   free(mask); free(Dir);
+				   return -1;
 			   }
 		   }
 		   break;
