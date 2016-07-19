@@ -138,9 +138,6 @@
     <ClCompile Include="calc.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
-    <ClCompile Include="catc.c">
-      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
-    </ClCompile>
     <ClCompile Include="diff.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
@@ -151,6 +148,9 @@
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
     <ClCompile Include="tail.c">
+      <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="prFile.c">
       <Filter>Файлы исходного кода\BuiltinPrograms</Filter>
     </ClCompile>
   </ItemGroup>
@@ -245,9 +245,6 @@
     <ClInclude Include="calc.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
-    <ClInclude Include="cat.h">
-      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
-    </ClInclude>
     <ClInclude Include="diff.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
@@ -258,6 +255,9 @@
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
     <ClInclude Include="tail.h">
+      <Filter>Заголовочные файлы\BuilinPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="prFile.h">
       <Filter>Заголовочные файлы\BuilinPrograms</Filter>
     </ClInclude>
   </ItemGroup>

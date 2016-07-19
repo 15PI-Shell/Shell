@@ -1,14 +1,14 @@
-#include "cat.h"
+#include "prFile.h"
 
-char* cat(char* arg)
+char* printFile(char* arg)
 {
 	FILE *fp = NULL;
 	SingleLinklistNode *ARList=NULL;
 	int n_ar;
 	n_ar = ParsOfArgs(arg, &ARList);
-	if (n_ar < 1)
+	if (n_ar!= 1)
 	{
-		printf("The number of arguments is not enough\n");
+		printf("The number of arguments is wrong\n");
 		return -1;
 	}
 	if (strlen(ARList->value) > MAX_PATH)
@@ -37,6 +37,10 @@ char* cat(char* arg)
 			printf("%s", str);
 		}
 		free(str);
+	}
+	else
+	{
+		printf("File is empty\n");
 	}
 	free(fileName);
 	fclose(fp);

@@ -28,7 +28,7 @@ void BPC_Init()
 	RegisterProgram("cd", ChangeDirectory, BPC_ReturnsNothing);
 	RegisterProgram("History", PrintHistory, BPC_ReturnsString);
 	RegisterProgram("tail", TailOfFile, BPC_ReturnsString);
-	RegisterProgram("cat", cat, BPC_ReturnsNothing);
+	RegisterProgram("prFile", printFile, BPC_ReturnsNothing);
 	RegisterProgram("diff", diff, BPC_ReturnsNothing);
 	RegisterProgram("ls", ls, BPC_ReturnsNothing);
 

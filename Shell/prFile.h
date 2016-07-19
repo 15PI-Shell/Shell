@@ -3,4 +3,4 @@
 #include "ParserOfArguments.h"
 #include "LinkedList.h"
 #include "FindFile.h"
-char*cat(char*);
+char*printFile(char*);
