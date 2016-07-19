@@ -40,7 +40,7 @@ int CreateFileArch(SingleListStringNode* FilesPaths, char * mas, int Size)
 		char * GetName;
 		GetName = FilesPaths->value;
 
-		Paths = CreateFile(GetName, GENERIC_READ, FILE_SHARE_READ,
+		Paths = CreateFileA(GetName, GENERIC_READ, FILE_SHARE_READ,
 			NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (Paths == INVALID_HANDLE_VALUE)
 		{

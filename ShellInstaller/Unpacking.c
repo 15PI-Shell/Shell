@@ -32,7 +32,7 @@ int UnpackingFile(char* dir)
 	int lDir = strlen(dir);
 	char* UnInstFile = (char*)malloc(MAX_PATH);
 	strcpy(UnInstFile,dir);				//копируем нашу директорию в переменную
-	char* FileName = "\uninstall.exe";
+	char* FileName = "\\uninstall.exe";
 	strcat(UnInstFile + lDir, FileName,strlen(FileName));
 
 	hUnInstFile = CreateFileA( UnInstFile, GENERIC_WRITE,   //создаем файл в указанной директории
@@ -51,16 +51,26 @@ int UnpackingFile(char* dir)
 	char   buff[4096];
 	int BuffSize = strlen(buff);
 	int skp = KB_TO_SKIP + lSign;
+	int j;
+	int i;
 	do
 	{
 		if (ReadFile(hFile, buff, sizeof(buff), &dwBytesRead, NULL))
 		{
 			char* ptr;							
-			ptr = strstr(buff, strstr);			//содержит ли наш буффер сигнатуру
-			if (ptr != NULL)
+			for ( i=0;i<dwBytesRead -lSign;i++)
 			{
-				ptr1 = SetFilePointer(hFile, 0, NULL, FILE_CURRENT);
-				break;							//да - выходим
+				 j = 0;
+				for (;j<lSign;j++)
+				{
+					if (buff[i + j] != sign[j]) break;
+				}
+				if (j == lSign) break;
+			}
+			if (i != dwBytesRead - lSign)
+			{
+				SetFilePointer(hFile, i + lSign, NULL, FILE_CURRENT);
+				break;
 			}
 			else
 			{

@@ -11,7 +11,8 @@ void Install()
 	printf("Installer logic\n");
 	printf("Please, enter installation path: ");
 	scanf("%s", &InstallationPath);
-	InstallResult = InstallModifyPath();
+	UnpackingFile(InstallationPath);
+	/*InstallResult = InstallModifyPath();
 	if (InstallResult)
 		printf("Update Path\n");
 	else
@@ -26,7 +27,7 @@ void Install()
 	{
 		printf("Creating a Registry Key Failed\n");
 		return;
-	}
+	}*/
 }
 
 void Uninstall()
