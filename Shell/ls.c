@@ -49,39 +49,40 @@ char* ls(char* args)
 				SingleLinklistRemoveDownmost(&last);
 			}
 			break;
-	case 2: if (strlen(ArgList->value) > MAX_PATH)
-	{
-		printf("list of arguments is wrong)\n");
-		free(mask); free(Dir);
-		return -1;
-	}
-			if (strlen(ArgList->value) > MAX_PATH)
-			{
-				printf("list of arguments is wrong)\n");
-				free(mask); free(Dir);
-				return -1;
-			}
-			if (strcmp(ArgList->value, "-R") != 0 && (strcmp(ArgList->value, "-r") != 0))
-			{
-				strcpy(mask, ArgList->value);
-				SingleLinklistRemoveDownmost(&ArgList);
-				strcpy(Dir, ArgList->value);
-				FindFilesAndDirsMask(mask, Dir, 3, &last);
-			}
-			else
-			{
-				SingleLinklistRemoveDownmost(&ArgList);
-				strcpy(Dir, ArgList->value);
-				FindFilesRecursive(Dir, "*", &last);
-				SingleLinklistRemoveDownmost(&ArgList);
-			}
-			while (last)
-			{
-				printf("%s\n", last->value);
-				SingleLinklistRemoveDownmost(&last);
-			}
-			break;
-	case 3:if (strlen(ArgList->value)>MAX_PATH)
+	case 2:
+		if (strlen(ArgList->value) > MAX_PATH)
+		{
+			printf("list of arguments is wrong)\n");
+			free(mask); free(Dir);
+			return -1;
+		}
+		strcpy(Dir, ArgList->value);
+		SingleLinklistRemoveDownmost(&ArgList);
+		if (strlen(ArgList->value) > MAX_PATH)
+		{
+			printf("list of arguments is wrong)\n");
+			free(mask); free(Dir);
+			return -1;
+		}
+
+		if (strcmp(ArgList->value, "-R") != 0 && (strcmp(ArgList->value, "-r") != 0))
+		{
+			strcpy(mask, ArgList->value);
+			SingleLinklistRemoveDownmost(&ArgList);
+			FindFilesAndDirsMask(mask, Dir, 3, &last);
+		}
+		else
+		{
+			SingleLinklistRemoveDownmost(&ArgList);
+			FindFilesRecursive(Dir, "*", &last);
+		}
+		while (last)
+		{
+			printf("%s\n", last->value);
+			SingleLinklistRemoveDownmost(&last);
+		}
+		break;
+	case 3:if (strlen(ArgList->value) > MAX_PATH)
 	{
 		printf("list of arguments is wrong)\n");
 		free(mask); free(Dir);
@@ -89,7 +90,7 @@ char* ls(char* args)
 	}
 		   strcpy(mask, ArgList->value);
 		   SingleLinklistRemoveDownmost(&ArgList);
-		   if (strlen(ArgList->value)>MAX_PATH)
+		   if (strlen(ArgList->value) > MAX_PATH)
 		   {
 			   printf("list of arguments is wrong)\n");
 			   free(mask); free(Dir);
