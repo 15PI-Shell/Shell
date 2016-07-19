@@ -18,6 +18,7 @@ char* calc(char* expr)
 		free(res);
 		return -1;
 	}
+	expr = malloc(1000);
 	sprintf(expr, "%lf", *res);
 	free(res);
 	return expr;
