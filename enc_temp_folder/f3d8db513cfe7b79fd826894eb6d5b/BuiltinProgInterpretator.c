@@ -237,7 +237,7 @@ char* CmdInterpretator(char* mas)
 		}
 
 		free(ptrname);
-		//free(ptrarg);
+		free(ptrarg);
 
 		
 		s += strlen(cmd) + 1;

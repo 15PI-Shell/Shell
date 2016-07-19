@@ -5,6 +5,7 @@ int main()
 {
 	Basic_VM = VM_Create();
 	BPC_Init();
+	
 	ConsoleInitialisation();
 	
 	int key;
