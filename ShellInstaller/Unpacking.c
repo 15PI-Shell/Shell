@@ -14,9 +14,9 @@ int UnpackingFile(char* dir)
 
 	int lDir = strlen(dir);
 	char* UnInstFile = (char*)malloc(MAX_PATH);
-	memcpy(UnInstFile,dir,lDir);				//копируем нашу директорию в переменную
+	strcpy(UnInstFile,dir);				//копируем нашу директорию в переменную
 	char* FileName = "\uninstall.exe";
-	memcpy(UnInstFile + lDir, FileName,strlen(FileName));
+	strcat(UnInstFile + lDir, FileName,strlen(FileName));
 
 	hUnInstFile = CreateFileA( UnInstFile, GENERIC_WRITE,   //создаем файл в указанной директории
 		0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -26,7 +26,8 @@ int UnpackingFile(char* dir)
 		printf("Could not open uninstall.exe");
 		return 0;
 	}
-	char* sign = "SHELL-INSTALLER-INFOSECTION";
+	char sign[] = " HELL-INSTALLER-INFOSECTION";
+	sign[0] = 'S';
 	int lSign = strlen(sign);
 
 	DWORD  dwBytesRead, dwBytesWritten, dwPos;
@@ -49,12 +50,13 @@ int UnpackingFile(char* dir)
 				WriteFile(hUnInstFile, buff, dwBytesRead, &dwBytesWritten, NULL);	//нет - записываем в файл
 			}
 		}
+		else break;
 	} while (1);
 	
 	//начиная с ptr пропускаем сигнатуру и 40 кб считываем два байта
 	SetFilePointer( hFile, skp, NULL, FILE_CURRENT);
 	int SkpTwoBytes = 2;
-	int SkpFiveHBytes = 2;
+	int SkpFiveHBytes = 516;
 	char buff1[2];
 	char buff2[516];
 	int NumOfFiles;
@@ -68,18 +70,20 @@ int UnpackingFile(char* dir)
 	int i = 0;
 	SingleListStringNode * ListOfPaths;
 	SingleListStringNode * ListOfSize;
+	int k = 0;
 	while (i<NumOfFiles)
 	{
 		if (ReadFile(hFile, buff2, sizeof(buff2), &dwBytesRead, NULL))
 		{
 			char* PathFile;
-			for (int k = 0, j = 0; buff2[j] != "\0"; k++, j++)
+			for (int j = 0; buff2[j] != "\0"; k++, j++)
 			{
 				PathFile[k] = buff2[j];
 			}
+			PathFile[k] = "\0";
 			SingleStrlistAddDownmost(ListOfPaths, PathFile);		//добавляем пути к файлам в список
 			int Size;
-			Size = buff2[512] + (buff2[513]<<8) + (buff2[514]<<16) + (buff2[515]<<24);
+			Size = buff2[515] + (buff2[514]<<8) + (buff2[513]<<16) + (buff2[512]<<24);
 			char* s;
 			itoa(Size, s, 10);
 			SingleStrlistAddDownmost(ListOfSize, s);				//добавляем размер файлов в список
@@ -95,8 +99,8 @@ int UnpackingFile(char* dir)
 		char * GetName;
 		GetName = ListOfPaths->value;
 		char* PathFileDir = (char*)malloc(MAX_PATH);
-		memcpy(PathFileDir, dir, lDir);				//копируем нашу директорию в переменную
-		memcpy(PathFileDir + lDir, GetName, strlen(GetName));
+		strcpy(PathFileDir, dir);				//копируем нашу директорию в переменную
+		strcat(PathFileDir, GetName);
 
 		HANDLE Paths;
 		Paths = CreateFile(GetName, GENERIC_WRITE, FILE_SHARE_READ,
