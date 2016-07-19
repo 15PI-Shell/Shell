@@ -38,6 +38,10 @@ char* printFile(char* arg)
 		}
 		free(str);
 	}
+	else
+	{
+		printf("File is empty\n");
+	}
 	free(fileName);
 	fclose(fp);
 	return 0;
