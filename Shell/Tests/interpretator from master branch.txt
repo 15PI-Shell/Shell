@@ -43,7 +43,7 @@ cat "Binary.h Binary.c"
 cat a.txt - RESULT: ничего ??? вроде должно быть сообщение о том, что файл пустой
 cat C:\ASM\fin.txt - RESULT: hdg ugd... (print)
 
-binary - RESULT: "0"
+binary - RESULT: "0" !!!
 binary 2 - RESULT: "10"
 binary 0 - RESULT: "0"
 binary 2 3 - RESULT: "10" !!! 

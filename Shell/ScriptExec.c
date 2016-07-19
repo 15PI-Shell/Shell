@@ -29,7 +29,7 @@ char* ScriptExec(char* path)
 	string[fsize] = 0;
 
 	if (EvalScript(string, v))
-		printf("Script finished");
+		printf("Script finished\n");
 	free(string);
 
 	return 0;

@@ -32,6 +32,25 @@ void shift(char* out, int key)
 	}
 }
 
+void GoToNxtBracket(char* exp, int* i)
+{
+	int delta = 0;
+	while (exp[*i])
+	{
+		if (exp[*i] == '(')
+			delta++;
+		else if (exp[*i] == ')')
+		{
+			delta--;
+			if (delta < 0)
+				failed = 1;
+			if (delta <= 0)
+				break;
+		}
+		(*i)++;
+	}
+}
+
 char* GetRightExpression(char* expression)
 {
 	int brac = 0;
@@ -78,6 +97,11 @@ char* GetRightExpression(char* expression)
 				open = i + 1;
 			break;
 		case '(':
+			if (i > 0 && (tolower(out[i - 1]) >= 'a' && tolower(out[i - 1]) <= 'z'))
+			{
+				GoToNxtBracket(out, &i);
+				continue;
+			}
 			if (close == -1)
 				close = -2;
 			else
@@ -143,7 +167,7 @@ double Summand(Mathi* mi, TrieNode* VM)//Слагаемое = Множитель
 
 	Pass(mi);
 
-	int modify = 1;
+	double modify = 1;
 	switch (mi->str[mi->ptr])
 	{
 	case '+':
@@ -230,9 +254,9 @@ double Function(Mathi* mi, TrieNode* VM, char* funct)
 		failed = 1;
 		return 0;
 	}
-	//todo: скобкокостыль
-	char args[1000] = "(";
-	int i = 1;
+
+	char args[1000] = "";
+	int i = 0;
 	int bracets2 = 1;
 	while ((mi->str[++(mi->ptr)] != ')') || (bracets2 != 1))
 	{
@@ -250,8 +274,7 @@ double Function(Mathi* mi, TrieNode* VM, char* funct)
 		}
 		args[i++] = mi->str[mi->ptr];
 	}
-	args[i] = ')';
-	args[i + 1] = 0;
+	args[i] = 0;
 	mi->ptr++;
 	strcpy(args, RetRightArg(VM, args, &failed));
 	BPC_Returns returns;
@@ -347,6 +370,7 @@ int MathInterpreter(TrieNode* VM, char* expression, double** result)
 	Mathi mi;
 	mi.ptr = failed = mi.bracets = 0;
 	mi.str = GetRightExpression(expression);
+	printf("%s\n", mi.str);
 	double* ans = (double*)malloc(sizeof(double));
 	*ans = Term(&mi, VM);
 
