@@ -72,7 +72,6 @@ char* GetRightExpression(char* expression)
 			{
 				shift(out, open);
 				out[open] = '(';
-				open = 0;
 				close = -1;
 				i++;
 			}
