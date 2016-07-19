@@ -93,7 +93,7 @@ void ConsolePrintChar(int key)
 {
 	DoubleTabFlag = 0;
 	int buffLen = strlen(Buff);
-	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= '?' && key <= '?') && !(key >= '?' && key <= '?'))
+	if (buffLen < MAX_CONSOLE_INPUT && isprint(key) && !(key >= 'à' && key <= 'ÿ') && !(key >= 'À' && key <= 'ß'))
 	{
 		//???? ?????? ???????? ? ?? ????????? (?? ?)
 		for (int i = buffLen; i > cur; --i)

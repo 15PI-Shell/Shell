@@ -167,7 +167,7 @@ double Summand(Mathi* mi, TrieNode* VM)//Слагаемое = Множитель
 
 	Pass(mi);
 
-	int modify = 1;
+	double modify = 1;
 	switch (mi->str[mi->ptr])
 	{
 	case '+':
@@ -370,6 +370,7 @@ int MathInterpreter(TrieNode* VM, char* expression, double** result)
 	Mathi mi;
 	mi.ptr = failed = mi.bracets = 0;
 	mi.str = GetRightExpression(expression);
+	printf("%s\n", mi.str);
 	double* ans = (double*)malloc(sizeof(double));
 	*ans = Term(&mi, VM);
 
