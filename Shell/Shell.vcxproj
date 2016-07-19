@@ -78,7 +78,7 @@
   <ItemGroup>
     <ClCompile Include="Arguments.c" />
     <ClCompile Include="Binary.c" />
-    <ClCompile Include="catc.c" />
+    <ClCompile Include="prFile.c" />
     <ClCompile Include="calc.c" />
     <ClCompile Include="ChangeDirectory.c" />
     <ClCompile Include="diff.c" />
@@ -117,7 +117,7 @@
     <ClInclude Include="Binary.h" />
     <ClInclude Include="BuiltinProgController.h" />
     <ClInclude Include="BuiltinProgInterpretator.h" />
-    <ClInclude Include="cat.h" />
+    <ClInclude Include="prFile.h" />
     <ClInclude Include="calc.h" />
     <ClInclude Include="ChangeDirectory.h" />
     <ClInclude Include="diff.h" />
