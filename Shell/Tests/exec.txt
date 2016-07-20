@@ -1,0 +1,62 @@
+int passed = 0;
+
+if(tryCmd("Notepad.exe") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+if(tryCmd("Notepad.afd") == "exec error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+if(tryCmd("Notepad.exe test.txt") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+if(tryCmd("test.txt") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+if(tryCmd("C:\\Windows") == "no ret value")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+if(tryCmd("explorer.exe C:\\Windows") == "extern file error")
+{
+	echo(">>>>>>>>passed");
+	passed += 1;
+}
+else
+{
+	echo(">>>>>>>>not passed");
+}
+
+echo(toStr(passed) + "/6 tests was passed");

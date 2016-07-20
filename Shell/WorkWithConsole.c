@@ -111,7 +111,7 @@ void ReadHistory()
 	{
 		fseek(fpHistory, 0, SEEK_END);
 		long pos = ftell(fpHistory);
-		if (pos>0)
+		if (pos > 0)
 		{
 			rewind(fpHistory);
 			char *str = (char*)malloc(MAX_CONSOLE_INPUT);
@@ -263,9 +263,9 @@ void ConsoleEnter()
 		CurrHist = CurrHist->down;
 	if ((CurrHist->up == NULL) || ((CurrHist->up != 0) && (strcmp(CurrHist->up->value, Buff))))
 	{
-		DoubleLinklistRemoveUpmost(&CurrHist->up);
+		//DoubleLinklistRemoveUpmost(&CurrHist->up);
 		cnt++;
-		if (cnt>100)
+		if (cnt > 100)
 		{
 			DoubleLinklistRemoveUpmost(&CurrHist->up);
 			cnt--;
