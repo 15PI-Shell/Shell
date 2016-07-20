@@ -45,7 +45,7 @@ else
 {
 	echo(">>>>>>>>not passed");
 }
-if(tryCmd("ls -r C:\\ASM") == "no ret value")
+if(tryCmd("ls -r C:\\DELL") == "no ret value")
 {
 	echo(">>>>>>>>passed");
 	passed += 1;
@@ -81,7 +81,7 @@ else
 {
 	echo(">>>>>>>>not passed");
 }
-if(tryCmd("ls -r C:\\ASM *.com") == "no ret value")
+if(tryCmd("ls -r C:\\DELL *") == "no ret value")
 {
 	echo(">>>>>>>>passed");
 	passed += 1;

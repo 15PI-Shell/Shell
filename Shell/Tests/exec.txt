@@ -9,7 +9,7 @@ else
 {
 	echo(">>>>>>>>not passed");
 }
-if(tryCmd("Notepad.afd") == "exec error")
+if(tryCmd("Notepa.afd") == "not found")
 {
 	echo(">>>>>>>>passed");
 	passed += 1;
