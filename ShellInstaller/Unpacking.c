@@ -20,7 +20,7 @@ int UnpackingFile(char* dir)
 	strcat(UnInstFile + lDir, FileName,strlen(FileName));
 
 	hUnInstFile = CreateFileA( UnInstFile, GENERIC_WRITE,   //создаем файл в указанной директории
-		0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hUnInstFile == INVALID_HANDLE_VALUE)
 	{
@@ -64,17 +64,24 @@ int UnpackingFile(char* dir)
 		}
 		else break;
 	} while (dwBytesRead == sizeof(buff));
-		//сигнатура и 40 кб, считываем два байта
+		//сигнатура и 32 кб, 
 	char* buff3=(char*)malloc(skp);
 	if (ReadFile(hFile, buff3, skp, &dwBytesRead, NULL))
 	{
 		WriteFile(hUnInstFile, buff3, dwBytesRead, &dwBytesWritten, NULL);
 	}
-
+	char* HellMsg = (char*)malloc(8 * 1024);
+	if (ReadFile(hFile, HellMsg, 8*1024, &dwBytesRead, NULL))
+	{
+		WriteFile(hUnInstFile, HellMsg, dwBytesRead, &dwBytesWritten, NULL);
+	}
+	printf("%s\n\nPress any key\n", HellMsg);
+	getch();
 	int SkpTwoBytes = 2;
 	int SkpFiveHBytes = 516;
 	char buff1[2];
 	unsigned char buff2[516];
+	//считываем 2 байта
 	int NumOfFiles;
 	if (ReadFile(hFile, buff1, sizeof(buff1), &dwBytesRead, NULL))
 	{
@@ -125,7 +132,7 @@ int UnpackingFile(char* dir)
 
 		HANDLE Paths;
 		Paths = CreateFileA(PathFileDir, GENERIC_WRITE, FILE_SHARE_READ,
-			NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		int ByteToSkip = atoi(ListOfSize->value);
 		char* buff3=(char*)malloc(ByteToSkip);
 		if (ReadFile(hFile, buff3, ByteToSkip, &dwBytesRead, NULL))

@@ -22,7 +22,7 @@ int CreateFileArch(SingleListStringNode* FilesPaths, char * mas, int Size)
 	DWORD NumOfBytes, dwBytesRead;
 	HANDLE File, Paths, ShellFile;
 	File = CreateFileA("15PIShellInstaller.exe", GENERIC_READ | GENERIC_WRITE,
-		0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	ShellFile = CreateFileA(CurrentFile, GENERIC_READ,
 		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 

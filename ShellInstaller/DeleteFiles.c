@@ -6,9 +6,9 @@ void Delete()
 	DWORD ptr1;
 
 	char* dir = (char*)malloc(300);
-	GetCurrentDirectory(300, dir);
+	GetCurrentDirectoryA(300, dir);
 
-	hUnInstFile = CreateFileA(CurrentFile, GENERIC_WRITE,   //создаем файл в указанной директории
+	hUnInstFile = CreateFileA(CurrentFile, GENERIC_READ,   //создаем файл в указанной директории
 		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hUnInstFile == INVALID_HANDLE_VALUE)
@@ -48,6 +48,7 @@ void Delete()
 		}
 		else break;
 	} while (dwBytesRead == sizeof(buff));
+
 	//сигнатура и 40 кб, считываем два байта
 	char* buff3 = (char*)malloc(skp);
 	ReadFile(hUnInstFile, buff3, skp, &dwBytesRead, NULL);
@@ -63,6 +64,11 @@ void Delete()
 	int i1 = 0;
 	SingleListStringNode * ListOfPaths = NULL;
 	int k;
+	HKEY shellRegKey;
+	char* CurDir=(char*)malloc(MAX_PATH);
+	int siz = 260;
+	RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", 0, KEY_ALL_ACCESS | KEY_WOW64_64KEY, &shellRegKey);
+	LSTATUS l=RegGetValueA(shellRegKey, "15PI-SHELL","InstallLocation",RRF_RT_ANY,0,CurDir,&siz);
 	while (i1<NumOfFiles)
 	{
 		k = 0;
@@ -74,23 +80,16 @@ void Delete()
 				PathFile[k] = buff2[j1];
 				if (buff2[j1] == '\0') break;
 			}
-			SingleStrlistAddUpmost(&ListOfPaths, PathFile);	//добавляем пути к файлам в список
+
+			char* PathFileDir = (char*)malloc(MAX_PATH);
+			strcpy(PathFileDir, CurDir);				//копируем нашу директорию в переменную
+			strcat(PathFileDir, "\\");
+			strcat(PathFileDir, PathFile);
+			remove(PathFileDir);
 			i1++;
 		}
 	}
-	
-	while (ListOfPaths)
-	{
-		char * GetName;
-		GetName = ListOfPaths->value;
-		char* PathFileDir = (char*)malloc(MAX_PATH);
-		strcpy(PathFileDir, dir);				//копируем нашу директорию в переменную
-		strcat(PathFileDir, "\\");
-		strcat(PathFileDir, GetName);
-		remove(PathFileDir);
-		ListOfPaths = ListOfPaths->up;
-	}
-	
+		
 	CloseHandle(hUnInstFile);
 	return 1;
 

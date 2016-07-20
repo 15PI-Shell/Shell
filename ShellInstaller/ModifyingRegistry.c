@@ -47,7 +47,7 @@ int InstallKeyRegistry()
 		return 0;
 	//добавление UninstallString
 	strcpy(copyInstalPath, InstallationPath);
-	strcat(copyInstalPath, "\\ShellInstaller.exe");
+	strcat(copyInstalPath, "\\uninstall.exe");
 	RegFunStatus = RegSetValueExA(shellRegKey, "UninstallString", NULL, REG_SZ, copyInstalPath, strlen(copyInstalPath) + 1);
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
@@ -56,7 +56,7 @@ int InstallKeyRegistry()
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
 	//добавление EstimatedSize
-	DWORD size = 0xFFFFFF;
+	DWORD size = 420;
 	RegFunStatus = RegSetValueExA(shellRegKey, "EstimatedSize", NULL, REG_DWORD, &size, sizeof(size));
 	if (RegFunStatus != ERROR_SUCCESS)
 		return 0;
